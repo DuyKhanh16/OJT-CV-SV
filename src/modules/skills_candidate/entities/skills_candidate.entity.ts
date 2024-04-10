@@ -1,5 +1,6 @@
 import { Candidate } from "src/modules/candidates/entities/candidate.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Leveljob } from "src/modules/leveljobs/entities/leveljob.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('skills_candidate')
 export class SkillsCandidate {
@@ -31,5 +32,10 @@ export class SkillsCandidate {
     @ManyToOne(() => Candidate, (candidate) => candidate.id)
     @JoinColumn({ name: 'candidate_id' })
     candidate_id: Candidate;
+
+    @ManyToOne(() => Leveljob, (leveljob) => leveljob.id)
+    @JoinColumn({ name: 'leveljob_id' })
+    leveljob_id: Leveljob;
+    
 
 }
