@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { User } from 'src/modules/user/database/user.entity';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -14,7 +13,7 @@ const config: MysqlConnectionOptions = {
   password: process.env.DB_PASSWORD || '',
   type: 'mysql',
   database: process.env.DB_NAME || 'OJT_CV',
-  entities: [User],
+  entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: true,
   namingStrategy: new SnakeNamingStrategy(),
 };
