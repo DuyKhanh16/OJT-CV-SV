@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountModule } from '../account/account.module';
 import { CandidatesModule } from '../candidates/candidates.module';
 import { MailModule } from 'src/mail/mail.module';
+import { CompaniesModule } from '../companies/companies.module';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
-  imports: [forwardRef(() => AccountModule),forwardRef(()=>CandidatesModule),forwardRef(()=>MailModule)],
+  imports: [forwardRef(() => AccountModule),forwardRef(()=>CandidatesModule),forwardRef(()=>MailModule),
+  forwardRef(()=>CompaniesModule)],
 })
 export class AuthModule {}
