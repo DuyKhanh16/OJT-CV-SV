@@ -12,6 +12,9 @@ export class Account {
 
     @Column({type: 'varchar', length: 255})
     password: string;
+    
+    @Column({type: 'int'})
+    role : number
 
     @OneToMany(type => Company, company => company.account_company_id)
     company: Company[]

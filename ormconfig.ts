@@ -8,13 +8,12 @@ const SnakeNamingStrategy =
   require('typeorm-naming-strategies').SnakeNamingStrategy;
 const config: MysqlConnectionOptions = {
   host: process.env.DB_HOST || 'localhost',
-  port: 3306,
+  port: parseInt(process.env.DB_PORT) || 3306,
   username: process.env.DB_USERNAME || 'root',
   password: process.env.DB_PASSWORD || '',
   type: 'mysql',
   database: process.env.DB_NAME || 'OJT_CV',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize:true,
   namingStrategy: new SnakeNamingStrategy(),
 };
 
