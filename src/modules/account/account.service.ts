@@ -15,12 +15,12 @@ export class AccountService {
    return await this.accountRepository.findOne({ where: { email: email } });
  }
 
- async createNewAccount(email: string, password: string) {
+ async createNewAccount(email: string, password: string, role: number) {
   const hashedPassword = await argon2.hash(password);
    const account = new Account();
    account.email = email;
    account.password = hashedPassword;
-   account.role = RoleEnum.CANDIDATE;
+   account.role = role;
    await this.accountRepository.save(account);
  }
 }
