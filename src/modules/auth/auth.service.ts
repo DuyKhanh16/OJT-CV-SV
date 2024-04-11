@@ -51,6 +51,7 @@ export class AuthService {
       address: createCompanyDto.address,
       phone: createCompanyDto.phone,
       emailCompany: createCompanyDto.emailCompany
+      
     }
     await this.companyService.createNewCompany(infoCandidate);
     return
