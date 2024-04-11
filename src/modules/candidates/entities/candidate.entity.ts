@@ -1,10 +1,11 @@
+import { Account } from "src/modules/account/entities/account.entity";
 import { CertificateCandidate } from "src/modules/certificate_candidate/entities/certificate_candidate.entity";
 import { EducationCandidate } from "src/modules/education_candidate/entities/education_candidate.entity";
 import { ExperienceCandidate } from "src/modules/experience_candidate/entities/experience_candidate.entity";
 import { JobCandidates } from "src/modules/jobs/entities/job_candidates.entity";
 import { ProjectCandidate } from "src/modules/project_candidate/entities/project_candidate.entity";
 import { SkillsCandidate } from "src/modules/skills_candidate/entities/skills_candidate.entity";
-import { Column, Entity,  OneToMany,  PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity,  JoinColumn,  ManyToOne,  OneToMany,  PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('candidate')
 export class Candidate {
@@ -96,4 +97,8 @@ export class Candidate {
 
     @OneToMany(() => JobCandidates, (job_candidates) => job_candidates.candidate_id)
     job_candidates: JobCandidates[]
+
+    @ManyToOne(()=> Account, (account) => account.id)
+    @JoinColumn({ name: 'account_id' })
+    account_candidate_id: Account
 }

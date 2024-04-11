@@ -1,6 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { AddressCompany } from "./address_company.entity";
 import { Job } from "src/modules/jobs/entities/job.entity";
+import { Typecompany } from "src/modules/typecompany/entities/typecompany.entity";
+import { Account } from "src/modules/account/entities/account.entity";
 
 @Entity('company')
 export class Company {
@@ -43,4 +45,12 @@ export class Company {
     @OneToMany(type => Job, job => job.company)
 
     job: Job[]
+
+    @ManyToOne(type => Typecompany, typecompany => typecompany.company)
+    @JoinColumn({name: 'typeCompany_id'})
+    typeCompany_id: Typecompany
+
+    @ManyToOne(type => Account, account => account.company)
+    @JoinColumn({name: 'account_company_id'})
+    account_company_id: Account
 }
