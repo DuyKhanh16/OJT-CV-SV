@@ -7,7 +7,7 @@ export class Leveljob {
     id: string;
     @Column({type: 'varchar', length: 255})
     name: string;
-
+    
     lever_job: LeversJobs[]
     
 }

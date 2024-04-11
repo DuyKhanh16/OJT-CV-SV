@@ -1,34 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-
-@Controller('auth')
+import { CreateCandidateAuthDto } from './dto/create-auth.dto';
+import { MailService } from 'src/mail/mail.service';
+require('dotenv').config();
+@Controller('api/v2/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly mailService: MailService
+    ) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.authService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+ @Post("login-candidate")
+async createNewCandidate(@Body() createCandidateAuthDto: CreateCandidateAuthDto,@Res() res) {
+    try {
+      await this.authService.registerCandidate(createCandidateAuthDto);
+      const formdata:any= {}
+      formdata.toList =[createCandidateAuthDto.email],
+      formdata.subject ="Wellcome",
+      formdata.name =createCandidateAuthDto.name,
+  
+      await this.mailService.sendEmailRegister(formdata)
+      res.status(200).json({message: process.env.REGISTER_OK});
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({message: error.message});
+    }
   }
 }

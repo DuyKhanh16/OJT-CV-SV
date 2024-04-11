@@ -22,51 +22,60 @@ export class Candidate {
 
     @Column({
        type:"date",
+       nullable: true
     })
     birthday: string;
 
     @Column({
         type:"varchar",
-        length: 255
+        length: 255,
+        nullable: true
     })
     address: string;
 
     @Column({
         type:"varchar",
-        length: 20
+        length: 10,
+        nullable: true
     })
     phone: string;
 
     @Column({
         type:"int",
+        nullable: true
     })
     gender: number;
 
     @Column({
         type:"varchar",
-        length: 100
+        length: 100,
+        nullable: true
     })
     link_fb: string;
 
     @Column({
         type:"varchar",
-        length: 100
+        length: 100,
+        nullable: true
     })
     link_linkedin: string;
 
     @Column({
         type:"varchar",
-        length: 100
+        length: 100,
+        nullable: true
     })
     link_git: string;
 
     @Column({
         type:"date",
+        nullable: true
     })
     created_at: string; 
 
     @Column({
         type:"date",
+        nullable: true
     })
     updated_at: string; 
 
