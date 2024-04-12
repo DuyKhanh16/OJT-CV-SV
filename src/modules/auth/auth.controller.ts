@@ -2,10 +2,56 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { MailService } from 'src/mail/mail.service';
+require('dotenv').config();
 
+import {
+  CreateCandidateAuthDto,
+  CreateCompanyDto,
+} from './dto/create-auth.dto';
 @Controller('api/v2')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly mailService: MailService
+    ) {}
+
+
+  @Post('register-candidate')
+  async createNewCandidate(
+    @Body() createCandidateAuthDto: CreateCandidateAuthDto,
+    @Res() res,
+  ) {
+    try {
+      await this.authService.registerCandidate(createCandidateAuthDto);
+      const formdata: any = {};
+      (formdata.toList = [createCandidateAuthDto.email]),
+        (formdata.subject = 'Wellcome'),
+        (formdata.name = createCandidateAuthDto.name),
+        await this.mailService.sendEmailRegister(formdata);
+      res.status(200).json({ message: process.env.REGISTER_OK });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  @Post('register-company')
+  async createNewCompany(@Body() createCompanyDto: CreateCompanyDto,@Res() res) {
+    try {
+      await this.authService.registerCompany(createCompanyDto);
+      const formdata: any = {};
+      (formdata.toList = [createCompanyDto.email]),
+        (formdata.subject = 'Wellcome'),
+        (formdata.name = createCompanyDto.name),
+        await this.mailService.sendEmailRegister(formdata);
+      res.status(200).json({ message: process.env.REGISTER_OK });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: error.message });
+      
+    }
+  }
 
   @Post("login")
   async login(@Body() createAuthDto: CreateAuthDto,@Res() res) {
@@ -46,4 +92,12 @@ export class AuthController {
       OTP: checkMail
     })
   }
-}
+  }
+
+  
+ 
+
+ 
+
+  
+

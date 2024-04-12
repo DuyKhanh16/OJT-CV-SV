@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAccountDto } from './dto/create-account.dto';
-import { UpdateAccountDto } from './dto/update-account.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from './entities/account.entity';
 import { Repository } from 'typeorm';
-
+import * as argon2 from 'argon2';
 @Injectable()
 export class AccountService {
   constructor(
@@ -26,4 +24,22 @@ export class AccountService {
     .execute();
     return result;
   }
+// @Injectable()
+// export class AccountService {
+//  constructor(
+//   @InjectRepository(Account) private accountRepository: Repository<Account>
+//  ) {}
+ 
+ async getAccountByEmail(email: string) {
+   return await this.accountRepository.findOne({ where: { email: email } });
+ }
+
+ async createNewAccount(email: string, password: string, role: number) {
+  const hashedPassword = await argon2.hash(password);
+   const account = new Account();
+   account.email = email;
+   account.password = hashedPassword;
+   account.role = role;
+   await this.accountRepository.save(account);
+ }
 }

@@ -15,9 +15,10 @@ import { ExperienceCandidateModule } from './modules/experience_candidate/experi
 import { CertificateCandidateModule } from './modules/certificate_candidate/certificate_candidate.module';
 import { TypecompanyModule } from './modules/typecompany/typecompany.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), CompaniesModule, CandidatesModule, JobsModule,AccountModule, LocaltionModule, LeveljobsModule, TypejobModule, ProjectCandidateModule, SkillsCandidateModule, EducationCandidateModule, ExperienceCandidateModule, CertificateCandidateModule, TypecompanyModule, AuthModule], 
+  imports: [TypeOrmModule.forRoot(config), CompaniesModule, CandidatesModule, JobsModule,AccountModule, LocaltionModule, LeveljobsModule, TypejobModule, ProjectCandidateModule, SkillsCandidateModule, EducationCandidateModule, ExperienceCandidateModule, CertificateCandidateModule, TypecompanyModule, AuthModule, MailModule], 
   controllers: [],
   providers: [],
 })
