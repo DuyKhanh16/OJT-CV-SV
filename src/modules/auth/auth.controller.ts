@@ -1,34 +1,49 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 
-@Controller('auth')
+@Controller('api/v2')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  @Post("login")
+  async login(@Body() createAuthDto: CreateAuthDto,@Res() res) {
+    try {
+      const result = await this.authService.login(createAuthDto);
+      console.log(result)
+      res.status(200).json({
+        message: "login successfull",
+        data: result
+      })
+    } catch (error) {
+      res.status(500).json({
+        message: "login fail",
+      }) 
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @Post("forgetPassword")
+  async getNewPassword(@Body() body,@Res() res) {
+      const {email} = body
+      console.log(email)
+      const checkMail = await this.authService.getNewPassword(email)
+      console.log(checkMail)
+      res.status(200).json({
+        message: "New Password has been sent to your email",
+        newPassword: checkMail
+      })
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @Post("getOTP")
+  async getOTP(@Body() body,@Res() res) {
+    const {email} = body
+    console.log(email)
+    const checkMail = await this.authService.getOTP(email)
+    console.log(checkMail)
+    res.status(200).json({
+      message: "OTP has been sent to your email",
+      OTP: checkMail
+    })
   }
 }

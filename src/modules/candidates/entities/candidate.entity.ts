@@ -71,6 +71,7 @@ export class Candidate {
     })
     updated_at: string; 
 
+
     @OneToMany(() => ProjectCandidate, (project_candidate) => project_candidate.candidate_id)
     project_candidate: ProjectCandidate[]
 
