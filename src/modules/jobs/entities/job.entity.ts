@@ -17,8 +17,8 @@ export class Job {
     @Column({type: 'varchar', length: 255})
     salary: string;
 
-    @Column({type: 'date'})
-    expire_at: Date;
+    @Column({type:"varchar", length: 20})
+    expire_at: string;
 
     @Column({type:'date'})
     created_at: Date;

@@ -5,6 +5,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 export class EducationCandidate {
     @PrimaryGeneratedColumn("increment")
     id: string;
+
     @Column({
         type: "varchar",
         length: 255
@@ -17,12 +18,14 @@ export class EducationCandidate {
     })
     major: string;
     @Column({
-        type: "date",
+        type: "varchar",
+        length: 20
     })
     start_at: string;
 
     @Column({
-        type: "date",
+        type: "varchar",
+        length: 20
     })
     end_at: string;
 
@@ -37,18 +40,18 @@ export class EducationCandidate {
         default: 1
     })
     status: number;
-    @Column({
-        type:"date",
-    })
-    created_at: string; 
+    // @Column({
+    //     type:"date",
+    // })
+    // created_at: string; 
     
-    @Column({
-        type:"date",
-    })
-    updated_at: string; 
+    // @Column({
+    //     type:"date",
+    // })
+    // updated_at: string; 
 
     @ManyToOne(() => Candidate, (candidate) => candidate.id)
-    @JoinColumn({ name: 'candidate_id' })
+    @JoinColumn({ name: 'candidate_id'})
     candidate_id: Candidate;
 
 }

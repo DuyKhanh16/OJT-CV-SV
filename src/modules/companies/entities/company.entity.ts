@@ -50,6 +50,10 @@ export class Company {
     @Column({type: 'varchar', length: 255})
     addressRegister: string;
 
+    @Column({type: 'longtext'
+    , nullable:true})
+    policy:string
+
     @Column({type:'date'
     , nullable:true})
     created_at: Date;

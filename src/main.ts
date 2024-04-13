@@ -8,7 +8,7 @@ async function bootstrap() {
   const PORT = process.env.PORT || 3000;
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-
+  app.useGlobalGuards();
   //Swagger
   const options = new DocumentBuilder()
   .setTitle('Doc API Project demo')
