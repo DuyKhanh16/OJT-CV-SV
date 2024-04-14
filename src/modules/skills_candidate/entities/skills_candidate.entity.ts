@@ -19,15 +19,15 @@ export class SkillsCandidate {
     })
     status: number;
 
-    @Column({
-        type:"date",
-    })
-    created_at: string; 
+    // @Column({
+    //     type: "varchar",length:20
+    // })
+    // created_at: string; 
     
-    @Column({
-        type:"date",
-    })
-    updated_at: string; 
+    // @Column({
+    //     type: "varchar",length:20
+    // })
+    // updated_at: string; 
 
     @ManyToOne(() => Candidate, (candidate) => candidate.id)
     @JoinColumn({ name: 'candidate_id' })

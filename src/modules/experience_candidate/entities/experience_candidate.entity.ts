@@ -19,12 +19,12 @@ export class ExperienceCandidate {
     position: string;
 
     @Column({
-        type: "date",
+        type: "varchar",length:20
     })
     start_at: string;
 
     @Column({
-        type: "date",
+        type: "varchar",length:20
     })
     end_at: string;
 
@@ -39,15 +39,15 @@ export class ExperienceCandidate {
         default: 1
     })
     status: number;
-    @Column({
-        type:"date",
-    })
-    created_at: string; 
+    // @Column({
+    //     type:"date",
+    // })
+    // created_at: string; 
     
-    @Column({
-        type:"date",
-    })
-    updated_at: string; 
+    // @Column({
+    //     type:"date",
+    // })
+    // updated_at: string; 
 
     @ManyToOne(() => Candidate, (candidate) => candidate.id)
     @JoinColumn({ name: 'candidate_id' })

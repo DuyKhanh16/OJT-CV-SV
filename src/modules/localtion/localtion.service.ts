@@ -1,26 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLocaltionDto } from './dto/create-localtion.dto';
 import { UpdateLocaltionDto } from './dto/update-localtion.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Localtion } from './entities/localtion.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class LocaltionService {
-  create(createLocaltionDto: CreateLocaltionDto) {
-    return 'This action adds a new localtion';
-  }
 
-  findAll() {
-    return `This action returns all localtion`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} localtion`;
-  }
-
-  update(id: number, updateLocaltionDto: UpdateLocaltionDto) {
-    return `This action updates a #${id} localtion`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} localtion`;
+  constructor(
+    @InjectRepository(Localtion) private localtionRepository: Repository<Localtion>,
+  ) {}
+    // lấy location theo Id
+  async getLocation(id:string) {
+    return await this.localtionRepository.findOneBy({id:id});
   }
 }

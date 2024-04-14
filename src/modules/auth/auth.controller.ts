@@ -9,7 +9,7 @@ import {
   CreateCandidateAuthDto,
   CreateCompanyDto,
 } from './dto/create-auth.dto';
-@Controller('api/v2')
+@Controller('api/v2/auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -29,10 +29,10 @@ export class AuthController {
         (formdata.subject = 'Wellcome'),
         (formdata.name = createCandidateAuthDto.name),
         await this.mailService.sendEmailRegister(formdata);
-      res.status(200).json({ message: process.env.REGISTER_OK });
+      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.REGISTER_OK });
     } catch (error) {
       console.log(error);
-      res.status(400).json({ message: error.message });
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
     }
   }
 
@@ -45,10 +45,10 @@ export class AuthController {
         (formdata.subject = 'Wellcome'),
         (formdata.name = createCompanyDto.name),
         await this.mailService.sendEmailRegister(formdata);
-      res.status(200).json({ message: process.env.REGISTER_OK });
+      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.REGISTER_OK });
     } catch (error) {
       console.log(error);
-      res.status(400).json({ message: error.message });
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
       
     }
   }
@@ -58,12 +58,12 @@ export class AuthController {
     try {
       const result = await this.authService.login(createAuthDto);
       console.log(result)
-      res.status(200).json({
+      res.status(process.env.STATUS_SUCCESS).json({
         message: "login successfull",
         data: result
       })
     } catch (error) {
-      res.status(500).json({
+      res.status(process.env.STATUS_SERVER_ERROR).json({
         message: "login fail",
       }) 
     }
@@ -75,7 +75,7 @@ export class AuthController {
       console.log(email)
       const checkMail = await this.authService.getNewPassword(email)
       console.log(checkMail)
-      res.status(200).json({
+      res.status(process.env.STATUS_SUCCESS).json({
         message: "New Password has been sent to your email",
         newPassword: checkMail
       })
@@ -87,7 +87,7 @@ export class AuthController {
     console.log(email)
     const checkMail = await this.authService.getOTP(email)
     console.log(checkMail)
-    res.status(200).json({
+    res.status(process.env.STATUS_SUCCESS).json({
       message: "OTP has been sent to your email",
       OTP: checkMail
     })
