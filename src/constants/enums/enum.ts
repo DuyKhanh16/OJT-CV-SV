@@ -3,3 +3,4 @@ export enum RoleEnum {
   COMPANY=2,
   CANDIDATE=1
 }
+

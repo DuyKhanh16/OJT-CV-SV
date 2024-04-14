@@ -1,26 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLeveljobDto } from './dto/create-leveljob.dto';
 import { UpdateLeveljobDto } from './dto/update-leveljob.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Leveljob } from './entities/leveljob.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class LeveljobsService {
-  create(createLeveljobDto: CreateLeveljobDto) {
-    return 'This action adds a new leveljob';
-  }
+constructor(
+  @InjectRepository(Leveljob) private leveljobRepository: Repository<Leveljob>,
+) {}
 
-  findAll() {
-    return `This action returns all leveljobs`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} leveljob`;
-  }
-
-  update(id: number, updateLeveljobDto: UpdateLeveljobDto) {
-    return `This action updates a #${id} leveljob`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} leveljob`;
-  }
+ async getLeveljobById(id: string) {
+   return await this.leveljobRepository.findOneBy({id:id});
+ }
 }

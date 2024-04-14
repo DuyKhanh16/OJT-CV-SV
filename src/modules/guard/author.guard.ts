@@ -5,7 +5,7 @@ import { AuthService } from "../auth/auth.service";
 @Injectable()
 export class AuthorGuard { 
     constructor(private readonly authService: AuthService) {}
-    canActivate(context: ExecutionContext):Promise<boolean> |boolean {
+    canActivate(context: ExecutionContext,role:number):Promise<boolean> |boolean {
        console.log("context", context);
        const request = context.switchToHttp().getRequest();
        const responce = context.switchToHttp().getResponse();
@@ -20,7 +20,7 @@ export class AuthorGuard {
     //    console.log("newToken", newToken);
        const checkToken =  this.authService.verifyAccessToken(newToken).then((res)=>{
          request["account"] = res;
-         if(res.role !== 0){
+         if(res.role !== role){
             throw new UnauthorizedException("you are not an author");
          }
          // console.log("checkToken", res);
