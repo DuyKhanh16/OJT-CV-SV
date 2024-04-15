@@ -25,7 +25,7 @@ export class CandidatesController {
   @Get("getInfor")
   @UseGuards(AuthGuard)
   async findOne(@Param('id') id: string,@Res() res,@Req() req) {
-    console.log(req.account.email)
+    console.log("1111",req.account.email)
     try {
       const result = await this.candidatesService.getInfor(req.account.email);
       console.log(result)

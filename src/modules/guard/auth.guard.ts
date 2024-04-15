@@ -11,15 +11,15 @@ export class AuthGuard implements CanActivate  {
 
         
        const token = request.headers.authorization;
-      //  console.log("token", token);
+       console.log("token", token);
 
        if(!token?.startsWith("Bearer")) throw new UnauthorizedException();
 
        const newToken = token.split(" ")[1]; 
-    //    console.log("newToken", newToken);
+       console.log("newToken", newToken);
        const checkToken =  this.authService.verifyAccessToken(newToken).then((res)=>{
          request["account"] = res;
-         // console.log("checkToken", res); 
+         console.log("checkToken", res); 
        });
          
        if(!checkToken){
