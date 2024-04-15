@@ -80,6 +80,10 @@ export class Candidate {
     })
     updated_at: string; 
 
+    @Column({
+        type:"longtext"
+    })
+    aboutme:string;
 
     @OneToMany(() => ProjectCandidate, (project_candidate) => project_candidate.candidate_id)
     project_candidate: ProjectCandidate[]

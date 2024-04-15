@@ -20,12 +20,12 @@ export class SkillsCandidate {
     status: number;
 
     // @Column({
-    //     type: "varchar",length:20
+    //     type:"date",
     // })
     // created_at: string; 
     
     // @Column({
-    //     type: "varchar",length:20
+    //     type:"date",
     // })
     // updated_at: string; 
 

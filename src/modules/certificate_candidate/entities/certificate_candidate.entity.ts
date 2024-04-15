@@ -18,12 +18,14 @@ export class CertificateCandidate {
     })
     organization: string;
     @Column({
-        type: "varchar",length:20
+        type: "varchar",
+        length: 20
     })
     start_at: string;
 
     @Column({
-        type: "varchar",length:20
+        type: "varchar",
+        length: 20
     })
     end_at: string;
 
