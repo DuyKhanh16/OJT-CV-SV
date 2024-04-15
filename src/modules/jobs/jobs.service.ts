@@ -72,6 +72,7 @@ export class JobsService {
       .values({ leveljob: leveljob, job: job })
       .execute();
     return job;
+
   }
 
   //  update job
@@ -120,4 +121,21 @@ export class JobsService {
       .execute();
     return job;
   }
+
+ 
+
+ //lay tat ca job dang tuyen dung
+ async findAllLiveJobs() {
+    const result = await this.jobRepository.createQueryBuilder("job")
+    .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.company", "company")
+    .select("job")
+    .where("job.status = 1")
+    .orderBy("job.created_at", "DESC")
+    .getMany()
+    return result
+ }
+
+
+
 }

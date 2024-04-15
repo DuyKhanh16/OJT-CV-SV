@@ -1,34 +1,47 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
 import { ProjectCandidateService } from './project_candidate.service';
 import { CreateProjectCandidateDto } from './dto/create-project_candidate.dto';
 import { UpdateProjectCandidateDto } from './dto/update-project_candidate.dto';
+import { error } from 'console';
 
-@Controller('project-candidate')
+@Controller('api/v2/candidate')
 export class ProjectCandidateController {
   constructor(private readonly projectCandidateService: ProjectCandidateService) {}
 
-  @Post()
-  create(@Body() createProjectCandidateDto: CreateProjectCandidateDto) {
-    return this.projectCandidateService.create(createProjectCandidateDto);
+
+  //them thong tin project candidate
+  @Post("createProject")
+  async create(@Body() createProjectCandidateDto: CreateProjectCandidateDto,@Res() res) {
+    try {
+      const result = await this.projectCandidateService.createProjectCandidate(createProjectCandidateDto);
+      res.status(201).json({message:"create success"})
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.projectCandidateService.findAll();
+ 
+  //update thong tin project candidate
+  @Patch('updateProject/:id')
+  async update(@Param('id') id: string, @Body() updateProjectCandidateDto: CreateProjectCandidateDto,@Res() res) {
+    try {
+      const result = await this.projectCandidateService.updateProjectCandidate(id,updateProjectCandidateDto)
+      res.status(200).json({message:"update success"})
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.projectCandidateService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectCandidateDto: UpdateProjectCandidateDto) {
-    return this.projectCandidateService.update(+id, updateProjectCandidateDto);
-  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectCandidateService.remove(+id);
+  //xoa thong tin project candidate
+  @Delete('deleteProject/:id')
+  async remove(@Param('id') id: string,@Res() res) {
+    try {
+      const result = await this.projectCandidateService.deleteProject(id)
+      res.status(200).json({message:"delete success"})
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
   }
 }

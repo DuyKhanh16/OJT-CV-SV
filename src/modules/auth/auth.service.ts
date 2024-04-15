@@ -27,8 +27,8 @@ async registerCandidate(createCandidateAuthDto: UpdateAuthDto) {
   //  Tạo tài khoản và thông tin người dùng
   const role= RoleEnum.CANDIDATE
   try {
-    await this.accountService.createNewAccount(createCandidateAuthDto.email, createCandidateAuthDto.password,role);
-    await this.candidateService.createNewCandidate(createCandidateAuthDto.name);
+    const account = await this.accountService.createNewAccount(createCandidateAuthDto.email, createCandidateAuthDto.password,role);
+    await this.candidateService.createNewCandidate(createCandidateAuthDto.name,account.id);
     return
   } catch (error) {
     console.log(error);
@@ -47,13 +47,13 @@ async registerCompany(createCompanyDto: CreateCompanyDto) {
 // tạo tài khoản và thông tin công ty
 const role= RoleEnum.COMPANY
  try {
-  await this.accountService.createNewAccount(createCompanyDto.email, createCompanyDto.password,role);
+  const account = await this.accountService.createNewAccount(createCompanyDto.email, createCompanyDto.password,role);
   const infoCandidate:InfoCompanyRegister={
-    nameComany: createCompanyDto.nameCompany,
+    email: createCompanyDto.email,
+    name: createCompanyDto.name,
     address: createCompanyDto.address,
     phone: createCompanyDto.phone,
-    emailCompany: createCompanyDto.emailCompany
-    
+    account_company_id: account.id
   }
   await this.companyService.createNewCompany(infoCandidate);
   return
@@ -111,7 +111,7 @@ async generateAccessToken(payload) {
 }
 
 async verifyAccessToken(token: string) {
-  // console.log("token", token)
+  console.log("token", token)
    return await this.jwtService.verify(token, {
      secret: 'token'
    });

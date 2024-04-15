@@ -15,6 +15,12 @@ export class CompaniesService {
         private readonly locationService: LocaltionService
     ) {}
 
+
+
+    // Lấy hết dữ liệu company
+    async findAll() {
+        return await this.companyRepository.find();
+    }
     // lấy company theo Id
     async getCompanyById(id: string) {
         return await this.companyRepository.findOneBy({id:id});
@@ -22,9 +28,13 @@ export class CompaniesService {
 
     // Tạo mới company
   async createNewCompany (infoCandidate: InfoCompanyRegister) {
-    return await this.companyRepository.save({name:infoCandidate.nameComany,
-      addressRegister:infoCandidate.address,phone:infoCandidate.phone,
-      emailCompany:infoCandidate.emailCompany});
+    const newCompany= await this.companyRepository.createQueryBuilder()
+    .insert()
+    .into(Company)
+    .values({ 
+        ...infoCandidate,
+    })
+    .execute();
   }
   // Update thông tin company
   async updateInfoCompany(id:string,updateInfoCompany: UpdateInfoCompanyDto) {

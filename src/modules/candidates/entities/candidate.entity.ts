@@ -52,7 +52,7 @@ export class Candidate {
         length: 100,
         nullable: true
     })
-    link_fb: string;
+    position: string;
 
     @Column({
         type:"varchar",
@@ -80,6 +80,12 @@ export class Candidate {
     })
     updated_at: string; 
 
+    @Column({
+        type:"longtext",
+        nullable: true
+
+    })
+    aboutme:string;
 
     @OneToMany(() => ProjectCandidate, (project_candidate) => project_candidate.candidate_id)
     project_candidate: ProjectCandidate[]

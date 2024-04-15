@@ -8,29 +8,41 @@ export class ProjectCandidate {
 
     @Column({
         type: "varchar",
-        length: 55
+        length: 55,
+        nullable: true,
+
     })
     name: string;
 
     @Column({
         type: "varchar",
-        length: 255
+        length: 255,
+        nullable: true,
+
     })
     link: string;
 
     @Column({
-        type: "varchar",length:20
+        type: "varchar",
+        length: 20,
+        nullable: true,
+
     })
     start_at: string;
 
     @Column({
-        type: "varchar",length:20
+        type: "varchar",
+        length: 20,
+        nullable: true,
+
     })
     end_at: string;
 
     @Column({
         type: "varchar",
-        length: 255
+        length: 255,
+        nullable: true,
+
     })
     info: string;
     

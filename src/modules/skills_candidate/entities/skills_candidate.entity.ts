@@ -9,7 +9,8 @@ export class SkillsCandidate {
 
     @Column({
         type: "varchar",
-        length: 55
+        length: 55,
+        nullable: true,
     })
     name: string;
 
@@ -20,12 +21,12 @@ export class SkillsCandidate {
     status: number;
 
     // @Column({
-    //     type: "varchar",length:20
+    //     type:"date",
     // })
     // created_at: string; 
     
     // @Column({
-    //     type: "varchar",length:20
+    //     type:"date",
     // })
     // updated_at: string; 
 

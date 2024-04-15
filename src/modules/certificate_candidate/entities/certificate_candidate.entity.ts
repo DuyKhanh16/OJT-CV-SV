@@ -8,28 +8,40 @@ export class CertificateCandidate {
 
     @Column({
         type: "varchar",
-        length: 255
+        length: 255,
+        nullable: true,
+
     })
     name: string;
 
     @Column({
         type: "varchar",
-        length: 255
+        length: 255,
+        nullable: true,
+
     })
     organization: string;
     @Column({
-        type: "varchar",length:20
+        type: "varchar",
+        length: 20,
+        nullable: true,
+
     })
     start_at: string;
 
     @Column({
-        type: "varchar",length:20
+        type: "varchar",
+        length: 20,
+        nullable: true,
+
     })
     end_at: string;
 
     @Column({
         type: "varchar",
-        length: 255
+        length: 255,
+        nullable: true,
+
     })
     info: string;
     
