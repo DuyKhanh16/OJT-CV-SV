@@ -7,6 +7,15 @@ require('dotenv').config();
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
 
+  @Get("getAll")
+  async findAll(@Res() res) {
+    const result = await this.companiesService.findAll();
+    res.status(200).json({ 
+      message:"success",
+      data:result
+     });
+  }
+
   // Update thông tin company
   @Post("update-info/:id")
  async updateInfoCompany(@Body() createCompanyDto: UpdateInfoCompanyDto,@Param("id") id,@Res() res) {

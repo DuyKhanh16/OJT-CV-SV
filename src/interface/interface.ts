@@ -1,6 +1,6 @@
 export interface InfoCompanyRegister{
-    nameComany: string,
+    name: string,
     address: string,
     phone: string,
-    emailCompany: string
+    email: string
 }

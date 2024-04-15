@@ -25,7 +25,11 @@ export class Job {
     @Column({type:"varchar", length: 20})
     expire_at: string;
 
-   
+    @Column({type:"timestamp", default: () => "CURRENT_TIMESTAMP"})
+    created_at: string;
+
+    @Column({type:"int", default: 1})
+    status: number;
 
     @ManyToOne(type => Company, company => company.job)
     @JoinColumn({name: 'company_id'})
