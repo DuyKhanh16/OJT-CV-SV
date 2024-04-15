@@ -81,7 +81,9 @@ export class Candidate {
     updated_at: string; 
 
     @Column({
-        type:"longtext"
+        type:"longtext",
+        nullable: true
+
     })
     aboutme:string;
 

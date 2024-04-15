@@ -9,7 +9,8 @@ export class SkillsCandidate {
 
     @Column({
         type: "varchar",
-        length: 55
+        length: 55,
+        nullable: true,
     })
     name: string;
 

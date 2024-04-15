@@ -6,6 +6,17 @@ require('dotenv').config();
 @Controller('api/v2/jobs')
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
+  
+  //lay tat ca job dang tuyen dung
+  @Get("getLiveJobs")
+  async findAll(@Res() res) {
+    const result = await this.jobsService.findAllLiveJobs();
+    res.status(200).json({ 
+      message:"success",
+      data:result
+     });
+  }
+
 
   @Post("create/:id")
  async createNewJob(@Body() createJobDto: CreateJobDto,@Res() res, @Param("id") id) {

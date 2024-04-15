@@ -49,11 +49,10 @@ const role= RoleEnum.COMPANY
  try {
   await this.accountService.createNewAccount(createCompanyDto.email, createCompanyDto.password,role);
   const infoCandidate:InfoCompanyRegister={
-    nameComany: createCompanyDto.nameCompany,
+    email: createCompanyDto.email,
+    name: createCompanyDto.name,
     address: createCompanyDto.address,
     phone: createCompanyDto.phone,
-    emailCompany: createCompanyDto.emailCompany
-    
   }
   await this.companyService.createNewCompany(infoCandidate);
   return

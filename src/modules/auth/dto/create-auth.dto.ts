@@ -39,9 +39,7 @@ export class CreateCandidateAuthDto {
 
 export class CreateCompanyDto {
   @IsString()
-    @IsNotEmpty()
-    name: string;
-
+   
     @IsString()
     @IsNotEmpty()
     @IsEmail({},{message:"sai định dạng email"})
@@ -57,7 +55,7 @@ export class CreateCompanyDto {
 
     @IsString()
     @IsNotEmpty()
-    nameCompany: string;
+    name: string;
 
     @IsString()
     @IsNotEmpty()
@@ -67,7 +65,4 @@ export class CreateCompanyDto {
     @IsNotEmpty()
     phone: string;
 
-    @IsString()
-    @IsNotEmpty()
-    emailCompany: string;
 }
