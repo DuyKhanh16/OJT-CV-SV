@@ -27,8 +27,8 @@ async registerCandidate(createCandidateAuthDto: UpdateAuthDto) {
   //  Tạo tài khoản và thông tin người dùng
   const role= RoleEnum.CANDIDATE
   try {
-    await this.accountService.createNewAccount(createCandidateAuthDto.email, createCandidateAuthDto.password,role);
-    await this.candidateService.createNewCandidate(createCandidateAuthDto.name);
+    const account = await this.accountService.createNewAccount(createCandidateAuthDto.email, createCandidateAuthDto.password,role);
+    await this.candidateService.createNewCandidate(createCandidateAuthDto.name,account.id);
     return
   } catch (error) {
     console.log(error);
@@ -47,12 +47,13 @@ async registerCompany(createCompanyDto: CreateCompanyDto) {
 // tạo tài khoản và thông tin công ty
 const role= RoleEnum.COMPANY
  try {
-  await this.accountService.createNewAccount(createCompanyDto.email, createCompanyDto.password,role);
+  const account = await this.accountService.createNewAccount(createCompanyDto.email, createCompanyDto.password,role);
   const infoCandidate:InfoCompanyRegister={
     email: createCompanyDto.email,
     name: createCompanyDto.name,
     address: createCompanyDto.address,
     phone: createCompanyDto.phone,
+    account_company_id: account.id
   }
   await this.companyService.createNewCompany(infoCandidate);
   return

@@ -11,8 +11,16 @@ export class CandidatesService {
  constructor(
     @InjectRepository(Candidate) private candidateRepository: Repository<Candidate>
  ) {}
-   async createNewCandidate(name:string) {
-      await this.candidateRepository.save({name:name});
+   async createNewCandidate(name:string,id:string|any) {
+      const result = await this.candidateRepository.createQueryBuilder()
+      .insert()
+      .into(Candidate)
+      .values(
+         {name:name,account_candidate_id:id}
+      )
+      .execute()
+      console.log(result)
+      return result;
    }
   
 
@@ -38,7 +46,11 @@ export class CandidatesService {
   async updateAboutMe(aboutMe:string,email:string) {
    const result = await this.candidateRepository.createQueryBuilder()
    .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
+   .update(Candidate)
+   .set({aboutme:aboutMe})
    .where("Account.email = :email", { email: email })
    .execute()
+
+   return result
   }
 }
