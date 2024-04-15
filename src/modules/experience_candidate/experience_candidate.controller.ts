@@ -1,34 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
 import { ExperienceCandidateService } from './experience_candidate.service';
 import { CreateExperienceCandidateDto } from './dto/create-experience_candidate.dto';
 import { UpdateExperienceCandidateDto } from './dto/update-experience_candidate.dto';
 
-@Controller('experience-candidate')
+@Controller('api/v2/candidate')
 export class ExperienceCandidateController {
   constructor(private readonly experienceCandidateService: ExperienceCandidateService) {}
 
-  @Post()
-  create(@Body() createExperienceCandidateDto: CreateExperienceCandidateDto) {
-    return this.experienceCandidateService.create(createExperienceCandidateDto);
+
+  // thêm kinh nghiem cadidate
+  @Post("createExperience")
+  create(@Body() body:CreateExperienceCandidateDto,@Res() res) {
+    try {
+      const result = this.experienceCandidateService.createExperience(body);
+      res.status(201).json({message:"create success"})
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.experienceCandidateService.findAll();
+  @Patch('updateExperience/:id')
+  update(@Param('id') id: string, @Body() updateExperienceCandidateDto: UpdateExperienceCandidateDto,@Res() res) {
+    try {
+      const result = this.experienceCandidateService.updateExperience(id, updateExperienceCandidateDto);
+      res.status(200).json({message:"update success"})
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.experienceCandidateService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateExperienceCandidateDto: UpdateExperienceCandidateDto) {
-    return this.experienceCandidateService.update(+id, updateExperienceCandidateDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.experienceCandidateService.remove(+id);
+  @Delete('deleteExperience/:id')
+  remove(@Param('id') id: string,@Res() res) {
+    try {
+      const result = this.experienceCandidateService.removeExperience(id);
+      res.status(200).json({message:"delete success"})
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
   }
 }

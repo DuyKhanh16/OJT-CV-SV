@@ -1,26 +1,45 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAccountDto } from './dto/create-account.dto';
-import { UpdateAccountDto } from './dto/update-account.dto';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Account } from './entities/account.entity';
+import { Repository } from 'typeorm';
+import * as argon2 from 'argon2';
 @Injectable()
 export class AccountService {
-  create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
-  }
+  constructor(
+    @InjectRepository(Account) private accountRepository: Repository<Account>,
 
-  findAll() {
-    return `This action returns all account`;
+  ) {}
+  async findByEmail(email: string) {
+    const result = await this.accountRepository.findOne({
+      where: { email },
+    });
+    console.log(result)
+    return result;
   }
+  async updatePassword(id: string, password:string  ) {
+    const result = await this.accountRepository.createQueryBuilder()
+    .update(Account)
+    .set({ password: password })
+    .where("id = :id", { id })
+    .execute();
+    return result;
+  }
+// @Injectable()
+// export class AccountService {
+//  constructor(
+//   @InjectRepository(Account) private accountRepository: Repository<Account>
+//  ) {}
+ 
+ async getAccountByEmail(email: string) {
+   return await this.accountRepository.findOne({ where: { email: email } });
+ }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
-  }
-
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} account`;
-  }
+ async createNewAccount(email: string, password: string, role: number) {
+  const hashedPassword = await argon2.hash(password);
+   const account = new Account();
+   account.email = email;
+   account.password = hashedPassword;
+   account.role = role;
+   await this.accountRepository.save(account);
+ }
 }

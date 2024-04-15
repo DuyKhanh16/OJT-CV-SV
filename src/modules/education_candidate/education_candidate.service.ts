@@ -1,26 +1,59 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEducationCandidateDto } from './dto/create-education_candidate.dto';
 import { UpdateEducationCandidateDto } from './dto/update-education_candidate.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EducationCandidate } from './entities/education_candidate.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class EducationCandidateService {
-  create(createEducationCandidateDto: CreateEducationCandidateDto) {
-    return 'This action adds a new educationCandidate';
+  constructor(
+    @InjectRepository(EducationCandidate) private educationCandidateRepository: Repository<EducationCandidate>,
+  ) {}
+
+  // thêm thông tin học vấn
+  async createNewEducation(candidate_id:any, name_education:string, major:string, started_at: string, end_at: string, info: string) {
+    console.log(candidate_id,name_education,major,started_at,end_at,info)
+    const result = await this.educationCandidateRepository.createQueryBuilder()
+    .insert()
+    .into(EducationCandidate)
+    .values({
+      candidate_id:candidate_id,
+      name_education:name_education,
+      major:major,
+      start_at:started_at,
+      end_at:end_at,
+      info:info
+    })
+    .execute();
+    console.log(result)
+    return 'create success';
   }
 
-  findAll() {
-    return `This action returns all educationCandidate`;
+  //update thông tin học vấn candidate
+  async updateNewEducation(candidate_id:any, name_education:string, major:string, started_at: string, end_at: string, info: string) {
+    // console.log(candidate_id,name_education,major,started_at,end_at,info)
+    const result = await this.educationCandidateRepository.createQueryBuilder()
+    .update(EducationCandidate)
+    .set({
+      name_education:name_education,
+      major:major,
+      start_at:started_at,
+      end_at:end_at,
+      info:info
+    })
+    .where("candidate_id = :candidate_id", { candidate_id: candidate_id })
+    .execute();
+    console.log(result)
+    return 'update success';
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} educationCandidate`;
-  }
-
-  update(id: number, updateEducationCandidateDto: UpdateEducationCandidateDto) {
-    return `This action updates a #${id} educationCandidate`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} educationCandidate`;
+  async removeEdication(id: string) {
+    const result = await this.educationCandidateRepository.createQueryBuilder()
+    .delete()
+    .from(EducationCandidate)
+    .where("candidate_id = :id", { id: id })
+    .execute();
+    console.log(result)
+    return 'delete success';
   }
 }

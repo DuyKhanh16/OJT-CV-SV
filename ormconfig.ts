@@ -7,14 +7,15 @@ require('dotenv').config();
 const SnakeNamingStrategy =
   require('typeorm-naming-strategies').SnakeNamingStrategy;
 const config: MysqlConnectionOptions = {
-  host: process.env.DB_HOST || 'localhost',
-  port: 3306,
-  username: process.env.DB_USERNAME || 'root',
-  password: process.env.DB_PASSWORD || '',
+  host: process.env.DB_HOST||"mysql-20396d72-duykhanh16121993.b.aivencloud.com",
+  port: Number(process.env.DB_PORT||19656),
+  username: process.env.DB_USERNAME||"avnadmin", 
+  password: process.env.DB_PASSWORD,
   type: 'mysql',
-  database: process.env.DB_NAME || 'OJT_CV',
+  database: process.env.DB_NAME, 
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: true,
+  // autoSchemaSync: true,
   namingStrategy: new SnakeNamingStrategy(),
 };
 

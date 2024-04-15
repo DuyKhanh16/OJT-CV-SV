@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto } from './dto/update-candidate.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Candidate } from './entities/candidate.entity';
+import { Repository } from 'typeorm';
+import { async } from 'rxjs';
 
 @Injectable()
 export class CandidatesService {
-  create(createCandidateDto: CreateCandidateDto) {
-    return 'This action adds a new candidate';
+ constructor(
+    @InjectRepository(Candidate) private candidateRepository: Repository<Candidate>
+ ) {}
+   async createNewCandidate(name:string) {
+      await this.candidateRepository.save({name:name});
+   }
+  
+
+  async getInfor(id:string) {
+   console.log(id)
+    const result = await this.candidateRepository.createQueryBuilder("Candidate")
+    .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
+    .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
+    .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
+    .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
+    .innerJoinAndSelect("Candidate.Project_candidate", "ProjectCandidate")
+    .where("Candidate.id = :id", { id: id })
+    .getOne()
+   console.log(result)
+    return result
+    ;
   }
 
-  findAll() {
-    return `This action returns all candidates`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} candidate`;
-  }
-
-  update(id: number, updateCandidateDto: UpdateCandidateDto) {
-    return `This action updates a #${id} candidate`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} candidate`;
+  async findAll() {
+    return await this.candidateRepository.find();
   }
 }

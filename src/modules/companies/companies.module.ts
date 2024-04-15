@@ -1,9 +1,16 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { CompaniesController } from './companies.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Company } from './entities/company.entity';
+import { AddressCompany } from './entities/address_company.entity';
+import { LocaltionModule } from '../localtion/localtion.module';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Company]),TypeOrmModule.forFeature([AddressCompany]),
+    forwardRef(()=>LocaltionModule)],
   controllers: [CompaniesController],
   providers: [CompaniesService],
+  exports: [CompaniesService],
 })
 export class CompaniesModule {}

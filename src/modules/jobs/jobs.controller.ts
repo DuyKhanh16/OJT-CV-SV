@@ -1,34 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
-
-@Controller('jobs')
+require('dotenv').config();
+@Controller('api/v2/jobs')
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
-
-  @Post()
-  create(@Body() createJobDto: CreateJobDto) {
-    return this.jobsService.create(createJobDto);
+  
+  //lay tat ca job dang tuyen dung
+  @Get("getLiveJobs")
+  async findAll(@Res() res) {
+    const result = await this.jobsService.findAllLiveJobs();
+    res.status(200).json({ 
+      message:"success",
+      data:result
+     });
   }
 
-  @Get()
-  findAll() {
-    return this.jobsService.findAll();
-  }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.jobsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
-    return this.jobsService.update(+id, updateJobDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.jobsService.remove(+id);
-  }
+  @Post("create/:id")
+ async createNewJob(@Body() createJobDto: CreateJobDto,@Res() res, @Param("id") id) {
+   try {
+    await this.jobsService.createNewJob(createJobDto,id);
+    res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS });
+   } catch (error) {
+    console.log(error);
+    res.status(process.env.STATUS_FAIL).json({ message: error.message });
+   }
+   
+ }
 }
