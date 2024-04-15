@@ -52,7 +52,7 @@ export class Candidate {
         length: 100,
         nullable: true
     })
-    link_fb: string;
+    position: string;
 
     @Column({
         type:"varchar",

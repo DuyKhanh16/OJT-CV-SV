@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCandidateDto } from './dto/create-candidate.dto';
-import { UpdateCandidateDto } from './dto/update-candidate.dto';
+import { UpdateCandidateDto, UpdateInforCandidateDto } from './dto/update-candidate.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Candidate } from './entities/candidate.entity';
 import { Repository } from 'typeorm';
@@ -52,5 +52,22 @@ export class CandidatesService {
    .execute()
 
    return result
+  }
+  async updateInfoCandidate(body:UpdateInforCandidateDto,email:string) {
+    const result = await this.candidateRepository.createQueryBuilder()
+    .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
+    .update(Candidate)
+    .set({name:body.name,
+      birthday:body.birthday,
+      gender:body.gender,
+      phone:body.phone,
+      address: body.address,
+      position:body.position,
+      link_git:body.link_git
+   })
+    .where("Account.email = :email", { email: email })
+    .execute()
+    console.log(result)
+    return result
   }
 }
