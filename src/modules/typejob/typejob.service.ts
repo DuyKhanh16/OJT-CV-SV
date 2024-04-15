@@ -1,26 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTypejobDto } from './dto/create-typejob.dto';
 import { UpdateTypejobDto } from './dto/update-typejob.dto';
+import { Typejob } from './entities/typejob.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TypejobService {
-  create(createTypejobDto: CreateTypejobDto) {
-    return 'This action adds a new typejob';
-  }
+ constructor(
+  @InjectRepository(Typejob) private typejobRepository: Repository<Typejob>,
+ ) {}
 
-  findAll() {
-    return `This action returns all typejob`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} typejob`;
-  }
-
-  update(id: number, updateTypejobDto: UpdateTypejobDto) {
-    return `This action updates a #${id} typejob`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} typejob`;
+  async getTypejobById(id:string) {
+    return await this.typejobRepository.findOneBy({id:id});
   }
 }

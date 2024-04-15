@@ -29,6 +29,10 @@ export class Company {
     , nullable:true})
     link_linkedin: string;
 
+    @Column({type: 'varchar', length: 255
+    , nullable:true})
+    link_github: string
+
     @Column({type: 'int'
     , nullable:true})
     followers: number;
@@ -61,6 +65,7 @@ export class Company {
     @Column({type:'date'
     , nullable:true})
     updated_at: Date;
+
 
     @OneToMany(type => AddressCompany, address_company => address_company.company)
     address_company: AddressCompany[]

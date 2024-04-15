@@ -2,6 +2,7 @@ import { Company } from "src/modules/companies/entities/company.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { LeversJobs } from "./levers_jobs.entity";
 import { TypesJobs } from "./types_jobs.entity";
+import { AddressCompany } from "src/modules/companies/entities/address_company.entity";
 
 @Entity('job')
 export class Job {
@@ -14,17 +15,17 @@ export class Job {
     @Column({type: 'longtext'})
     description: string;
 
+
+    @Column({type: 'longtext'})
+    requirements: string;
+
     @Column({type: 'varchar', length: 255})
     salary: string;
 
     @Column({type:"varchar", length: 20})
     expire_at: string;
 
-    @Column({type:'date'})
-    created_at: Date;
-
-    @Column({type:'date'})
-    updated_at: Date;
+   
 
     @ManyToOne(type => Company, company => company.job)
     @JoinColumn({name: 'company_id'})
@@ -35,4 +36,8 @@ export class Job {
 
     @OneToMany(type => TypesJobs, types_jobs => types_jobs.jobs)
     types_jobs: TypesJobs[]
+
+    @ManyToOne(type => AddressCompany, address_company => address_company.job)
+    @JoinColumn({name: 'address_company_id'})
+    address_company: AddressCompany
 }
