@@ -16,15 +16,15 @@ export class CandidatesService {
    }
   
 
-  async getInfor(id:string) {
-   console.log(id)
+  async getInfor(email:string) {
     const result = await this.candidateRepository.createQueryBuilder("Candidate")
-    .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
-    .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
-    .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
-    .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
-    .innerJoinAndSelect("Candidate.Project_candidate", "ProjectCandidate")
-    .where("Candidate.id = :id", { id: id })
+   //  .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
+   //  .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
+   //  .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
+   //  .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
+   //  .innerJoinAndSelect("Candidate.Project_candidate", "ProjectCandidate")
+    .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
+    .where("Account.email = :email", { email: email })
     .getOne()
    console.log(result)
     return result
@@ -33,5 +33,12 @@ export class CandidatesService {
 
   async findAll() {
     return await this.candidateRepository.find();
+  }
+
+  async updateAboutMe(aboutMe:string,email:string) {
+   const result = await this.candidateRepository.createQueryBuilder()
+   .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
+   .where("Account.email = :email", { email: email })
+   .execute()
   }
 }
