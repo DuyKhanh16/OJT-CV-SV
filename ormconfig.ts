@@ -12,7 +12,7 @@ const config: MysqlConnectionOptions = {
   username: process.env.DB_USERNAME||"avnadmin", 
   password: process.env.DB_PASSWORD,
   type: 'mysql',
-  database: process.env.DB_NAME, 
+  database: process.env.DB_NAME || "defaultdb" , 
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: false,
   // autoSchemaSync: true,
