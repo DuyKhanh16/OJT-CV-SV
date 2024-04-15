@@ -9,6 +9,7 @@ import {
   CreateCandidateAuthDto,
   CreateCompanyDto,
 } from './dto/create-auth.dto';
+import { register } from 'module';
 @Controller('api/v2/auth')
 export class AuthController {
   constructor(
@@ -22,30 +23,32 @@ export class AuthController {
     @Body() createCandidateAuthDto: CreateCandidateAuthDto,
     @Res() res,
   ) {
+    console.log(createCandidateAuthDto)
     try {
       await this.authService.registerCandidate(createCandidateAuthDto);
-      const formdata: any = {};
-      (formdata.toList = [createCandidateAuthDto.email]),
-        (formdata.subject = 'Wellcome'),
-        (formdata.name = createCandidateAuthDto.name),
-        await this.mailService.sendEmailRegister(formdata);
-      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.REGISTER_OK });
+      // const formdata: any = {};
+      // (formdata.toList = [createCandidateAuthDto.email]),
+      //   (formdata.subject = 'Wellcome'),
+      //   (formdata.name = createCandidateAuthDto.name),
+      //   await this.mailService.sendEmailRegister(formdata);
+      res.status(201).json({ message: 'register successfull' });
     } catch (error) {
       console.log(error);
-      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+      res.status(400).json({ message: error.message });
     }
   }
 
   @Post('register-company')
   async createNewCompany(@Body() createCompanyDto: CreateCompanyDto,@Res() res) {
+    console.log(createCompanyDto)
     try {
       await this.authService.registerCompany(createCompanyDto);
-      const formdata: any = {};
-      (formdata.toList = [createCompanyDto.email]),
-        (formdata.subject = 'Wellcome'),
-        (formdata.name = createCompanyDto.name),
-        await this.mailService.sendEmailRegister(formdata);
-      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.REGISTER_OK });
+      // const formdata: any = {};
+      // (formdata.toList = [createCompanyDto.email]),
+      //   (formdata.subject = 'Wellcome'),
+      //   (formdata.name = createCompanyDto.name),
+      //   await this.mailService.sendEmailRegister(formdata);
+      res.status(process.env.STATUS_CREATR_OK).json({ message: "register successfull" });
     } catch (error) {
       console.log(error);
       res.status(process.env.STATUS_FAIL).json({ message: error.message });
@@ -55,15 +58,16 @@ export class AuthController {
 
   @Post("login")
   async login(@Body() createAuthDto: CreateAuthDto,@Res() res) {
+    console.log(createAuthDto)
     try {
       const result = await this.authService.login(createAuthDto);
       console.log(result)
-      res.status(process.env.STATUS_SUCCESS).json({
+      res.status(201).json({
         message: "login successfull",
         data: result
       })
     } catch (error) {
-      res.status(process.env.STATUS_SERVER_ERROR).json({
+      res.status(400).json({
         message: "login fail",
       }) 
     }

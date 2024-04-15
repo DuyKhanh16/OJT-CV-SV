@@ -6,7 +6,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 require('dotenv').config();
 async function bootstrap() {
   const PORT = process.env.PORT || 3000;
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalGuards();
 
@@ -15,7 +16,7 @@ async function bootstrap() {
   .setTitle('Doc API Project demo')
   .setDescription('My doc API description')
   .setVersion('1.0')
-  .addServer('http://localhost:8080/', 'Local environment')
+  .addServer('http://localhost:3000/', 'Local environment')
   .addServer('https://staging.yourapi.com/', 'Staging')
   .addServer('https://production.yourapi.com/', 'Production')
   .build();

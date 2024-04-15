@@ -43,4 +43,14 @@ export class JobsService {
     await this.leversJobsRepository.createQueryBuilder().insert().into(LeversJobs).values({leveljob:leveljob,job:job}).execute();
     return job;
  }
+
+ //lay tat ca job dang tuyen dung
+ async findAllLiveJobs() {
+    const result = await this.jobRepository.createQueryBuilder("job")
+    .select("job")
+    .where("job.status = 1")
+    .orderBy("job.created_at", "DESC")
+    .getMany()
+    return result
+ }
 }

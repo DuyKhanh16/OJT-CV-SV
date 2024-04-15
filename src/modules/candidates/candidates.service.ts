@@ -15,4 +15,23 @@ export class CandidatesService {
       await this.candidateRepository.save({name:name});
    }
   
+
+  async getInfor(id:string) {
+   console.log(id)
+    const result = await this.candidateRepository.createQueryBuilder("Candidate")
+    .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
+    .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
+    .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
+    .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
+    .innerJoinAndSelect("Candidate.Project_candidate", "ProjectCandidate")
+    .where("Candidate.id = :id", { id: id })
+    .getOne()
+   console.log(result)
+    return result
+    ;
+  }
+
+  async findAll() {
+    return await this.candidateRepository.find();
+  }
 }
