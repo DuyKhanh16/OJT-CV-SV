@@ -26,10 +26,8 @@ export class CandidatesController {
 
   @Get("getInfor")
   async findOne(@Param('id') id: string,@Res() res,@Req() req) {
-    console.log(req.account.email)
     try {
       const result = await this.candidatesService.getInfor(req.account.email);
-      console.log(result)
       res.status(200).json({
         message:"success",
         data:result
@@ -41,8 +39,6 @@ export class CandidatesController {
 
   @Patch('updateAboutMe')
   async updateAboutMe(@Param('id') id: string, @Body() body:any,@Res() res,@Req() req) {
-    console.log(req.account.email)
-    console.log(body.aboutme)
     try {
       const result = await this.candidatesService.updateAboutMe(body.aboutMe,req.account.email);
       res.status(200).json({message:"update success"})
@@ -53,12 +49,9 @@ export class CandidatesController {
   
   @Patch('updateInfoCandidate')
   async updateInfoCandidate(@Body() body:UpdateInforCandidateDto,@Res() res,@Req() req) {
-    console.log(req.account.email)
     const {name,birthday,gender,phone,address,position,link_git} = body
-    console.log(body)
     try {
       const result = await this.candidatesService.updateInfoCandidate(body,req.account.email)
-      console.log(result)
       res.status(200).json({message:"update success"});
     } catch (error) {
       res.status(400).json({message:error})

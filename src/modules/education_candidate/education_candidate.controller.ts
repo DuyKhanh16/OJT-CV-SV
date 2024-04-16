@@ -10,7 +10,8 @@ export class EducationCandidateController {
 
   // thêm thông tin học vấn
   @Post("createEducation")
-  create(@Body() body:CreateEducationCandidateDto ,@Res() res ) {
+  create(@Body() body:any ,@Res() res ) {
+    console.log("33333",body)
     try {
       const {candidate_id,name_education,major,started_at,end_at,info} = body 
       // console.log(body)

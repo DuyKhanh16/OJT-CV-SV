@@ -1,28 +1,15 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateProjectCandidateDto {
+  candidate_id: string | any;
 
-    @IsNotEmpty()
-    @IsString()
-    candidate_id:string|any;
+  name: string;
 
-    @IsNotEmpty()
-    @IsString()
-    name: string;
+  link: string;
 
-    @IsNotEmpty()
-    @IsString()
-    link: string;
+  info: string;
 
-    @IsNotEmpty()
-    @IsString()
-    info: string;
+  start_at: string;
 
-    @IsNotEmpty()
-    @IsString()
-    start_at: string;
-
-    @IsNotEmpty()
-    @IsString()
-    end_at: string;
+  end_at: string;
 }

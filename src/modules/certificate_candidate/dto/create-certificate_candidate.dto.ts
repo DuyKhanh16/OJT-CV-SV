@@ -1,29 +1,15 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateCertificateCandidateDto {
+  candidate_id: string | any;
 
-    @IsNotEmpty()
-    @IsString()
-    candidate_id: string|any;
+  name: string;
 
-    @IsNotEmpty()
-    @IsString()
-    name: string;
+  organization: string;
 
-    @IsNotEmpty()
-    @IsString()
-    organization: string;   
+  start_at: string;
 
-    @IsNotEmpty()
-    @IsString()
-    start_at: string;
+  end_at: string;
 
-    @IsNotEmpty()
-    @IsString()
-    end_at: string;
-
-    @IsNotEmpty()
-    @IsString()
-    info: string;
-    
+  info: string;
 }

@@ -34,7 +34,7 @@ export class CandidatesService {
     .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
     .where("Account.email = :email", { email: email })
     .getOne()
-   console.log(result)
+ 
     return result
     ;
   }
@@ -46,7 +46,6 @@ export class CandidatesService {
 
   // update thong tin cv cua candidate
   async updateAboutMe(aboutMe:string,email:string) {
-    console.log(aboutMe)
    const result = await this.candidateRepository.createQueryBuilder()
    .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
    .where("Account.email = :email", { email: email })
@@ -56,7 +55,6 @@ export class CandidatesService {
    .set({aboutme:aboutMe})
    .where("id = :id", { id: result.id })
    .execute()
-   console.log(resulta)
    return result
   }
   async updateInfoCandidate(body:UpdateInforCandidateDto,email:string) {
@@ -77,7 +75,6 @@ export class CandidatesService {
    })
    .where("id = :id", { id: candidate.id })
    .execute()
-    console.log(result)
     return result
   }
 
