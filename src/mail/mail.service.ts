@@ -12,8 +12,8 @@ export class MailService {
     this.transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user:process.env.EMAIL_ADDRESS,
-        pass: process.env.EMAIL_PASSWORD 
+        user:"topcvdemo@gmail",
+        pass:"zqtpbypynqyorahr"
       },
     });
   }
@@ -28,7 +28,7 @@ export class MailService {
 
     for (const to of toList) {
       const mailOptions = {
-        from: process.env.SEND_FROM,
+        from: "topcvdemo@gmail",
         to,
         subject,
         html, // Sử dụng HTML thay vì text

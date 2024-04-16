@@ -48,8 +48,8 @@ export class Company {
     @Column({type: 'varchar', length: 11})
     phone: string;
 
-    // @Column({type: 'varchar', length: 255})
-    // emailCompany: string;
+    @Column({type: 'varchar', length: 255})
+    emailCompany: string;
 
     // @Column({type: 'varchar', length: 255})
     // addressRegister: string;
