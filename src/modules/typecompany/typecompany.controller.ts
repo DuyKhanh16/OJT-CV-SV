@@ -18,4 +18,15 @@ export class TypecompanyController {
       res.status(process.env.STATUS_FAIL);
     }
   }
+
+  @Post("create")
+  async createTypeCompany(@Body() createTypecompanyDto: CreateTypecompanyDto, @Res() res) {
+    try {
+      await this.typecompanyService.createType(createTypecompanyDto);
+      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });      
+    }
+  }
 }

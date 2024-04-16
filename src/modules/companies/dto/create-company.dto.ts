@@ -1,8 +1,11 @@
-import { IsNotEmpty, IsString } from "class-validator"
+import { IsNotEmpty, IsNumber, IsString } from "class-validator"
 
 export class UpdateInfoCompanyDto{
     @IsString()
     name: string
+
+    @IsString()
+    logo: string
 
     @IsString()
     website: string
@@ -10,20 +13,21 @@ export class UpdateInfoCompanyDto{
     @IsString()
     link_facebook: string
 
-    @IsString()
-    link_linkedin: string
+   @IsString()
+   emailCompany: string
+
+   @IsNumber()
+   size:number
 
     @IsString()
-    link_github: string
-
-    @IsString()
-    addressRegister: string
+   phone:string
 
     @IsString()
     description: string
 
     @IsString()
-    policy: string
+    typeCompany_id: string
+  
 }
 
 export class CreateAddressCompanyDto{
