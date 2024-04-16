@@ -28,9 +28,31 @@ export class CompaniesService {
 
     // Tạo mới company
   async createNewCompany (infoCandidate: InfoCompanyRegister) {
-    return await this.companyRepository.save({name:infoCandidate.name,
-      addressRegister:infoCandidate.address,phone:infoCandidate.phone,
-      emailCompany:infoCandidate.email});
+    const newCompany= await this.companyRepository.createQueryBuilder()
+    .insert()
+    .into(Company)
+    .values({ 
+      name:infoCandidate.name,
+      phone:infoCandidate.phone,
+      account_company_id:infoCandidate.account_company_id
+    })
+    .execute();
+    //tra id company moi cho bang address company
+    const company = await this.companyRepository.findOneBy({id:newCompany.identifiers[0].id})
+    console.log(company)
+   
+    return company
+  }
+  async createNewAddress(id:string|any,addressCompany: string) {
+    const addDress= await this.addressCompanyRepository.createQueryBuilder()
+    .insert()
+    .into(AddressCompany)
+    .values({ 
+      company_id:id,
+      address:addressCompany
+    })
+    .execute();
+    return addDress
   }
   // Update thông tin company
   async updateInfoCompany(id:string,updateInfoCompany: UpdateInfoCompanyDto) {

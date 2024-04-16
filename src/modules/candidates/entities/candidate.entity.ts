@@ -12,7 +12,13 @@ export class Candidate {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column()
+    @Column(
+        {
+            type: 'varchar',
+            length: 50,
+            nullable: true
+        }
+    )
     name: string;
 
     @Column({
@@ -22,7 +28,8 @@ export class Candidate {
     status: number;
 
     @Column({
-       type:"date",
+       type:"varchar",
+       length: 20,
        nullable: true
     })
     birthday: string;
@@ -42,17 +49,17 @@ export class Candidate {
     phone: string;
 
     @Column({
-        type:"int",
+        type:"varchar",
         nullable: true
     })
-    gender: number;
+    gender: string;
 
     @Column({
         type:"varchar",
         length: 100,
         nullable: true
     })
-    link_fb: string;
+    position: string;
 
     @Column({
         type:"varchar",

@@ -22,12 +22,12 @@ export class EducationCandidateController {
   }
 
   //update thông tin học vấn candidate
-  @Patch("updateEducation")
-  update(@Body() body:CreateEducationCandidateDto ,@Res() res ) {
+  @Patch("updateEducation/:id")
+  update(@Body() body:CreateEducationCandidateDto ,@Res() res ,@Param('id') id:string) {
     try {
       const {candidate_id,name_education,major,started_at,end_at,info} = body 
       // console.log(body)
-      const result = this.educationCandidateService.updateNewEducation(candidate_id,name_education,major,started_at,end_at,info)
+      const result = this.educationCandidateService.updateNewEducation(id,candidate_id,name_education,major,started_at,end_at,info)
       res.status(200).json({message:"update education success"})
     } catch (error) {
       res.status(400).json({message:error})

@@ -8,18 +8,27 @@ export class AddressCompany {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column({type: 'varchar', length: 255})
+    @Column({type: 'varchar',
+    length: 255,
+    nullable:true
+    })
     address: string;
 
-    @Column({type: 'varchar', length: 255})
+    @Column({type: 'varchar'
+    ,length: 255,
+    nullable:true
+    })
     map_url: string;
 
-    @Column({type:'varchar', length: 20})
+    @Column({type:'varchar',
+    length: 20,
+    nullable:true
+    })
     created_at: string;
 
     @ManyToOne(type => Company, company => company.address_company)
     @JoinColumn({name: 'company_id'})
-    company: Company
+    company_id: Company
 
     @ManyToOne(type => Localtion, localtion => localtion.address_company)
     @JoinColumn({name: 'localtion_id'})

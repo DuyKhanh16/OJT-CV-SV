@@ -41,5 +41,13 @@ export class AccountService {
    account.password = hashedPassword;
    account.role = role;
    await this.accountRepository.save(account);
+
+   const result = await this.accountRepository.createQueryBuilder()
+  .select("Account")
+  .where("Account.email = :email", { email: email })
+  .getOne();
+
+   return result;
  }
+ 
 }
