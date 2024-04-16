@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Res,
+} from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
@@ -46,4 +55,23 @@ export class JobsController {
    }
    
  }
+  
+//   Update Job
+ @Patch("edit/:id")
+  async editJob(
+    @Body() updateJob: UpdateJobDto,
+    @Res() res,
+    @Param('id') id,
+  ){
+    try {
+      await this.jobsService.updateJob(updateJob,id)
+      res
+      .status(process.env.STATUS_CREATR_OK)
+      .json({ message: process.env.SUCCESS });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+    }
+  }
+
 }

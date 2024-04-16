@@ -35,3 +35,34 @@ export class CreateJobDto {
     @IsNotEmpty()
     leveljob_id: string
 }
+
+export class UpdateJobDto {
+    @IsString()
+    @IsNotEmpty()
+    title: string
+
+    @IsString()
+    @IsNotEmpty()
+    description: string
+
+
+    @IsString()
+    @IsNotEmpty()
+    requirements: string
+
+    @IsString()
+    @IsNotEmpty()
+    salary: string
+
+    @IsString()
+    @IsNotEmpty()
+    expire_at: string
+
+    @IsString()
+    @IsNotEmpty()
+    typejob_id: string
+
+    @IsString()
+    @IsNotEmpty()
+    leveljob_id: string
+}
