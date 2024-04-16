@@ -5,10 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Company } from './entities/company.entity';
 import { AddressCompany } from './entities/address_company.entity';
 import { LocaltionModule } from '../localtion/localtion.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Company]),TypeOrmModule.forFeature([AddressCompany]),
-    forwardRef(()=>LocaltionModule)],
+    forwardRef(()=>LocaltionModule),
+    forwardRef(()=>AuthModule),
+  ],
   controllers: [CompaniesController],
   providers: [CompaniesService],
   exports: [CompaniesService],

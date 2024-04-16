@@ -26,11 +26,11 @@ export class CandidatesService {
 
   async getInfor(email:string) {
     const result = await this.candidateRepository.createQueryBuilder("Candidate")
-   //  .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
-   //  .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
-   //  .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
-   //  .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
-   //  .innerJoinAndSelect("Candidate.Project_candidate", "ProjectCandidate")
+    // .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
+    // .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
+    // .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
+    // .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
+    // .innerJoinAndSelect("Candidate.Project_candidate", "ProjectCandidate")
     .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
     .where("Account.email = :email", { email: email })
     .getOne()

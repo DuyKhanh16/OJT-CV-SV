@@ -11,10 +11,12 @@ export class EducationCandidateController {
   // thêm thông tin học vấn
   @Post("createEducation")
   create(@Body() body:CreateEducationCandidateDto ,@Res() res ) {
+    
+    console.log(body)
     try {
-      const {candidate_id,name_education,major,started_at,end_at,info} = body 
+      const {candidate_id,name_education,major,start_at,end_at,info} = body 
       // console.log(body)
-      const result = this.educationCandidateService.createNewEducation(candidate_id,name_education,major,started_at,end_at,info)
+      const result = this.educationCandidateService.createNewEducation(candidate_id,name_education,major,start_at,end_at,info)
       res.status(201).json({message:"create success"})
     } catch (error) {
       res.status(400).json({message:error})
@@ -25,9 +27,9 @@ export class EducationCandidateController {
   @Patch("updateEducation/:id")
   update(@Body() body:CreateEducationCandidateDto ,@Res() res ,@Param('id') id:string) {
     try {
-      const {candidate_id,name_education,major,started_at,end_at,info} = body 
+      const {candidate_id,name_education,major,start_at,end_at,info} = body 
       // console.log(body)
-      const result = this.educationCandidateService.updateNewEducation(id,candidate_id,name_education,major,started_at,end_at,info)
+      const result = this.educationCandidateService.updateNewEducation(id,candidate_id,name_education,major,start_at,end_at,info)
       res.status(200).json({message:"update education success"})
     } catch (error) {
       res.status(400).json({message:error})
