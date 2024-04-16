@@ -39,6 +39,7 @@ async registerCandidate(createCandidateAuthDto: UpdateAuthDto) {
 //  service đăng ký công ty
 async registerCompany(createCompanyDto: CreateCompanyDto) {
   // check Mail tồn tại
+  console.log(createCompanyDto)
  const account = await this.accountService.getAccountByEmail(createCompanyDto.email);
  if (account) {
    throw new Error('email đã tồn tại');
@@ -49,13 +50,13 @@ const role= RoleEnum.COMPANY
  try {
   const account = await this.accountService.createNewAccount(createCompanyDto.email, createCompanyDto.password,role);
   const infoCandidate:InfoCompanyRegister={
-    email: createCompanyDto.email,
     name: createCompanyDto.name,
-    address: createCompanyDto.address,
     phone: createCompanyDto.phone,
     account_company_id: account.id
   }
-  await this.companyService.createNewCompany(infoCandidate);
+  const newCompany =  await this.companyService.createNewCompany(infoCandidate);
+  // tạo chi nhánh cho company trong bang address company
+  const newAddressCompany = await this.companyService.createNewAddress(newCompany.id,createCompanyDto.address);
   return
   } catch (error) {
   console.log(error);
@@ -64,7 +65,7 @@ const role= RoleEnum.COMPANY
 }
 async login(createAuthDto: CreateAuthDto) {
   const { email, password } = createAuthDto;
-  
+  console.log(email, password)
   const account = await this.accountService.findByEmail(email);
   console.log(account)
   

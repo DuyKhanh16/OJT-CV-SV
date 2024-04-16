@@ -54,10 +54,17 @@ export class CandidatesService {
    return result
   }
   async updateInfoCandidate(body:UpdateInforCandidateDto,email:string) {
-    const result = await this.candidateRepository.createQueryBuilder()
+    const candidate = await this.candidateRepository.createQueryBuilder()
     .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
+    .where("Account.email = :email", { email: email })
+    .getOne()
+
+    console.log(candidate.id)
+    console.log(body)
+    const result = await this.candidateRepository.createQueryBuilder()
     .update(Candidate)
-    .set({name:body.name,
+    .set({
+      name:body.name,
       birthday:body.birthday,
       gender:body.gender,
       phone:body.phone,
@@ -65,8 +72,8 @@ export class CandidatesService {
       position:body.position,
       link_git:body.link_git
    })
-    .where("Account.email = :email", { email: email })
-    .execute()
+   .where("id = :id", { id: candidate.id })
+   .execute()
     console.log(result)
     return result
   }
