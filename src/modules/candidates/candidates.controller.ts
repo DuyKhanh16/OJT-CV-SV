@@ -46,7 +46,7 @@ export class CandidatesController {
     try {
       const result = await this.candidatesService.updateAboutMe(body.aboutMe,req.account.email);
       res.status(200).json({message:"update success"})
-    } catch (error) {
+    }catch (error) {
       res.status(400).json({message:error})
     }
   }
@@ -64,5 +64,7 @@ export class CandidatesController {
       res.status(400).json({message:error})
     }
   }
+
+  
 
 }
