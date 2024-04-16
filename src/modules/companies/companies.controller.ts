@@ -17,7 +17,7 @@ export class CompaniesController {
   }
 
   // Update thông tin company
-  @Post("update-info/:id")
+  @Patch("update-info/:id")
  async updateInfoCompany(@Body() createCompanyDto: UpdateInfoCompanyDto,@Param("id") id,@Res() res) {
     try {
       await this.companiesService.updateInfoCompany(id,createCompanyDto);

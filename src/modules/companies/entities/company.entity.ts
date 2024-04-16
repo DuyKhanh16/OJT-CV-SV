@@ -48,11 +48,11 @@ export class Company {
     @Column({type: 'varchar', length: 11})
     phone: string;
 
-    @Column({type: 'varchar', length: 255})
-    emailCompany: string;
+    // @Column({type: 'varchar', length: 255})
+    // emailCompany: string;
 
-    @Column({type: 'varchar', length: 255})
-    addressRegister: string;
+    // @Column({type: 'varchar', length: 255})
+    // addressRegister: string;
 
     @Column({type: 'longtext'
     , nullable:true})
@@ -67,12 +67,11 @@ export class Company {
     updated_at: Date;
 
 
-    @OneToMany(type => AddressCompany, address_company => address_company.company)
+    @OneToMany(type => AddressCompany, address_company => address_company.company_id)
     address_company: AddressCompany[]
 
     @OneToMany(type => Job, job => job.company)
-
-    job: Job[]
+    job:Job[]
 
     @ManyToOne(type => Typecompany, typecompany => typecompany.company)
     @JoinColumn({name: 'typeCompany_id'})
