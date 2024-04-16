@@ -26,11 +26,11 @@ export class AuthController {
     console.log(createCandidateAuthDto)
     try {
       await this.authService.registerCandidate(createCandidateAuthDto);
-      // const formdata: any = {};
-      // (formdata.toList = [createCandidateAuthDto.email]),
-      //   (formdata.subject = 'Wellcome'),
-      //   (formdata.name = createCandidateAuthDto.name),
-      //   await this.mailService.sendEmailRegister(formdata);
+      const formdata: any = {};
+      (formdata.toList = [createCandidateAuthDto.email]),
+        (formdata.subject = 'Wellcome'),
+        (formdata.name = createCandidateAuthDto.name),
+        await this.mailService.sendEmailRegister(formdata);
       res.status(201).json({ message: 'register successfull' });
     } catch (error) {
       console.log(error);
