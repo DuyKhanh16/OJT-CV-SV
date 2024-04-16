@@ -1,12 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req } from '@nestjs/common';
 import { EducationCandidateService } from './education_candidate.service';
 import { CreateEducationCandidateDto } from './dto/create-education_candidate.dto';
 import { UpdateEducationCandidateDto } from './dto/update-education_candidate.dto';
+import { AuthGuard } from '../guard/auth.guard';
 
 @Controller('api/v2/candidate')  
 export class EducationCandidateController {
   constructor(private readonly educationCandidateService: EducationCandidateService) {}
 
+
+  @Get("getAllEducationCandidate")
+  @UseGuards(AuthGuard)
+  findEducations(@Res() res,@Req() req) {
+    console.log(req.account.email)
+    try {
+      const result = this.educationCandidateService.findEducations(req.account.email);
+      res.status(200).json({ 
+        message:"success",
+        data:result
+       });
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+  }
 
   // thêm thông tin học vấn
   @Post("createEducation")

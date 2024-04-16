@@ -11,6 +11,16 @@ export class EducationCandidateService {
     @InjectRepository(EducationCandidate) private educationCandidateRepository: Repository<EducationCandidate>,
   ) {}
 
+  async findEducations(email:string) {
+    const result = await this.educationCandidateRepository.createQueryBuilder()
+    .innerJoinAndSelect("EducationCandidate.candidate_id","Candidate")
+    .innerJoinAndSelect("Candidate.account_candidate_id","Account")
+    .where("Account.email = :email", { email: email })
+    .getMany();
+    console.log(result)
+    return result
+  }
+
   // thêm thông tin học vấn
   async createNewEducation(candidate_id:string|any, name_education:string, major:string, start_at: string, end_at: string, info: string) {
     console.log(candidate_id,name_education,major,start_at,end_at,info)

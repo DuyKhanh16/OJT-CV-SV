@@ -1,13 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Req, UseGuards } from '@nestjs/common';
 import { ProjectCandidateService } from './project_candidate.service';
 import { CreateProjectCandidateDto } from './dto/create-project_candidate.dto';
 import { UpdateProjectCandidateDto } from './dto/update-project_candidate.dto';
 import { error } from 'console';
+import { AuthGuard } from '../guard/auth.guard';
 
 @Controller('api/v2/candidate')
 export class ProjectCandidateController {
   constructor(private readonly projectCandidateService: ProjectCandidateService) {}
 
+
+  @Get("getAllProject")
+  @UseGuards(AuthGuard)
+  async findProjects(@Res() res,@Req() req) {
+   try {
+    const result = await this.projectCandidateService.findProjects(req.account.email);
+    res.status(200).json({
+      message:"success",
+      data:result
+    })
+   } catch (error) {
+    res.status(400).json({message:error})
+   }
+  }
 
   //them thong tin project candidate
   @Post("createProject")
