@@ -1,15 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req } from '@nestjs/common';
 import { CertificateCandidateService } from './certificate_candidate.service';
 import { CreateCertificateCandidateDto } from './dto/create-certificate_candidate.dto';
 import { UpdateCertificateCandidateDto } from './dto/update-certificate_candidate.dto';
 import { RolesGuard } from '../guard/role.guard';
 import { Roles } from 'src/decorator/role.decorator';
+import { AuthGuard } from '../guard/auth.guard';
 
 
 @Controller('api/v2/candidate')
 export class CertificateCandidateController {
   constructor(private readonly certificateCandidateService: CertificateCandidateService) {}
 
+  @Get("getAllCertificate")
+  @UseGuards(AuthGuard)
+  findCertificates(@Res() res,@Req() req) {
+    console.log(req.account.email)
+    try {
+      const result = this.certificateCandidateService.findCertificates(req.account.email);
+      res.status(200).json({ 
+        message:"success",
+        data:result
+       });
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+  }
 
   // thêm tin chi cadidate
   @Post("createCertificate")

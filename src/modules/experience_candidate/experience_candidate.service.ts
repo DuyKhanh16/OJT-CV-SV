@@ -10,8 +10,21 @@ export class ExperienceCandidateService {
   constructor(
     @InjectRepository(ExperienceCandidate) private certificateCandidateRepository: Repository<ExperienceCandidate>,
   ) {}
-  createExperience(createExperienceCandidateDto: CreateExperienceCandidateDto) {
-    const result = this.certificateCandidateRepository.createQueryBuilder()
+
+
+  async findExperiences(email:string) {
+    const result = await this.certificateCandidateRepository.createQueryBuilder() 
+    .innerJoinAndSelect("ExperienceCandidate.candidate_id","Candidate")
+    .innerJoinAndSelect("Candidate.account_candidate_id","Account")
+    .where("Account.email = :email", { email: email })
+    .getMany();
+    console.log(result)
+    return result
+  }
+
+  async createExperience(createExperienceCandidateDto: CreateExperienceCandidateDto) {
+    console.log(createExperienceCandidateDto)
+    const result = await this.certificateCandidateRepository.createQueryBuilder()
     .insert()
     .into(ExperienceCandidate)
     .values({
@@ -26,8 +39,8 @@ export class ExperienceCandidateService {
     return result
   }
 
-  updateExperience(id:string, updateExperienceCandidateDto: UpdateExperienceCandidateDto) {
-    const result = this.certificateCandidateRepository.createQueryBuilder()
+  async updateExperience(id:string, updateExperienceCandidateDto: UpdateExperienceCandidateDto) {
+    const result = await this.certificateCandidateRepository.createQueryBuilder()
     .update(ExperienceCandidate)
     .set({
       position: updateExperienceCandidateDto.position,
@@ -41,8 +54,8 @@ export class ExperienceCandidateService {
     return result
   }
 
-  removeExperience(id:string) {
-    const result = this.certificateCandidateRepository.createQueryBuilder()
+  async removeExperience(id:string) {
+    const result = await this.certificateCandidateRepository.createQueryBuilder()
     .delete()
     .from(ExperienceCandidate)
     .where("id = :id", { id: id })

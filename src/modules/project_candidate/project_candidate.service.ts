@@ -10,6 +10,18 @@ export class ProjectCandidateService {
   constructor(
     @InjectRepository(ProjectCandidate) private projectCandidateRepository: Repository<ProjectCandidate>,
   ){}
+
+
+  async findProjects(email:string) {
+    const result = await this.projectCandidateRepository.createQueryBuilder() 
+    .innerJoinAndSelect("ProjectCandidate.candidate_id","Candidate")
+    .innerJoinAndSelect("Candidate.account_candidate_id","Account")
+    .where("Account.email = :email", { email: email })
+    .getMany();
+    console.log(result)
+    return result
+  }
+
   async createProjectCandidate(createProjectCandidateDto: CreateProjectCandidateDto) {
     const result = await this.projectCandidateRepository.createQueryBuilder()
     .insert()
