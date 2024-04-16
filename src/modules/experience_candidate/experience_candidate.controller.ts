@@ -11,6 +11,7 @@ export class ExperienceCandidateController {
   // thêm kinh nghiem cadidate
   @Post("createExperience")
   create(@Body() body:CreateExperienceCandidateDto,@Res() res) {
+    
     try {
       const result = this.experienceCandidateService.createExperience(body);
       res.status(201).json({message:"create success"})

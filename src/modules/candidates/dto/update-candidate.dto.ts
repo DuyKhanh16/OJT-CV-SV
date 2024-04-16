@@ -13,3 +13,10 @@ export class UpdateInforCandidateDto {
     position:string
     link_git:string
 }
+export class updateEducationDto {
+    name_education:string|any
+    major:string
+    start_date:string
+    end_date:string
+    info:string
+}

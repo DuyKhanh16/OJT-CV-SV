@@ -23,7 +23,6 @@ export class EducationCandidate {
         type: "varchar",
         length: 20,
         nullable: true,
-
     })
     start_at: string;
 
@@ -31,7 +30,6 @@ export class EducationCandidate {
         type: "varchar",
         length: 20,
         nullable: true,
-
     })
     end_at: string;
 

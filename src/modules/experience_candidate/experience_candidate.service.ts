@@ -11,6 +11,7 @@ export class ExperienceCandidateService {
     @InjectRepository(ExperienceCandidate) private certificateCandidateRepository: Repository<ExperienceCandidate>,
   ) {}
   createExperience(createExperienceCandidateDto: CreateExperienceCandidateDto) {
+    console.log(createExperienceCandidateDto)
     const result = this.certificateCandidateRepository.createQueryBuilder()
     .insert()
     .into(ExperienceCandidate)

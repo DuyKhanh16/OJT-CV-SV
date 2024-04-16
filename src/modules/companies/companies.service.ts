@@ -70,4 +70,16 @@ export class CompaniesService {
   async getAddressCompanyById(id: string) {
     return await this.addressCompanyRepository.findOneBy({id:id});
   }
+
+  //lay thong tin cty
+  async getInfor(email:string) {
+    const result = await this.companyRepository.createQueryBuilder("Company")
+    .innerJoinAndSelect("Company.address_company", "AddressCompany")
+    .innerJoinAndSelect("Company.account_company_id", "Account")
+    .where("Account.email = :email", { email: email })
+    // .where("Company.account_company_id = :id", { id: id })
+    .getOne()
+    console.log(result)
+    return result
+  }
 }
