@@ -44,6 +44,7 @@ export class CandidatesService {
   }
 
   async updateAboutMe(aboutMe:string,email:string) {
+    console.log(aboutMe)
    const result = await this.candidateRepository.createQueryBuilder()
    .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
    .update(Candidate)
