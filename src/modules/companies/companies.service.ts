@@ -59,18 +59,6 @@ export class CompaniesService {
   // Update thông tin company
   async updateInfoCompany(id:number,updateInfoCompany: UpdateInfoCompanyDto) {
     const {name,website,description,policy,email,phone,photo,link_facebook,size,typeCompany_id} = updateInfoCompany
-
-    console.log(name,"1")
-    console.log(website,"2")
-    console.log(description,"3")
-    console.log(policy,"4")
-    console.log(email,"5")
-    console.log(phone,"6")
-    console.log(photo,"7")
-    console.log(link_facebook,"8")
-    console.log(size,"9")
-    console.log(typeCompany_id,"10")
-    console.log(id)
     const result = await this.companyRepository.createQueryBuilder().update(Company).set({
       name: updateInfoCompany.name,
       website: updateInfoCompany.website,
@@ -80,7 +68,7 @@ export class CompaniesService {
       phone: updateInfoCompany.phone,
       logo: updateInfoCompany.photo,
       link_facebook: updateInfoCompany.link_facebook,
-      size: +updateInfoCompany.size,
+      size: updateInfoCompany.size as any,
       typeCompany_id: updateInfoCompany.typeCompany_id as any
     }).where("id = :id", { id }).execute();
 
