@@ -11,13 +11,14 @@ export class EducationCandidateController {
 
   @Get("getAllEducationCandidate")
   @UseGuards(AuthGuard)
-  findEducations(@Res() res,@Req() req) {
+  async findEducations(@Res() res,@Req() req) {
     console.log(req.account.email)
     try {
-      const result = this.educationCandidateService.findEducations(req.account.email);
+      const result = await this.educationCandidateService.findEducations(req.account.email);
+      console.log(result)
       res.status(200).json({ 
         message:"success",
-        data:result
+        data:result 
        });
     } catch (error) {
       res.status(400).json({message:error})

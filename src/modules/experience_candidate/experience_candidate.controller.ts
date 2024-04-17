@@ -11,9 +11,9 @@ export class ExperienceCandidateController {
 
   @Get("getAllExperience")
   @UseGuards(AuthGuard)
-  findExperiences(@Res() res,@Req() req) {
+  async findExperiences(@Res() res,@Req() req) {
     try {
-      const result = this.experienceCandidateService.findExperiences(req.account.email);
+      const result = await this.experienceCandidateService.findExperiences(req.account.email);
       res.status(200).json({ 
         message:"success",
         data:result

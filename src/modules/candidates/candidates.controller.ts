@@ -39,6 +39,19 @@ export class CandidatesController {
     }
   }
 
+  @Get("getAllInformation")
+  async findAllInformation(@Res() res,@Req() req) {
+    try {
+      const result = await this.candidatesService.getAllInformation(req.account.email);
+      res.status(200).json({ 
+        message:"success",
+        data:result
+       });
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+  }
+
   @Patch('updateAboutMe')
   async updateAboutMe(@Param('id') id: string, @Body() body:any,@Res() res,@Req() req) {
     console.log(req.account.email)

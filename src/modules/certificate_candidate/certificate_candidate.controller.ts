@@ -13,10 +13,10 @@ export class CertificateCandidateController {
 
   @Get("getAllCertificate")
   @UseGuards(AuthGuard)
-  findCertificates(@Res() res,@Req() req) {
+  async findCertificates(@Res() res,@Req() req) {
     console.log(req.account.email)
     try {
-      const result = this.certificateCandidateService.findCertificates(req.account.email);
+      const result = await this.certificateCandidateService.findCertificates(req.account.email);
       res.status(200).json({ 
         message:"success",
         data:result

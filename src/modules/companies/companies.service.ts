@@ -67,7 +67,7 @@ export class CompaniesService {
       website: updateInfoCompany.website,
       description: updateInfoCompany.description,
       policy: updateInfoCompany.policy,
-      emailCompany: updateInfoCompany.email,
+      email_company: updateInfoCompany.email,
       phone: updateInfoCompany.phone,
       logo: updateInfoCompany.photo,
       link_facebook: updateInfoCompany.link_facebook,
