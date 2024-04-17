@@ -6,13 +6,15 @@ import { Repository } from 'typeorm';
 import { CreateAddressCompanyDto, UpdateInfoCompanyDto } from './dto/create-company.dto';
 import { AddressCompany } from './entities/address_company.entity';
 import { LocaltionService } from '../localtion/localtion.service';
+import { TypecompanyService } from '../typecompany/typecompany.service';
 
 @Injectable()
 export class CompaniesService {
     constructor(
         @InjectRepository(Company) private companyRepository: Repository<Company>,
         @InjectRepository(AddressCompany) private addressCompanyRepository: Repository<AddressCompany>,
-        private readonly locationService: LocaltionService
+        private readonly locationService: LocaltionService,
+        private readonly typecompanyService: TypecompanyService
     ) {}
 
 
@@ -57,6 +59,7 @@ export class CompaniesService {
     return addDress
   }
   // Update thông tin company
+
   async updateInfoCompany(id:number,updateInfoCompany: UpdateInfoCompanyDto) {
     const {name,website,description,policy,email,phone,photo,link_facebook,size,typeCompany_id} = updateInfoCompany
     const result = await this.companyRepository.createQueryBuilder().update(Company).set({
@@ -64,14 +67,13 @@ export class CompaniesService {
       website: updateInfoCompany.website,
       description: updateInfoCompany.description,
       policy: updateInfoCompany.policy,
-      emailCompany: updateInfoCompany.email,
+      email_company: updateInfoCompany.email,
       phone: updateInfoCompany.phone,
       logo: updateInfoCompany.photo,
       link_facebook: updateInfoCompany.link_facebook,
       size: updateInfoCompany.size as any,
       typeCompany_id: updateInfoCompany.typeCompany_id as any
     }).where("id = :id", { id }).execute();
-
   }
 
   // Tạo chi nhánh cho company
@@ -92,7 +94,6 @@ export class CompaniesService {
     .innerJoinAndSelect("Company.address_company", "AddressCompany")
     .innerJoinAndSelect("Company.account_company_id", "Account")
     .innerJoinAndSelect("Company.typeCompany_id", "Typecompany")
-    // .innerJoinAndSelect("AddressCompany.", "Location")
     .where("Account.email = :email", { email: email })
     .getOne()
    console.log(result)

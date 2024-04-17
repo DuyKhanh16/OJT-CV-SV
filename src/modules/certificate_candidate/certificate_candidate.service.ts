@@ -10,6 +10,17 @@ export class CertificateCandidateService {
   constructor(
     @InjectRepository(CertificateCandidate) private certificateCandidateRepository: Repository<CertificateCandidate>,
   ) {}
+
+
+  async findCertificates(email:string) {
+    const result = await this.certificateCandidateRepository.createQueryBuilder()
+    .innerJoinAndSelect("CertificateCandidate.candidate_id","Candidate")
+    .innerJoinAndSelect("Candidate.account_candidate_id","Account")
+    .where("Account.email = :email", { email: email })
+    .getMany();
+    console.log(result)
+    return result
+  }
   async createCertificate(body: CreateCertificateCandidateDto) {
     const newCertificate = this.certificateCandidateRepository.createQueryBuilder()
     .insert()

@@ -1,12 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req } from '@nestjs/common';
 import { SkillsCandidateService } from './skills_candidate.service';
 import { CreateSkillsCandidateDto } from './dto/create-skills_candidate.dto';
 import { UpdateSkillsCandidateDto } from './dto/update-skills_candidate.dto';
+import { AuthGuard } from '../guard/auth.guard';
 
 @Controller('api/v2/candidate')
 export class SkillsCandidateController {
   constructor(private readonly skillsCandidateService: SkillsCandidateService) {}
 
+  @Get("getAllSkill")
+  @UseGuards(AuthGuard)
+  async findSkills(@Res() res,@Req() req) {
+    try {
+      const result = await this.skillsCandidateService.findSkills(req.account.email);
+      res.status(200).json({
+        message:"success",
+        data:result
+      })
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+  }
 
   // them ki nang candidate 
   @Post("createSkill")

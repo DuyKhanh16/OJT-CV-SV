@@ -15,4 +15,12 @@ export class TypecompanyService {
   async findAll(): Promise<Typecompany[]> {
     return await this.typecompanyRepository.find();
   }
+  
+ async findOne(id: string): Promise<Typecompany> {
+    return await this.typecompanyRepository.findOneBy({id:id});
+  }
+
+  async createType(createTypecompanyDto: CreateTypecompanyDto) {
+   return await this.typecompanyRepository.save(createTypecompanyDto)
+  }
 }
