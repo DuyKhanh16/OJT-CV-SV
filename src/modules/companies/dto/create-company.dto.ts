@@ -1,14 +1,19 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+
+import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+
 
 export class UpdateInfoCompanyDto {
   @IsString()
   name: string;
 
+
   @IsString()
   website: string;
 
+
   @IsString()
   link_facebook: string;
+
 
   @IsString()
   email: string;
@@ -20,8 +25,10 @@ export class UpdateInfoCompanyDto {
   @IsString()
   phone: string;
 
+
   @IsString()
   size: string;
+
 
   @IsString()
   typeCompany_id: string;
