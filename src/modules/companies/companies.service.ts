@@ -43,6 +43,8 @@ export class CompaniesService {
    
     return company
   }
+
+  // thêm mới chi nhánh
   async createNewAddress(id:string|any,addressCompany: string) {
     const addDress= await this.addressCompanyRepository.createQueryBuilder()
     .insert()
@@ -55,16 +57,41 @@ export class CompaniesService {
     return addDress
   }
   // Update thông tin company
-  async updateInfoCompany(id:string,updateInfoCompany: UpdateInfoCompanyDto) {
-    return await this.companyRepository.createQueryBuilder().update(Company).set({ ...updateInfoCompany}).where("id = :id", { id }).execute();
+  async updateInfoCompany(id:number,updateInfoCompany: UpdateInfoCompanyDto) {
+    const {name,website,description,policy,email,phone,photo,link_facebook,size,typeCompany_id} = updateInfoCompany
+
+    console.log(name,"1")
+    console.log(website,"2")
+    console.log(description,"3")
+    console.log(policy,"4")
+    console.log(email,"5")
+    console.log(phone,"6")
+    console.log(photo,"7")
+    console.log(link_facebook,"8")
+    console.log(size,"9")
+    console.log(typeCompany_id,"10")
+    console.log(id)
+    const result = await this.companyRepository.createQueryBuilder().update(Company).set({
+      name: updateInfoCompany.name,
+      website: updateInfoCompany.website,
+      description: updateInfoCompany.description,
+      policy: updateInfoCompany.policy,
+      emailCompany: updateInfoCompany.email,
+      phone: updateInfoCompany.phone,
+      logo: updateInfoCompany.photo,
+      link_facebook: updateInfoCompany.link_facebook,
+      size: +updateInfoCompany.size,
+      typeCompany_id: updateInfoCompany.typeCompany_id as any
+    }).where("id = :id", { id }).execute();
+
   }
 
   // Tạo chi nhánh cho company
-  async createNewAddressCompany(createAddressCompanyDto: CreateAddressCompanyDto) {
-    const addcompany= await this.companyRepository.findOneBy({id:createAddressCompanyDto.company_id});
-    const location = await this.locationService.getLocation(createAddressCompanyDto.location_id);
-    return await this.addressCompanyRepository.save({company:addcompany,location:location,address:createAddressCompanyDto.address,map_url:createAddressCompanyDto.map_url,created_at:createAddressCompanyDto.created_at});
-  }
+  // async createNewAddressCompany(createAddressCompanyDto: CreateAddressCompanyDto) {
+  //   const addcompany= await this.companyRepository.findOneBy({id:createAddressCompanyDto.company_id});
+  //   const location = await this.locationService.getLocation(createAddressCompanyDto.location_id);
+  //   return await this.addressCompanyRepository.save({company:addcompany,location:location,address:createAddressCompanyDto.address,map_url:createAddressCompanyDto.map_url,created_at:createAddressCompanyDto.created_at});
+  // }
 
   // Lấy thông tin chi nhánh theo id
   async getAddressCompanyById(id: string) {
@@ -76,10 +103,16 @@ export class CompaniesService {
     const result = await this.companyRepository.createQueryBuilder("Company")
     .innerJoinAndSelect("Company.address_company", "AddressCompany")
     .innerJoinAndSelect("Company.account_company_id", "Account")
+    .innerJoinAndSelect("Company.typeCompany_id", "Typecompany")
+    // .innerJoinAndSelect("AddressCompany.", "Location")
     .where("Account.email = :email", { email: email })
-    // .where("Company.account_company_id = :id", { id: id })
     .getOne()
-    console.log(result)
+   console.log(result)
     return result
+  }
+
+  // xoá địa chỉ chi nhánh công ty
+  async deleteAddressCompany(id:string){
+    return await this.addressCompanyRepository.delete({id:id})
   }
 }

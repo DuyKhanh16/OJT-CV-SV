@@ -7,7 +7,7 @@ require('dotenv').config();
 @Controller('api/v2/typecompany')
 export class TypecompanyController {
   constructor(private readonly typecompanyService: TypecompanyService) {}
-
+  
   @Get("all")
   async getAllTypeCompany(@Res() res) {
     try {
