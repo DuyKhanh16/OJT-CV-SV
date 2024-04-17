@@ -26,6 +26,10 @@ export class AddressCompany {
     })
     created_at: string;
 
+    @Column({type:"int",default: 0})
+    status:number;
+
+
     @ManyToOne(type => Company, company => company.address_company)
     @JoinColumn({name: 'company_id'})
     company_id: Company
