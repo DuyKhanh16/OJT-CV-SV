@@ -16,7 +16,7 @@ export class CertificateCandidateController {
   async findCertificates(@Res() res,@Req() req) {
     console.log(req.account.email)
     try {
-      const result =await this.certificateCandidateService.findCertificates(req.account.email);
+      const result = await this.certificateCandidateService.findCertificates(req.account.email);
       res.status(200).json({ 
         message:"success",
         data:result

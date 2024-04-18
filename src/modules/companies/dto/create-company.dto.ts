@@ -1,53 +1,63 @@
+
 import { IsNotEmpty, IsNumber, IsString } from "class-validator"
 
-export class UpdateInfoCompanyDto{
-    @IsString()
-    name: string
 
-    @IsString()
-    logo: string
+export class UpdateInfoCompanyDto {
+  @IsString()
+  name: string;
 
-    @IsString()
-    website: string
 
-    @IsString()
-    link_facebook: string
+  @IsString()
+  website: string;
 
-   @IsString()
-   emailCompany: string
 
-   @IsNumber()
-   size:number
+  @IsString()
+  link_facebook: string;
 
-    @IsString()
-   phone:string
 
-    @IsString()
-    description: string
+  @IsString()
+  email: string;
 
-    @IsString()
-    typeCompany_id: string
-  
+  @IsString()
+// @IsNotEmpty()
+  photo: string;
+
+  @IsString()
+  phone: string;
+
+
+  @IsString()
+  size: string;
+
+
+  @IsString()
+  typeCompany_id: string;
+
+  @IsString()
+  description: string;
+
+  @IsString()
+  policy: string;
 }
 
-export class CreateAddressCompanyDto{
-    @IsString()
-    @IsNotEmpty()
-    company_id: string
+export class CreateAddressCompanyDto {
+  // @IsString()
+  // @IsNotEmpty()
+  // company_id: string
 
-    @IsString()
-    @IsNotEmpty()
-    location_id: string
+  // @IsString()
+  // @IsNotEmpty()
+  // location_id: string
 
-    @IsString()
-    @IsNotEmpty()
-    address: string
+  @IsString()
+  @IsNotEmpty()
+  address: string;
 
-    @IsString()
-    @IsNotEmpty()
-    map_url: string
+  // @IsString()
+  // @IsNotEmpty()
+  // map_url: string
 
-    @IsString()
-    @IsNotEmpty()
-    created_at: string
+  // @IsString()
+  // @IsNotEmpty()
+  // created_at: string
 }

@@ -23,16 +23,15 @@ export class EducationCandidateController {
 
   @Get('getAllEducationCandidate')
   @UseGuards(AuthGuard)
-  async findEducations(@Res() res, @Req() req) {
-    console.log(req.account.email);
+  async findEducations(@Res() res,@Req() req) {
+    console.log(req.account.email)
     try {
-      const result = await this.educationCandidateService.findEducations(
-        req.account.email,
-      );
-      res.status(200).json({
-        message: 'success',
-        data: result,
-      });
+      const result = await this.educationCandidateService.findEducations(req.account.email);
+      console.log(result)
+      res.status(200).json({ 
+        message:"success",
+        data:result 
+       });
     } catch (error) {
       res.status(400).json({ message: error });
     }
