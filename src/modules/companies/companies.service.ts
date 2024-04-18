@@ -71,7 +71,7 @@ export class CompaniesService {
       phone: updateInfoCompany.phone,
       logo: updateInfoCompany.photo,
       link_facebook: updateInfoCompany.link_facebook,
-      size: +updateInfoCompany.size,
+      size: updateInfoCompany.size as any,
       typeCompany_id: updateInfoCompany.typeCompany_id as any
     }).where("id = :id", { id }).execute();
   }
