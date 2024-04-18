@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { LeversJobs } from "./levers_jobs.entity";
 import { TypesJobs } from "./types_jobs.entity";
 import { AddressCompany } from "src/modules/companies/entities/address_company.entity";
+import { JobCandidates } from "./job_candidates.entity";
 
 @Entity('job')
 export class Job {
@@ -44,4 +45,7 @@ export class Job {
     @ManyToOne(type => AddressCompany, address_company => address_company.job)
     @JoinColumn({name: 'address_company_id'})
     address_company: AddressCompany
+
+    @OneToMany(type => JobCandidates, job_candidates => job_candidates.job_id)
+    job_candidates: JobCandidates[]
 }
