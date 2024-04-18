@@ -10,6 +10,7 @@ import { LeversJobs } from './entities/levers_jobs.entity';
 import { TypesJobs } from './entities/types_jobs.entity';
 import { CompaniesService } from '../companies/companies.service';
 import { log } from 'console';
+import { get } from 'http';
 
 @Injectable()
 export class JobsService {
@@ -136,6 +137,19 @@ export class JobsService {
     return result
  }
 
+//  lấy job theo company
+ async getJobByIdCompany(id: string) {
+    const result = await this.jobRepository.createQueryBuilder("job")
+    .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .leftJoinAndSelect("types_jobs.typejob", "typejob")
+    .leftJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .where("job.company.id = :id", { id })
+    .getMany()
+    return result;
+ }
+
 
  //lay tat ca job dang tuyen dung cua cty (Hoang viet)
 async getJobsForCompany(email: string) {
@@ -154,5 +168,6 @@ async getJobsForCompany(email: string) {
     console.log(result)
   return result;
 }
+
 
 }
