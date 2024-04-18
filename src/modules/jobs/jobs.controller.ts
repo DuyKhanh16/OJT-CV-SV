@@ -30,20 +30,33 @@ export class JobsController {
   @Get("getNewJobs")
   async findAllNewJobs(@Res() res) {
     const now = new Date().toISOString().split("/").reverse().join("");
-    console.log(now)
     const result = await this.jobsService.findAllLiveJobs();
     const arr = result.filter((item) => {
-      // console.log(item.expire_at.slice(0, 10).split("-").join(""))
       return item.created_at.toString().slice(0, 10).split("-").join("") >= now;
     })
-    console.log(arr)
     res.status(200).json({ 
       message:"success",
       data:arr
      });
   }
 
+  // Lấy Job theo Id company
 
+  @Get("company/:id")
+  async getJobByIdCompany(@Param("id") id, @Res() res) {
+   try {
+    const result = await this.jobsService.getJobByIdCompany(id);
+    res.status(process.env.STATUS_SUCCESS).json({ 
+      message:process.env.SUCCESS,
+      data:result
+     });
+   } catch (error) {
+    console.log(error);
+    res.status(process.env.STATUS_FAIL).json({ message: error.message });
+   }
+  }
+
+  // Tạo mới job
   @Post("create/:id")
  async createNewJob(@Body() createJobDto: CreateJobDto,@Res() res, @Param("id") id) {
    try {
