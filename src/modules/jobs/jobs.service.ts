@@ -133,10 +133,12 @@ export class JobsService {
     const result = await this.jobRepository.createQueryBuilder("job")
     .innerJoinAndSelect("job.address_company", "address_company")
     .innerJoinAndSelect("job.company", "company")
-    .select("job")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
     .where("job.status = 1")
     .orderBy("job.created_at", "DESC")
     .getMany()
+    // console.log(result)
     return result
  }
 

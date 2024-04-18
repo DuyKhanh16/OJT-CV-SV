@@ -56,7 +56,16 @@ export class CandidatesService {
 
 
   async findAll() {
-    return await this.candidateRepository.find();
+    const result = await this.candidateRepository.createQueryBuilder("Candidate")
+    .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
+    .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
+    .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
+    .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
+    // .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
+    .innerJoinAndSelect("Candidate.project_candidate", "ProjectCandidate")
+    .getMany()
+    console.log(result)
+    return result;
   }
 
 

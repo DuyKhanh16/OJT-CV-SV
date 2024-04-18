@@ -6,7 +6,6 @@ import * as dotenv from 'dotenv';
 import { AuthGuard } from '../guard/auth.guard';
 dotenv.config();
 @Controller('api/v2/candidates')
-@UseGuards(AuthGuard)
 
 export class CandidatesController {
   constructor(private readonly candidatesService: CandidatesService) {}
@@ -25,6 +24,8 @@ export class CandidatesController {
   }
 
   @Get("getInfor")
+@UseGuards(AuthGuard)
+
   async findOne(@Param('id') id: string,@Res() res,@Req() req) {
     console.log(req.account.email)
     try {
@@ -40,6 +41,8 @@ export class CandidatesController {
   }
 
   @Get("getAllInformation")
+@UseGuards(AuthGuard)
+
   async findAllInformation(@Res() res,@Req() req) {
     try {
       const result = await this.candidatesService.getAllInformation(req.account.email);
@@ -53,6 +56,8 @@ export class CandidatesController {
   }
 
   @Patch('updateAboutMe')
+@UseGuards(AuthGuard)
+
   async updateAboutMe(@Param('id') id: string, @Body() body:any,@Res() res,@Req() req) {
     console.log(req.account.email)
     console.log(body.aboutme)
@@ -65,6 +70,8 @@ export class CandidatesController {
   }
   
   @Patch('updateInfoCandidate')
+@UseGuards(AuthGuard)
+
   async updateInfoCandidate(@Body() body:UpdateInforCandidateDto,@Res() res,@Req() req) {
     console.log(req.account.email)
     const {name,birthday,gender,phone,address,position,link_git} = body
