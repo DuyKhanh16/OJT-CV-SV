@@ -9,6 +9,7 @@ import {
   Res,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
@@ -134,5 +135,45 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
     res.status(400).json({message:error})
   }
 }
+  // lấy job theo Id(jobdetail)
+  @Get("detail/:id")
+  async getJobById(@Param("id") id, @Res() res) {
+    try {
+      const result = await this.jobsService.getJobById(id);
+      res.status(process.env.STATUS_SUCCESS).json({ 
+        message:process.env.SUCCESS,
+        data:result
+       });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+    }
+  }
 
+  // Delete Job
+  @Delete("delete/:id")
+  async deleteJobById(@Param("id") id, @Res() res) {
+    try {
+    const result =  await this.jobsService.deleteoneJob(id);
+      res.status(process.env.STATUS_SUCCESS).json({ message: process.env.SUCCESS });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+    }
+  }
+  
+  //update status job
+  @Patch("updatestatus/:id")
+  async updateStatusJob(@Param("id") id, @Res() res,@Query("status") status) {
+    try {
+      await this.jobsService.updateStatusJob(id,status)
+      res
+      .status(process.env.STATUS_CREATR_OK)
+      .json({ message: process.env.SUCCESS });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+    }
+    
+  }
 }
