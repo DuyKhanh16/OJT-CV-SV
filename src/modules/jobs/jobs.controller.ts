@@ -7,11 +7,14 @@ import {
   Param,
   Delete,
   Res,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { zip } from 'rxjs/operators';
+import { AuthGuard } from '../guard/auth.guard';
 require('dotenv').config();
 @Controller('api/v2/jobs')
 export class JobsController {
@@ -40,8 +43,7 @@ export class JobsController {
      });
   }
 
-  // Lấy Job theo Id company
-
+  // Lấy Job theo Id company(a khanh )
   @Get("company/:id")
   async getJobByIdCompany(@Param("id") id, @Res() res) {
    try {
@@ -56,7 +58,24 @@ export class JobsController {
    }
   }
 
-  // Tạo mới job
+ 
+
+  //lay tat ca job dang tuyen dung cua cty (Hoang viet)
+  @Get("getJobsForCompany")
+  @UseGuards(AuthGuard)
+  async getJobsForCompany(@Res() res, @Req() req) {
+    try {
+      const result = await this.jobsService.getJobsForCompany(req.account.email);
+    res.status(200).json({ 
+      message:"success",
+      data:result
+     });
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+  }
+
+ // Tạo mới job
   @Post("create/:id")
  async createNewJob(@Body() createJobDto: CreateJobDto,@Res() res, @Param("id") id) {
    try {
