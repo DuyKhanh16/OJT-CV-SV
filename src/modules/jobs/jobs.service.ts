@@ -200,8 +200,10 @@ async getCandidatesApplyingforCompany(email: string) {
 async getJobById(id: string) {
   return await this.jobRepository.createQueryBuilder("job")
   .innerJoinAndSelect("job.address_company", "address_company")
+  .innerJoinAndSelect("job.company", "company")
     .innerJoinAndSelect("job.types_jobs", "types_jobs")
     .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+  // .leftJoinAndSelect("address_company.location", "location")
     .leftJoinAndSelect("types_jobs.typejob", "typejob")
     .leftJoinAndSelect("levers_jobs.leveljob", "leveljob")
     .where("job.id = :id", { id })
