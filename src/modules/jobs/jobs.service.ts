@@ -11,6 +11,7 @@ import { TypesJobs } from './entities/types_jobs.entity';
 import { CompaniesService } from '../companies/companies.service';
 import { log } from 'console';
 import { get } from 'http';
+import { async } from 'rxjs';
 
 @Injectable()
 export class JobsService {
@@ -169,5 +170,34 @@ async getJobsForCompany(email: string) {
   return result;
 }
 
+// lấy job theo Id(jobdetail)
+async getJobById(id: string) {
+  return await this.jobRepository.createQueryBuilder("job")
+  .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .leftJoinAndSelect("types_jobs.typejob", "typejob")
+    .leftJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .where("job.id = :id", { id })
+    .getOne()
+}
 
+// delete job
+async deleteoneJob(id: string) {
+  const result = await this.jobRepository.find({relations: ["types_jobs","levers_jobs"] ,where: { id: id }})
+  console.log(result);
+  await this.leversJobsRepository.remove(result[0].levers_jobs)
+  await this.typesJobsRepository.remove(result[0].types_jobs)
+  return await this.jobRepository.delete(id);
+ }
+
+//  update status job
+async updateStatusJob(id: string, status: number) {
+  return await this.jobRepository
+    .createQueryBuilder()
+    .update(Job)
+    .set({ status: status })
+    .where("id = :id", { id })
+    .execute();
+}
 }
