@@ -89,10 +89,12 @@ export class JobsService {
     const typejob = await this.typejobService.getTypejobById(
       updateJob.typejob_id,
     );
+    console.log(typejob)
     // Lấy leveljob theo id
     const leveljob = await this.leveljobService.getLeveljobById(
       updateJob.leveljob_id,
     );
+    
     //  update Job
     await this.jobRepository
       .createQueryBuilder()
@@ -158,11 +160,11 @@ async getJobsForCompany(email: string) {
     .createQueryBuilder("job")
     .innerJoinAndSelect("job.company", "company")
     .innerJoinAndSelect("company.account_company_id", "account")
-    // .innerJoinAndSelect("job.address_company", "address_company")
-    // .innerJoinAndSelect("job.types_jobs", "types_jobs")
-    // .innerJoinAndSelect("types_jobs.typejob", "typejob")
-    // .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
-    // .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
     .where("account.email = :email", { email })
     .orderBy("job.created_at", "DESC")
     .getMany();
