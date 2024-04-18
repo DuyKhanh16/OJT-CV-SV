@@ -169,5 +169,30 @@ async getJobsForCompany(email: string) {
   return result;
 }
 
+//lay tat ca candidate theo id job (Hoang viet)
+async getCandidatesbyIdJob(id: string) {
+  const result = await this.jobRepository
+    .createQueryBuilder("job")
+    .innerJoinAndSelect("job.job_candidates", "job_candidates")
+    .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
+    .innerJoinAndSelect("candidate.account_candidate_id", "account")
+    .where("job.id = :id", { id })
+    .getMany();
+  console.log(result)
+  return result;
+}
 
+//lay tat ca candidate ung tuyen cty (Hoang viet)
+async getCandidatesApplyingforCompany(email: string) {
+  const result = await this.jobRepository
+    .createQueryBuilder("job")
+    .innerJoinAndSelect("job.job_candidates", "job_candidates")
+    .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
+    .innerJoinAndSelect("job.company", "company")
+      .innerJoinAndSelect("company.account_company_id", "account")
+      .where("account.email = :email", { email: email})
+    .getMany();
+  console.log(result)
+  return result;
+}
 }

@@ -106,5 +106,33 @@ export class JobsController {
     }
   }
 
+@Get("getCandidatesbyIdJob/:id")
+async getCandidatesbyIdJob(@Param("id") id:string, @Res() res) {
+  console.log(id)
+  try {
+    const result = await this.jobsService.getCandidatesbyIdJob(id);
+  res.status(200).json({ 
+    message:"success",
+    data:result
+   });
+  } catch (error) {
+    res.status(400).json({message:error})
+  }
+  
+}
+
+@Get("getCandidatesApplying")
+@UseGuards(AuthGuard)
+async getAllCandidatesAppling(@Res() res, @Req() req) {
+  try {
+    const result = await this.jobsService.getCandidatesApplyingforCompany(req.account.email);
+  res.status(200).json({ 
+    message:"success",
+    data:result
+   });
+  } catch (error) {
+    res.status(400).json({message:error})
+  }
+}
 
 }
