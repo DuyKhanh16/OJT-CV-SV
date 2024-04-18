@@ -79,8 +79,11 @@ export class JobsService {
 
   //  update job
   async updateJob(updateJob: UpdateJobDto, id: string) {
+    
     // lấy thông tin job update
-    const job = await this.jobRepository.findOneBy({ id: id });
+    const [job] = await this.jobRepository.find({relations:['types_jobs','levers_jobs'] , where: { id: id } });
+    const level_job_id =  job.levers_jobs[0].id;
+    const type_job_id =  job.types_jobs[0].id;
     // Lấy address-company theo id
     const address_company = await this.companyService.getAddressCompanyById(
       updateJob.address_company_id,
@@ -89,7 +92,6 @@ export class JobsService {
     const typejob = await this.typejobService.getTypejobById(
       updateJob.typejob_id,
     );
-    console.log(typejob)
     // Lấy leveljob theo id
     const leveljob = await this.leveljobService.getLeveljobById(
       updateJob.leveljob_id,
@@ -114,14 +116,15 @@ export class JobsService {
       .createQueryBuilder()
       .update(TypesJobs)
       .set({ typejob: typejob })
-      .where('id = :id', { id })
+      .where('id = :id', {id:type_job_id})
       .execute();
+
     // update level_job
     await this.leversJobsRepository
       .createQueryBuilder()
       .update(LeversJobs)
       .set({ leveljob: leveljob })
-      .where('id = :id', { id })
+      .where('id = :id', {id:level_job_id})
       .execute();
     return job;
   }
