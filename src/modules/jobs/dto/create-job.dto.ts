@@ -38,32 +38,44 @@ export class CreateJobDto {
 }
 
 export class UpdateJobDto {
+    // ok 1
     @IsString()
     @IsNotEmpty()
     title: string
-
+// 2
     @IsString()
     @IsNotEmpty()
     description: string
 
-
+// 3
     @IsString()
     @IsNotEmpty()
     requirements: string
 
+//4 
     @IsString()
     @IsNotEmpty()
     salary: string
-
+// 5
     @IsString()
     @IsNotEmpty()
     expire_at: string
-
-    @IsString()
+// 6
+    // @IsString()
     @IsNotEmpty()
     typejob_id: string
-
-    @IsString()
+// 7
+    // @IsString()
     @IsNotEmpty()
     leveljob_id: string
+
+    //8  @IsString()
+    @IsNotEmpty()
+    @IsString()
+    created_at : string
+    // 9
+    // @IsString()
+    @IsNotEmpty()
+    // @IsString()
+    address_company_id : string
 }
