@@ -181,3 +181,4 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
     
   }
 }
+  
