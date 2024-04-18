@@ -79,8 +79,11 @@ export class JobsService {
 
   //  update job
   async updateJob(updateJob: UpdateJobDto, id: string) {
+    
     // lấy thông tin job update
-    const job = await this.jobRepository.findOneBy({ id: id });
+    const [job] = await this.jobRepository.find({relations:['types_jobs','levers_jobs'] , where: { id: id } });
+    const level_job_id =  job.levers_jobs[0].id;
+    const type_job_id =  job.types_jobs[0].id;
     // Lấy address-company theo id
     const address_company = await this.companyService.getAddressCompanyById(
       updateJob.address_company_id,
@@ -93,6 +96,7 @@ export class JobsService {
     const leveljob = await this.leveljobService.getLeveljobById(
       updateJob.leveljob_id,
     );
+    
     //  update Job
     await this.jobRepository
       .createQueryBuilder()
@@ -112,14 +116,15 @@ export class JobsService {
       .createQueryBuilder()
       .update(TypesJobs)
       .set({ typejob: typejob })
-      .where('id = :id', { id })
+      .where('id = :id', {id:type_job_id})
       .execute();
+
     // update level_job
     await this.leversJobsRepository
       .createQueryBuilder()
       .update(LeversJobs)
       .set({ leveljob: leveljob })
-      .where('id = :id', { id })
+      .where('id = :id', {id:level_job_id})
       .execute();
     return job;
   }
@@ -131,10 +136,12 @@ export class JobsService {
     const result = await this.jobRepository.createQueryBuilder("job")
     .innerJoinAndSelect("job.address_company", "address_company")
     .innerJoinAndSelect("job.company", "company")
-    .select("job")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
     .where("job.status = 1")
     .orderBy("job.created_at", "DESC")
     .getMany()
+    // console.log(result)
     return result
  }
 
@@ -158,11 +165,11 @@ async getJobsForCompany(email: string) {
     .createQueryBuilder("job")
     .innerJoinAndSelect("job.company", "company")
     .innerJoinAndSelect("company.account_company_id", "account")
-    // .innerJoinAndSelect("job.address_company", "address_company")
-    // .innerJoinAndSelect("job.types_jobs", "types_jobs")
-    // .innerJoinAndSelect("types_jobs.typejob", "typejob")
-    // .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
-    // .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
     .where("account.email = :email", { email })
     .orderBy("job.created_at", "DESC")
     .getMany();

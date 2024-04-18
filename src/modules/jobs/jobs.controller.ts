@@ -47,6 +47,7 @@ export class JobsController {
   // Lấy Job theo Id company(a khanh )
   @Get("company/:id")
   async getJobByIdCompany(@Param("id") id, @Res() res) {
+    // console.log(id,"đã ăn vào đây")
    try {
     const result = await this.jobsService.getJobByIdCompany(id);
     res.status(process.env.STATUS_SUCCESS).json({ 
@@ -96,6 +97,7 @@ export class JobsController {
     @Res() res,
     @Param('id') id,
   ){
+    // console.log(updateJob,id,"đã vào đến đây")
     try {
       await this.jobsService.updateJob(updateJob,id)
       res
@@ -153,6 +155,7 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   // Delete Job
   @Delete("delete/:id")
   async deleteJobById(@Param("id") id, @Res() res) {
+    console.log(id,"đã ăn vào đây")
     try {
     const result =  await this.jobsService.deleteoneJob(id);
       res.status(process.env.STATUS_SUCCESS).json({ message: process.env.SUCCESS });
@@ -165,6 +168,7 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   //update status job
   @Patch("updatestatus/:id")
   async updateStatusJob(@Param("id") id, @Res() res,@Query("status") status) {
+    console.log(id,status,"11111111111111111111111111111111111111111111111111111")
     try {
       await this.jobsService.updateStatusJob(id,status)
       res
@@ -177,3 +181,4 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
     
   }
 }
+  

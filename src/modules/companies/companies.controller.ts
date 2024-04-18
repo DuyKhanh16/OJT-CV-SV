@@ -27,6 +27,7 @@ export class CompaniesController {
   @Get("getAll")
   async findAll(@Res() res) {
     const result = await this.companiesService.findAll();
+    
     res.status(200).json({ 
       message:"success",
       data:result

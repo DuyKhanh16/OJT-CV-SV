@@ -21,7 +21,12 @@ export class CompaniesService {
 
     // Lấy hết dữ liệu company
     async findAll() {
-        return await this.companyRepository.find();
+        const result = await this.companyRepository.createQueryBuilder("company")
+        .innerJoinAndSelect("company.address_company", "address")
+        .innerJoinAndSelect("company.typeCompany_id", "typecompany")
+        .getMany()
+        console.log(result)
+        return result;
     }
     // lấy company theo Id
     async getCompanyById(id: string) {
@@ -93,7 +98,7 @@ export class CompaniesService {
     const result = await this.companyRepository.createQueryBuilder("Company")
     .innerJoinAndSelect("Company.address_company", "AddressCompany")
     .innerJoinAndSelect("Company.account_company_id", "Account")
-    .innerJoinAndSelect("Company.typeCompany_id", "Typecompany")
+    // .innerJoinAndSelect("Company.typeCompany_id", "Typecompany")
     .where("Account.email = :email", { email: email })
     .getOne()
    console.log(result)
