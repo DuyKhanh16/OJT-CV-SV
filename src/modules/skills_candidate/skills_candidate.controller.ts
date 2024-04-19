@@ -8,7 +8,7 @@ import { AuthGuard } from '../guard/auth.guard';
 export class SkillsCandidateController {
   constructor(private readonly skillsCandidateService: SkillsCandidateService) {}
 
-  @Get("getAllSkill")
+  @Get("getAllSkills")
   @UseGuards(AuthGuard)
   async findSkills(@Res() res,@Req() req) {
     try {
