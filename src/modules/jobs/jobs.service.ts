@@ -260,6 +260,7 @@ async applyJob(body:applyJobDto) {
     .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
     .innerJoinAndSelect("candidate.account_candidate_id", "account")
     .innerJoinAndSelect("job.company", "company")
+    .innerJoinAndSelect("company.address_company", "address_company")
     .innerJoinAndSelect("job.types_jobs", "types_jobs")
     .innerJoinAndSelect("types_jobs.typejob", "typejob")
     .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
