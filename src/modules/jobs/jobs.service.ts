@@ -265,4 +265,22 @@ async applyJob(body:applyJobDto) {
   console.log(result)
   return result
 }
+
+ async getJobAppliedCandidates(email: string) {
+  const result = await this.jobCandidatesRepository
+    .createQueryBuilder("job_candidates")
+    .innerJoinAndSelect("job_candidates.job_id", "job")
+    .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
+    .innerJoinAndSelect("candidate.account_candidate_id", "account")
+    .innerJoinAndSelect("job.company", "company")
+    .innerJoinAndSelect("company.address_company", "address_company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .where("account.email = :email", { email: email})
+    .getMany();
+  console.log(result)
+  return result;
+}
 }

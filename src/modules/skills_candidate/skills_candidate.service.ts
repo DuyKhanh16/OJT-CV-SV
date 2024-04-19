@@ -15,6 +15,7 @@ export class SkillsCandidateService {
     const result = await this.skillsCandidateRepository.createQueryBuilder()
     .innerJoinAndSelect("SkillsCandidate.candidate_id","Candidate")
     .innerJoinAndSelect("Candidate.account_candidate_id","Account")
+    .innerJoinAndSelect("SkillsCandidate.leveljob_id","LevelJob")
     .where("Account.email = :email", { email: email })
     .getMany();
     console.log(result)

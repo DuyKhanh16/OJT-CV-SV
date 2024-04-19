@@ -90,7 +90,12 @@ export class Candidate {
     @Column({
         type:"longtext",
         nullable: true
+    })
+    avatar: string;
 
+    @Column({
+        type:"longtext",
+        nullable: true
     })
     aboutme:string;
 
