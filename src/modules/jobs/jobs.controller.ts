@@ -30,6 +30,17 @@ export class JobsController {
       data:result
      });
   }
+  
+// get all jobs của admin
+@Get("getJobsforadmin")
+async findAllAdminJobs(@Res() res) {
+  const result = await this.jobsService.findAllAdminJobs();
+  res.status(200).json({ 
+    message:"success",
+    data:result
+   });
+}
+
   //lay tat ca job moi dc dang tuyen 
   @Get("getNewJobs")
   async findAllNewJobs(@Res() res) {

@@ -147,6 +147,19 @@ export class JobsService {
     return result
  }
 
+//  admin lấy jobs
+async findAllAdminJobs() {
+  const result = await this.jobRepository.createQueryBuilder("job")
+  .innerJoinAndSelect("job.address_company", "address_company")
+  .innerJoinAndSelect("job.company", "company")
+  .innerJoinAndSelect("job.types_jobs", "types_jobs")
+  .innerJoinAndSelect("types_jobs.typejob", "typejob")
+  .orderBy("job.created_at", "DESC")
+  .getMany()
+  console.log(result)
+  return result
+}
+
 //  lấy job theo company
  async getJobByIdCompany(id: string) {
     const result = await this.jobRepository.createQueryBuilder("job")
