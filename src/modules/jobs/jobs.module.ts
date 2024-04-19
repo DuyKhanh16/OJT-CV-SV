@@ -10,11 +10,12 @@ import { TypesJobs } from './entities/types_jobs.entity';
 import { LeversJobs } from './entities/levers_jobs.entity';
 import { CompaniesModule } from '../companies/companies.module';
 import { AuthModule } from '../auth/auth.module';
+import { JobCandidates } from './entities/job_candidates.entity';
 
 @Module({
   controllers: [JobsController],
   providers: [JobsService],
-  imports: [TypeOrmModule.forFeature([Job]),TypeOrmModule.forFeature([TypesJobs]),TypeOrmModule.forFeature([LeversJobs])
+  imports: [TypeOrmModule.forFeature([Job,JobCandidates]),TypeOrmModule.forFeature([TypesJobs]),TypeOrmModule.forFeature([LeversJobs])
   ,forwardRef(() => TypejobModule),forwardRef(() => LeveljobsModule),forwardRef(() => LocaltionModule),forwardRef(() => CompaniesModule),
   forwardRef(() => AuthModule)
 ],

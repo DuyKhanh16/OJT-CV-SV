@@ -79,3 +79,9 @@ export class UpdateJobDto {
     // @IsString()
     address_company_id : string
 }
+export class applyJobDto{
+    candidate_id : string|any
+    content: string
+    cv_url: string
+    job_id: string|any
+}
