@@ -16,6 +16,9 @@ export class Account {
     @Column({type: 'int'})
     role : number
 
+    @Column({type: 'int', default: 1})
+    status : number
+
     @OneToMany(type => Company, company => company.account_company_id)
     company: Company[]
 

@@ -44,6 +44,7 @@ export class CandidatesController {
 @UseGuards(AuthGuard)
 
   async findAllInformation(@Res() res,@Req() req) {
+    console.log(req.account.email)
     try {
       const result = await this.candidatesService.getAllInformation(req.account.email);
       res.status(200).json({ 
@@ -74,7 +75,7 @@ export class CandidatesController {
 
   async updateInfoCandidate(@Body() body:UpdateInforCandidateDto,@Res() res,@Req() req) {
     console.log(req.account.email)
-    const {name,birthday,gender,phone,address,position,link_git} = body
+    const {name,birthday,gender,phone,address,position,link_git,avatar} = body
     console.log(body)
     try {
       const result = await this.candidatesService.updateInfoCandidate(body,req.account.email)
