@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
-import { CreateJobDto } from './dto/create-job.dto';
+import { CreateJobDto, applyJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { zip } from 'rxjs/operators';
 import { AuthGuard } from '../guard/auth.guard';
@@ -179,6 +179,20 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
       res.status(process.env.STATUS_FAIL).json({ message: error.message });
     }
     
+  }
+  @Post("applyJob")
+  async applyJob(@Body() applyJobDto: applyJobDto, @Res() res) {
+    try {
+      console.log(applyJobDto)
+      const result = await this.jobsService.applyJob(applyJobDto);
+      console.log(result)
+      res.status(200).json({ 
+        message:"Applied success",
+        data:result
+      })
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
   }
 }
   

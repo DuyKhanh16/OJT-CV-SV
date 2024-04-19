@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateJobDto } from './dto/create-job.dto';
+import { CreateJobDto, applyJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
@@ -12,11 +12,13 @@ import { CompaniesService } from '../companies/companies.service';
 import { log } from 'console';
 import { get } from 'http';
 import { async } from 'rxjs';
+import { JobCandidates } from './entities/job_candidates.entity';
 
 @Injectable()
 export class JobsService {
   constructor(
     @InjectRepository(Job) private jobRepository: Repository<Job>,
+    @InjectRepository(JobCandidates) private jobCandidatesRepository: Repository<JobCandidates>,
     @InjectRepository(LeversJobs)
     private leversJobsRepository: Repository<LeversJobs>,
     @InjectRepository(TypesJobs)
@@ -141,7 +143,7 @@ export class JobsService {
     .where("job.status = 1")
     .orderBy("job.created_at", "DESC")
     .getMany()
-    // console.log(result)
+    console.log(result)
     return result
  }
 
@@ -234,5 +236,20 @@ async updateStatusJob(id: string, status: number) {
     .set({ status: status })
     .where("id = :id", { id })
     .execute();
+}
+
+async applyJob(body:applyJobDto) {
+  const result = await this.jobCandidatesRepository.createQueryBuilder("job_candidates")
+  .insert()
+  .into(JobCandidates)
+  .values({
+    candidate_id: body.candidate_id,
+    job_id: body.job_id,
+    content: body.content,
+    cv_url: body.cv_url
+  })
+  .execute()
+  console.log(result)
+  return result
 }
 }
