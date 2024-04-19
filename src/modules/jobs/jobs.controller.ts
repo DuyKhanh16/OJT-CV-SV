@@ -194,5 +194,19 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
       res.status(400).json({message:error})
     }
   }
+
+  @Get("getJobAppliedCandidates")
+  @UseGuards(AuthGuard)
+  async getJobAppliedCandidates(@Res() res, @Req() req) {
+    try {
+      const result = await this.jobsService.getJobAppliedCandidates(req.account.email);
+    res.status(200).json({ 
+      message:"success",
+      data:result
+     });
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+  }
 }
   

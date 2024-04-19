@@ -252,4 +252,16 @@ async applyJob(body:applyJobDto) {
   console.log(result)
   return result
 }
+
+ async getJobAppliedCandidates(email: string) {
+  const result = await this.jobCandidatesRepository
+    .createQueryBuilder("job_candidates")
+    .innerJoinAndSelect("job_candidates.job_id", "job")
+    .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
+    .innerJoinAndSelect("candidate.account_candidate_id", "account")
+    .where("account.email = :email", { email: email})
+    .getMany();
+  console.log(result)
+  return result;
+}
 }
