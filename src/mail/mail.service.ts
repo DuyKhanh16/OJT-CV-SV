@@ -11,9 +11,12 @@ export class MailService {
   constructor() {
     this.transporter = nodemailer.createTransport({
       service: 'Gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: false,
       auth: {
-        user:"topcvdemo@gmail",
-        pass:"zqtpbypynqyorahr"
+        user:"khuongdanhhoang123@gmail.coml",
+        pass:"xkprzeomjqsdbahu"
       },
     });
   }
@@ -28,7 +31,7 @@ export class MailService {
 
     for (const to of toList) {
       const mailOptions = {
-        from: "topcvdemo@gmail",
+        from: "khuongdanhhoang123@gmail.com",
         to,
         subject,
         html, // Sử dụng HTML thay vì text

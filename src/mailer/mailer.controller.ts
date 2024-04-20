@@ -8,8 +8,8 @@ export class MailController {
 
   @Post()
   async sendEmail(@Body() body: any) {
-    const { to, subject, text } = body;
-    console.log(to, subject, text);
-    return this.mailService.sendMail(to, subject, text);
+    const { to, subject, name } = body;
+    console.log(to, subject, name);
+    return this.mailService.sendMail(to, subject, name);
   }
 }
