@@ -6,5 +6,5 @@ export enum RoleEnum {
 
 export enum StatusApplyEnum {
   CANCEL=0,
-  APPLY=1
+  APPLY=2
 }

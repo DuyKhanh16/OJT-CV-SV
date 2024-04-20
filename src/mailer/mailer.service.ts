@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import * as ejs from 'ejs';
 import * as fs from 'fs';
+import { async } from 'rxjs';
 require('dotenv').config();
 
 @Injectable()
@@ -54,5 +55,21 @@ export class MailService {
     };
 
     return await this.transporter.sendMail(mailOptions);
+  }
+
+  async sendMailInterview(to: string, subject: string, name: string,day:string) {
+     // Đọc template EJS từ file
+     const template = fs.readFileSync('./src/templates/interview.ejs', 'utf-8');
+     // Render template với dữ liệu từ formData
+     const html = ejs.render(template, { name, day});
+ 
+     const mailOptions = {
+       from: 'khuongdanhhoang123@gmail.com',
+       to: to,
+       subject: subject,
+       html,
+     };
+ 
+     return await this.transporter.sendMail(mailOptions);
   }
 }
