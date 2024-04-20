@@ -98,7 +98,7 @@ export class CompaniesService {
     const result = await this.companyRepository.createQueryBuilder("Company")
     .innerJoinAndSelect("Company.address_company", "AddressCompany")
     .innerJoinAndSelect("Company.account_company_id", "Account")
-    // .innerJoinAndSelect("Company.typeCompany_id", "Typecompany")
+    .innerJoinAndSelect("Company.typeCompany_id", "Typecompany")  
     .where("Account.email = :email", { email: email })
     .getOne()
    console.log(result)
@@ -110,3 +110,4 @@ export class CompaniesService {
     return await this.addressCompanyRepository.delete({id:id})
   }
 }
+    

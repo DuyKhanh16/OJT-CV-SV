@@ -12,7 +12,7 @@ export class CompaniesController {
   @Get("getInfor")
   @UseGuards(AuthGuard)
   async findOne(@Res() res,@Req() req) {
-    console.log(req.account.email)
+    // console.log(req.account.email)
     try {
       const result = await this.companiesService.getInfor(req.account.email);
       res.status(200).json({
@@ -23,6 +23,8 @@ export class CompaniesController {
       res.status(400).json({message:error})
     }
   }
+
+
 
   @Get("getAll")
   async findAll(@Res() res) {
