@@ -234,8 +234,8 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
     } catch (error) {
       console.log(error);
       res.status(process.env.STATUS_FAIL).json({ message: error.message });
-
-
+    }
+  }
   @Get("searchJob")
   async searchJob(@Res() res) {
     try {
@@ -249,5 +249,6 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
 
     }
   }
+
 }
   
