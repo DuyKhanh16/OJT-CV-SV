@@ -14,7 +14,7 @@ import { JobCandidates } from './entities/job_candidates.entity';
 import { SalaryModule } from '../salary/salary.module';
 import { SalaryJobs } from './entities/salary_jobs.entity';
 
-import { MailModule } from 'src/mail/mail.module';
+import { MailerModule } from 'src/mailer/mailer.module';
 
 
 
@@ -30,7 +30,7 @@ import { MailModule } from 'src/mail/mail.module';
   forwardRef(() => CompaniesModule),
   forwardRef(() => AuthModule),
   forwardRef(() => SalaryModule),
-  forwardRef(() => AuthModule),forwardRef(() => MailModule)],
+  forwardRef(() => AuthModule),forwardRef(() => MailerModule)],
   exports: [JobsService]
 })
 export class JobsModule {}

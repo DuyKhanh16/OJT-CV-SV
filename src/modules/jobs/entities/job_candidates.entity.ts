@@ -18,6 +18,14 @@ export class JobCandidates {
 
     })
     cv_url: string;
+
+    @Column({
+        type:"varchar",
+        length: 20,
+        nullable: true
+    })
+    interview_day: string;
+
     @Column({
         type:"varchar",
         length: 255
