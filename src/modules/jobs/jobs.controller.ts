@@ -219,5 +219,19 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
       res.status(400).json({message:error})
     }
   }
+
+
+  @Get("searchJob")
+  async searchJob(@Res() res) {
+    try {
+      const result = await this.jobsService.searchJob();
+      res.status(200).json({ 
+        message:"success",
+        data:result
+       });
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+  }
 }
   

@@ -104,7 +104,18 @@ export class CandidatesService {
     return result
   }
 
- 
+  async getInforCandidatebyId (id:string) {
+    const result = await this.candidateRepository.createQueryBuilder("Candidate")
+    .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
+    .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
+    .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
+    .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
+    .innerJoinAndSelect("Candidate.project_candidate", "ProjectCandidate")
+    .where("Candidate.id = :id", { id: id })
+    .getOne()
+    console.log(result)
+    return result
+  }
 
 
 }

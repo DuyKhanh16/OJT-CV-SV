@@ -2,7 +2,7 @@ import { Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGenera
 import { Job } from "./job.entity";
 import { Salary } from "src/modules/salary/entities/salary.entity";
 
-@Entity('job-salary')
+@Entity('job_salary')
 export class JobSalary {
     @PrimaryGeneratedColumn("increment")
     id: number;

@@ -109,5 +109,15 @@ export class CompaniesService {
   async deleteAddressCompany(id:string){
     return await this.addressCompanyRepository.delete({id:id})
   }
+
+  async getInfoCompanyById(id: string) {
+    const result = await this.companyRepository.createQueryBuilder("Company")
+    .innerJoinAndSelect("Company.address_company", "AddressCompany")
+    .innerJoinAndSelect("Company.account_company_id", "Account")
+    .innerJoinAndSelect("Company.typeCompany_id", "Typecompany")
+    .where("Company.id = :id", { id: id })
+    .getOne()
+    return result
+  }
 }
     
