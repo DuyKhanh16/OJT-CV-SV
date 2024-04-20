@@ -5,12 +5,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { AccountModule } from '../account/account.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CandidatesModule } from '../candidates/candidates.module';
-import { MailModule } from 'src/mail/mail.module';
 import { CompaniesModule } from '../companies/companies.module';
+import { MailerModule } from 'src/mailer/mailer.module';
 
 @Module({
   imports: [forwardRef(() => AccountModule),JwtModule.register({}),
-    forwardRef(()=>CandidatesModule),forwardRef(()=>MailModule),
+    forwardRef(()=>CandidatesModule),forwardRef(()=>MailerModule),
     forwardRef(()=>CompaniesModule)
   ],
   controllers: [AuthController],
