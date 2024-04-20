@@ -344,4 +344,20 @@ async applyJob(body:applyJobDto) {
   return result;
 }
 
+// update interview_day
+  async updateInterview(id: string, interview_day: string) {
+    const candidaet= await this.jobCandidatesRepository.createQueryBuilder("job_candidates")
+    .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
+    .leftJoinAndSelect("candidate.account_candidate_id", "account")
+    .where("job_candidates.id = :id", { id })
+    .getOne()
+    
+    const email= candidaet.candidate_id.account_candidate_id.email
+    const name=candidaet.candidate_id.name
+    await this.jobCandidatesRepository.update({id}, {interview_day:interview_day,status: StatusApplyEnum.APPLY})
+    const subject = 'Thư mời phỏng vấn'
+    const day=interview_day
+    return await this.mailService.sendMailInterview(email, subject, name,day)    
+  }
+
 }

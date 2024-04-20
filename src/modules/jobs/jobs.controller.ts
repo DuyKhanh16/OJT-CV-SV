@@ -254,5 +254,17 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
     }
   }
 
+  // Cập nhật ngày phỏng vấn 
+  @Post("update-interview-date/:id")
+  async updateInterview(@Param("id") id, @Body("interview_day") interview_day:string,  @Res() res) {
+    try {
+      await this.jobsService.updateInterview(id,interview_day);
+      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+      
+    }
+  }
 }
   
