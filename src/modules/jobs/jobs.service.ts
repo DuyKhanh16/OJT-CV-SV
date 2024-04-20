@@ -14,6 +14,9 @@ import { log } from 'console';
 // import { async } from 'rxjs';
 import { JobCandidates } from './entities/job_candidates.entity';
 import { SalaryJobs } from './entities/salary_jobs.entity';
+import { Candidate } from '../candidates/entities/candidate.entity';
+import { StatusApplyEnum } from 'src/constants/enums/enum';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class JobsService {
@@ -29,6 +32,8 @@ export class JobsService {
     private readonly typejobService: TypejobService,
     private readonly leveljobService: LeveljobsService,
     private readonly companyService: CompaniesService,
+    private readonly mailService: MailService
+
   ) {}
   //  tạo mới job
   async createNewJob(createJobDto: CreateJobDto, id: string) {
@@ -297,8 +302,26 @@ async applyJob(body:applyJobDto) {
   return result;
 }
 
-async searchJob(name:string,location:string,leveljob:string,salary:string) {
-  console.log(name,location,leveljob,salary)
+
+// từ chối ứng viên
+  async cancelCandidate (id: string) {
+    const candidaet= await this.jobCandidatesRepository.createQueryBuilder("job_candidates")
+    .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
+    .leftJoinAndSelect("candidate.account_candidate_id", "account")
+    .where("job_candidates.id = :id", { id })
+    .getOne()
+    const email= candidaet.candidate_id.account_candidate_id.email
+    const name=candidaet.candidate_id.name
+    await this.jobCandidatesRepository.update({id}, {status: StatusApplyEnum.CANCEL})
+    const formdata: any = {};
+      (formdata.toList = [email]),
+        (formdata.subject = 'THƯ CẢM ƠN & THÔNG BÁO KẾT QUẢ CV'),
+        (formdata.name = name),
+     await this.mailService.sendEmailCancel(formdata)
+  }
+
+  async searchJob(name:string,location:string,leveljob:string,salary:string) {
+    console.log(name,location,leveljob,salary)
   const result = await this.jobRepository
     .createQueryBuilder("job")
     .innerJoinAndSelect("job.company", "company")
@@ -317,4 +340,5 @@ async searchJob(name:string,location:string,leveljob:string,salary:string) {
   console.log(result)
   return result;
 }
+
 }

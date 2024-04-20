@@ -14,6 +14,10 @@ import { JobCandidates } from './entities/job_candidates.entity';
 import { SalaryModule } from '../salary/salary.module';
 import { SalaryJobs } from './entities/salary_jobs.entity';
 
+import { MailModule } from 'src/mail/mail.module';
+
+
+
 @Module({
   controllers: [JobsController],
   providers: [JobsService],
@@ -26,7 +30,7 @@ import { SalaryJobs } from './entities/salary_jobs.entity';
   forwardRef(() => CompaniesModule),
   forwardRef(() => AuthModule),
   forwardRef(() => SalaryModule),
-],
+  forwardRef(() => AuthModule),forwardRef(() => MailModule)],
   exports: [JobsService]
 })
 export class JobsModule {}

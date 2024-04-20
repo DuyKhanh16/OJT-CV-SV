@@ -4,3 +4,7 @@ export enum RoleEnum {
   CANDIDATE=1
 }
 
+export enum StatusApplyEnum {
+  CANCEL=0,
+  APPLY=1
+}

@@ -1,8 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { MailService } from 'src/mail/mail.service';
 require('dotenv').config();
 
 import {
@@ -10,6 +8,7 @@ import {
   CreateCompanyDto,
 } from './dto/create-auth.dto';
 import { register } from 'module';
+import { MailService } from 'src/mailer/mailer.service';
 @Controller('api/v2/auth')
 export class AuthController {
   constructor(
@@ -26,11 +25,10 @@ export class AuthController {
     console.log(createCandidateAuthDto)
     try {
       await this.authService.registerCandidate(createCandidateAuthDto);
-      const formdata: any = {};
-      (formdata.toList = [createCandidateAuthDto.email]),
-        (formdata.subject = 'Wellcome'),
-        (formdata.name = createCandidateAuthDto.name),
-        await this.mailService.sendEmailRegister(formdata);
+      const to=createCandidateAuthDto.email
+      const subject="Wellcome"
+      const name=createCandidateAuthDto.name
+        await this.mailService.sendMail(to,subject,name);
       res.status(201).json({ message: 'register successfull' });
     } catch (error) {
       console.log(error);
@@ -43,11 +41,10 @@ export class AuthController {
     console.log(createCompanyDto)
     try {
       await this.authService.registerCompany(createCompanyDto);
-      // const formdata: any = {};
-      // (formdata.toList = [createCompanyDto.email]),
-      //   (formdata.subject = 'Wellcome'),
-      //   (formdata.name = createCompanyDto.name),
-      //   await this.mailService.sendEmailRegister(formdata);
+      const to=createCompanyDto.email
+      const subject="Wellcome"
+      const name=createCompanyDto.name
+        await this.mailService.sendMail(to,subject,name);
       res.status(process.env.STATUS_CREATR_OK).json({ message: "register successfull" });
     } catch (error) {
       console.log(error);
