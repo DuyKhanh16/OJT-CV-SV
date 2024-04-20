@@ -335,9 +335,10 @@ async applyJob(body:applyJobDto) {
     .innerJoinAndSelect("job.address_company", "address_company")
     .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
     .innerJoinAndSelect("salary_jobs.salary", "salary")   
-    // .innerJoinAndSelect("job_salary.salary_id", "salary")
-    // .where("job.id = :id", { id: "21" })
     .where("job.title like :search", { search: `%${name}%` })
+    if(location){
+      result.andWhere("address_company.address like :location", { location: `%${location}%`})
+    }
     if(salary){
       result.andWhere("salary.id = :salary", { salary })
     }
