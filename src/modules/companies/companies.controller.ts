@@ -29,7 +29,7 @@ export class CompaniesController {
   @Get("getAll")
   async findAll(@Res() res) {
     const result = await this.companiesService.findAll();
-    
+
     res.status(200).json({ 
       message:"success",
       data:result
@@ -95,4 +95,18 @@ export class CompaniesController {
     }
   }
 
+
+  @Get("getInfoCompanyById/:id")
+  async getInfoCompanyById(@Param("id") id: string, @Res() res) {
+    try {
+      const result = await this.companiesService.getInfoCompanyById(id);
+      res.status(200).json({ 
+        message:"success",
+        data:result
+       });
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+
+}
 }
