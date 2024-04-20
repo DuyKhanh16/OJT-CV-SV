@@ -241,7 +241,7 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   @Get("searchJob")
   async searchJob(@Res() res , @Query("name") name:string,@Query("location") location:string,@Query("leveljob") leveljob:string,@Query("salary") salary:string) {
     console.log(name,location,leveljob,salary)
-
+    
     try {
       const result = await this.jobsService.searchJob(name,location,leveljob,salary);
       console.log(result)

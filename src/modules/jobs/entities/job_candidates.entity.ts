@@ -25,6 +25,13 @@ export class JobCandidates {
     })
     content: string;
 
+    @Column({
+        type:"varchar",
+        length: 20,
+        nullable: true
+    })
+    interview_day: string;
+
     @ManyToOne(() => Candidate, (candidate) => candidate.id)
     @JoinColumn({ name: 'candidate_id' })
     candidate_id: Candidate;

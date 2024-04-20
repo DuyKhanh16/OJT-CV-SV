@@ -335,10 +335,13 @@ async applyJob(body:applyJobDto) {
     // .innerJoinAndSelect("job_salary.salary_id", "salary")
     // .where("job.id = :id", { id: "21" })
     .where("job.title like :search", { search: `%${name}%` })
-    .andWhere("salary.id = :salary", { salary: salary })
-    .getMany();
-  console.log(result)
-  return result;
+    if(salary){
+      result.andWhere("salary.id = :salary", { salary })
+    }
+    if(leveljob){
+      result.andWhere("leveljob.id = :leveljob", { leveljob })
+    }
+    return result.getMany();
 }
 
 }
