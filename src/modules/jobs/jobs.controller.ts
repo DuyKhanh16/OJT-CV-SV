@@ -10,6 +10,7 @@ import {
   UseGuards,
   Req,
   Query,
+  Search,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto, applyJobDto } from './dto/create-job.dto';
@@ -91,6 +92,7 @@ async findAllAdminJobs(@Res() res) {
  // Tạo mới job
   @Post("create/:id")
  async createNewJob(@Body() createJobDto: CreateJobDto,@Res() res, @Param("id") id) {
+   console.log(createJobDto,id,"đã ăn vào đây")
    try {
     await this.jobsService.createNewJob(createJobDto,id);
     res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS });
@@ -222,9 +224,12 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
 
 
   @Get("searchJob")
-  async searchJob(@Res() res) {
+  async searchJob(@Res() res , @Query("name") name:string,@Query("location") location:string,@Query("leveljob") leveljob:string,@Query("salary") salary:string) {
+    console.log(name,location,leveljob,salary)
+
     try {
-      const result = await this.jobsService.searchJob();
+      const result = await this.jobsService.searchJob(name,location,leveljob,salary);
+      console.log(result)
       res.status(200).json({ 
         message:"success",
         data:result

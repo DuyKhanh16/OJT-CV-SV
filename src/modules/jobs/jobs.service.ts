@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateJobDto, applyJobDto } from './dto/create-job.dto';
+import { CreateJobDto, applyJobDto, salaryDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
@@ -10,9 +10,10 @@ import { LeversJobs } from './entities/levers_jobs.entity';
 import { TypesJobs } from './entities/types_jobs.entity';
 import { CompaniesService } from '../companies/companies.service';
 import { log } from 'console';
-import { get } from 'http';
-import { async } from 'rxjs';
+// import { get } from 'http';
+// import { async } from 'rxjs';
 import { JobCandidates } from './entities/job_candidates.entity';
+import { SalaryJobs } from './entities/salary_jobs.entity';
 
 @Injectable()
 export class JobsService {
@@ -21,6 +22,8 @@ export class JobsService {
     @InjectRepository(JobCandidates) private jobCandidatesRepository: Repository<JobCandidates>,
     @InjectRepository(LeversJobs)
     private leversJobsRepository: Repository<LeversJobs>,
+    @InjectRepository(SalaryJobs)
+    private salaryJobsRepository: Repository<SalaryJobs>,
     @InjectRepository(TypesJobs)
     private typesJobsRepository: Repository<TypesJobs>,
     private readonly typejobService: TypejobService,
@@ -44,7 +47,6 @@ export class JobsService {
         title: createJobDto.title,
         description: createJobDto.description,
         requirements: createJobDto.requirements,
-        salary: createJobDto.salary,
         expire_at: createJobDto.expire_at,
         company: company,
         address_company: address_company,
@@ -75,6 +77,14 @@ export class JobsService {
       .into(LeversJobs)
       .values({ leveljob: leveljob, job: job })
       .execute();
+    const salary_jobs = await this.salaryJobsRepository.createQueryBuilder()
+    .insert()
+    .into(SalaryJobs)
+    .values({
+      job:newJob.raw.insertId,
+      salary: createJobDto.salary
+    })
+    .execute();
     return job;
 
   }
@@ -140,6 +150,10 @@ export class JobsService {
     .innerJoinAndSelect("job.company", "company")
     .innerJoinAndSelect("job.types_jobs", "types_jobs")
     .innerJoinAndSelect("types_jobs.typejob", "typejob")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
+    .innerJoinAndSelect("salary_jobs.salary", "salary")
     .where("job.status = 1")
     .orderBy("job.created_at", "DESC")
     .getMany()
@@ -225,7 +239,6 @@ async getJobById(id: string) {
   .innerJoinAndSelect("job.company", "company")
     .innerJoinAndSelect("job.types_jobs", "types_jobs")
     .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
-  // .leftJoinAndSelect("address_company.location", "location")
     .leftJoinAndSelect("types_jobs.typejob", "typejob")
     .leftJoinAndSelect("levers_jobs.leveljob", "leveljob")
     .where("job.id = :id", { id })
@@ -284,13 +297,22 @@ async applyJob(body:applyJobDto) {
   return result;
 }
 
-async searchJob() {
+async searchJob(name:string,location:string,leveljob:string,salary:string) {
+  console.log(name,location,leveljob,salary)
   const result = await this.jobRepository
     .createQueryBuilder("job")
+    .innerJoinAndSelect("job.company", "company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .leftJoinAndSelect("types_jobs.typejob", "typejob")
+    .leftJoinAndSelect("levers_jobs.leveljob", "leveljob")
     .innerJoinAndSelect("job.address_company", "address_company")
-    .innerJoinAndSelect("job.id", "JobSalary")
-    .innerJoinAndSelect("JobSalary.salary_id", "Salary")
-    // .where("job.name like :search", { search: `%${search}%` })
+    .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
+    .innerJoinAndSelect("salary_jobs.salary", "salary")   
+    // .innerJoinAndSelect("job_salary.salary_id", "salary")
+    // .where("job.id = :id", { id: "21" })
+    .where("job.title like :search", { search: `%${name}%` })
+    .andWhere("salary.id = :salary", { salary: salary })
     .getMany();
   console.log(result)
   return result;

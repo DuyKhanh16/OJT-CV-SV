@@ -4,7 +4,7 @@ import { LeversJobs } from "./levers_jobs.entity";
 import { TypesJobs } from "./types_jobs.entity";
 import { AddressCompany } from "src/modules/companies/entities/address_company.entity";
 import { JobCandidates } from "./job_candidates.entity";
-import { JobSalary } from "./job_salary.entity";
+import { SalaryJobs } from "./salary_jobs.entity";
 
 @Entity('job')
 export class Job {
@@ -21,7 +21,7 @@ export class Job {
     @Column({type: 'longtext'})
     requirements: string;
 
-    @Column({type: 'varchar', length: 255})
+    @Column({type: 'varchar', length: 255,nullable: true})
     salary: string;
 
     @Column({type:"varchar", length: 20})
@@ -50,6 +50,6 @@ export class Job {
     @OneToMany(type => JobCandidates, job_candidates => job_candidates.job_id)
     job_candidates: JobCandidates[]
 
-    @OneToMany(type => JobSalary , job_salary => job_salary.job_id)
-    job_salary: JobSalary[]
+    @OneToMany(type => SalaryJobs, salary_jobs => salary_jobs.job)
+    salary_jobs: SalaryJobs
 }

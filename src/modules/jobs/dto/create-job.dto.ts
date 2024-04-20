@@ -16,9 +16,8 @@ export class CreateJobDto {
     @IsNotEmpty()
     requirements: string
 // ok
-    @IsString()
-    @IsNotEmpty()
-    salary: string
+   
+    salary: string|any
 // ok
     @IsString()
     @IsNotEmpty()
@@ -84,4 +83,9 @@ export class applyJobDto{
     content: string
     cv_url: string
     job_id: string|any
+}
+
+export class salaryDto{
+    job:string;
+    salary:any
 }
