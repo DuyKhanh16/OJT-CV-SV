@@ -101,7 +101,7 @@ export class CompaniesService {
     .innerJoinAndSelect("Company.typeCompany_id", "Typecompany")  
     .where("Account.email = :email", { email: email })
     .getOne()
-   console.log(result)
+   console.log(result,"1111")
     return result
   }
 

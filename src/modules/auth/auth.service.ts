@@ -78,6 +78,8 @@ async login(createAuthDto: CreateAuthDto) {
     throw new UnauthorizedException(' mật khẩu không đúng');
   }
   return {
+    // viết thêm trả status đẻ xét điều kiện đăng nhập
+    status: account.status,
     role: account.role,
     token_access: await this.generateAccessToken({ email: account.email, role: account.role }),
     token: await this.generateToken({ email: account.email, role: account.role }),

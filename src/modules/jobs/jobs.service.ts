@@ -143,7 +143,7 @@ export class JobsService {
     .where("job.status = 1")
     .orderBy("job.created_at", "DESC")
     .getMany()
-    console.log(result)
+    // console.log(result)
     return result
  }
 
@@ -156,7 +156,7 @@ async findAllAdminJobs() {
   .innerJoinAndSelect("types_jobs.typejob", "typejob")
   .orderBy("job.created_at", "DESC")
   .getMany()
-  console.log(result)
+  // console.log(result)
   return result
 }
 
@@ -175,7 +175,87 @@ async findAllAdminJobs() {
 
 
  //lay tat ca job dang tuyen dung cua cty (Hoang viet)
-async getJobsForCompany(email: string) {
+async getJobsForCompany(email: string,status :any) {
+  
+  // công ty selec trạng thái cua job đang tuyển dụng
+  if(status.status === "1"){
+    // console.log(status,"đã ăn vào dây122222222222222222222")
+    const result = await this.jobRepository
+    .createQueryBuilder("job")
+    .innerJoinAndSelect("job.company", "company")
+    .innerJoinAndSelect("company.account_company_id", "account")
+    .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .where("account.email = :email", { email })
+    .andWhere("job.status = 1")
+    .orderBy("job.created_at", "DESC")
+    .getMany();
+    // console.log(result)
+    return result;
+  }
+
+  // công ty lấy các job đã ngừng tuyển dụng
+  if(status.status === "0"){
+    // console.log(status,"đã ăn vào 333333333333")
+    const result = await this.jobRepository
+    .createQueryBuilder("job")
+    .innerJoinAndSelect("job.company", "company")
+    .innerJoinAndSelect("company.account_company_id", "account")
+    .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .where("account.email = :email", { email })
+    .andWhere("job.status = 0")
+    .orderBy("job.created_at", "DESC")
+    .getMany();
+    // console.log(result)
+    return result;
+  }
+
+  // lấy tất cả job
+  if(status.status === "2"){
+    // console.log(status,"đã ăn vào 444444444444")
+    const result = await this.jobRepository
+    .createQueryBuilder("job")
+    .innerJoinAndSelect("job.company", "company")
+    .innerJoinAndSelect("company.account_company_id", "account")
+    .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .where("account.email = :email", { email })
+    .orderBy("job.created_at", "DESC")
+    .getMany();
+    // console.log(result)
+    return result;
+  }
+
+  // công ty search theo tên công việc
+  if(status.key){
+    console.log(status,"111111155555555555555555")
+    const result = await this.jobRepository
+    .createQueryBuilder("job")
+    .innerJoinAndSelect("job.company", "company")
+    .innerJoinAndSelect("company.account_company_id", "account")
+    .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.types_jobs", "types_jobs")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
+    .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
+    .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .where("account.email = :email", { email })
+    .andWhere("job.title like :key", { key: `%${status.key}%` })
+    .orderBy("job.created_at", "DESC")
+    .getMany();
+    // console.log(result)
+    return result;
+  }
+
   const result = await this.jobRepository
     .createQueryBuilder("job")
     .innerJoinAndSelect("job.company", "company")
@@ -188,7 +268,7 @@ async getJobsForCompany(email: string) {
     .where("account.email = :email", { email })
     .orderBy("job.created_at", "DESC")
     .getMany();
-    console.log(result)
+    // console.log(result)
   return result;
 }
 
