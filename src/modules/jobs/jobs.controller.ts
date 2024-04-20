@@ -221,6 +221,21 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   }
 
 
+  //  Từ chối ứng viên
+  @Post("cancelCandidate/:id")
+  @UseGuards(AuthGuard)
+  async cancelCandidate(@Param("id") id, @Res() res) {
+    
+    try {
+      await this.jobsService.cancelCandidate(id);
+      res
+      .status(process.env.STATUS_SUCCESS)
+      .json({message: process.env.SUCCESS });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+
+
   @Get("searchJob")
   async searchJob(@Res() res) {
     try {
@@ -231,6 +246,7 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
        });
     } catch (error) {
       res.status(400).json({message:error})
+
     }
   }
 }
