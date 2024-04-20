@@ -124,9 +124,11 @@ async findAllAdminJobs(@Res() res) {
 
 @Get("getCandidatesbyIdJob/:id")
 async getCandidatesbyIdJob(@Param("id") id:string, @Res() res) {
-  console.log(id)
+  // console.log(id)
   try {
     const result = await this.jobsService.getCandidatesbyIdJob(id);
+    // console.log(result);
+    
   res.status(200).json({ 
     message:"success",
     data:result
@@ -142,6 +144,8 @@ async getCandidatesbyIdJob(@Param("id") id:string, @Res() res) {
 async getAllCandidatesAppling(@Res() res, @Req() req) {
   try {
     const result = await this.jobsService.getCandidatesApplyingforCompany(req.account.email);
+    // console.log(result);
+    
   res.status(200).json({ 
     message:"success",
     data:result
@@ -168,7 +172,6 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   // Delete Job
   @Delete("delete/:id")
   async deleteJobById(@Param("id") id, @Res() res) {
-    console.log(id,"đã ăn vào đây")
     try {
     const result =  await this.jobsService.deleteoneJob(id);
       res.status(process.env.STATUS_SUCCESS).json({ message: process.env.SUCCESS });
@@ -181,7 +184,6 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   //update status job
   @Patch("updatestatus/:id")
   async updateStatusJob(@Param("id") id, @Res() res,@Query("status") status) {
-    console.log(id,status,"11111111111111111111111111111111111111111111111111111")
     try {
       await this.jobsService.updateStatusJob(id,status)
       res
@@ -196,9 +198,7 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   @Post("applyJob")
   async applyJob(@Body() applyJobDto: applyJobDto, @Res() res) {
     try {
-      console.log(applyJobDto)
       const result = await this.jobsService.applyJob(applyJobDto);
-      console.log(result)
       res.status(200).json({ 
         message:"Applied success",
         data:result
@@ -213,6 +213,7 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   async getJobAppliedCandidates(@Res() res, @Req() req) {
     try {
       const result = await this.jobsService.getJobAppliedCandidates(req.account.email);
+      
     res.status(200).json({ 
       message:"success",
       data:result
@@ -240,8 +241,6 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   }
   @Get("searchJob")
   async searchJob(@Res() res , @Query("name") name:string,@Query("location") location:string,@Query("leveljob") leveljob:string,@Query("salary") salary:string) {
-    console.log(name,location,leveljob,salary)
-
     try {
       const result = await this.jobsService.searchJob(name,location,leveljob,salary);
       console.log(result)
