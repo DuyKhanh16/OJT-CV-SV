@@ -16,7 +16,7 @@ import { JobCandidates } from './entities/job_candidates.entity';
 import { SalaryJobs } from './entities/salary_jobs.entity';
 import { Candidate } from '../candidates/entities/candidate.entity';
 import { StatusApplyEnum } from 'src/constants/enums/enum';
-import { MailService } from 'src/mail/mail.service';
+import { MailService } from 'src/mailer/mailer.service';
 
 @Injectable()
 export class JobsService {
@@ -162,7 +162,7 @@ export class JobsService {
     .where("job.status = 1")
     .orderBy("job.created_at", "DESC")
     .getMany()
-    console.log(result)
+    // console.log(result)
     return result
  }
 
@@ -175,7 +175,7 @@ async findAllAdminJobs() {
   .innerJoinAndSelect("types_jobs.typejob", "typejob")
   .orderBy("job.created_at", "DESC")
   .getMany()
-  console.log(result)
+  // console.log(result)
   return result
 }
 
@@ -207,20 +207,26 @@ async getJobsForCompany(email: string) {
     .where("account.email = :email", { email })
     .orderBy("job.created_at", "DESC")
     .getMany();
-    console.log(result)
+    // console.log(result)
   return result;
 }
 
 //lay tat ca candidate theo id job (Hoang viet)
 async getCandidatesbyIdJob(id: string) {
-  const result = await this.jobRepository
-    .createQueryBuilder("job")
-    .innerJoinAndSelect("job.job_candidates", "job_candidates")
-    .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
-    .innerJoinAndSelect("candidate.account_candidate_id", "account")
-    .where("job.id = :id", { id })
-    .getMany();
-  console.log(result)
+  // const result = await this.jobRepository
+  //   .createQueryBuilder("job")
+  //   .innerJoinAndSelect("job.job_candidates", "job_candidates")
+  //   .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
+  //   .innerJoinAndSelect("candidate.account_candidate_id", "account")
+  //   .where("job.id = :id", { id })
+  //   .getMany();
+  // console.log(result)
+  const result= await this.jobCandidatesRepository.createQueryBuilder("job_candidates")
+  .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
+  .innerJoinAndSelect("candidate.account_candidate_id", "account")
+  .innerJoinAndSelect("job_candidates.job_id", "job")
+  .where("job_candidates.job_id.id = :id", { id })
+  .getMany();
   return result;
 }
 
@@ -280,7 +286,7 @@ async applyJob(body:applyJobDto) {
     cv_url: body.cv_url
   })
   .execute()
-  console.log(result)
+  // console.log(result)
   return result
 }
 
@@ -298,7 +304,7 @@ async applyJob(body:applyJobDto) {
     .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
     .where("account.email = :email", { email: email})
     .getMany();
-  console.log(result)
+  // console.log(result)
   return result;
 }
 
@@ -313,11 +319,8 @@ async applyJob(body:applyJobDto) {
     const email= candidaet.candidate_id.account_candidate_id.email
     const name=candidaet.candidate_id.name
     await this.jobCandidatesRepository.update({id}, {status: StatusApplyEnum.CANCEL})
-    const formdata: any = {};
-      (formdata.toList = [email]),
-        (formdata.subject = 'THƯ CẢM ƠN & THÔNG BÁO KẾT QUẢ CV'),
-        (formdata.name = name),
-     await this.mailService.sendEmailCancel(formdata)
+    const subject = 'THƯ CẢM ƠN & THÔNG BÁO KẾT QUẢ CV'
+    await this.mailService.sendMailCancel(email, subject, name)
   }
 
   async searchJob(name:string,location:string,leveljob:string,salary:string) {
@@ -342,6 +345,7 @@ async applyJob(body:applyJobDto) {
       result.andWhere("leveljob.id = :leveljob", { leveljob })
     }
     return result.getMany();
+  // console.log(result)
 }
 
 }
