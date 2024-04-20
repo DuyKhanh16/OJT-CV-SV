@@ -11,7 +11,7 @@ export class MailController {
     @Get('send')
     async sendEmail(@Res() res) {
         const formdata:any= {}
-            formdata.toList =["duykhanh2301@gmail.com",],
+            formdata.toList =["khuongdanhhoang123@gmail.com",],
             formdata.subject ="wellcome",
             formdata.name ="Khanh"
         
