@@ -4,6 +4,7 @@ import { LeversJobs } from "./levers_jobs.entity";
 import { TypesJobs } from "./types_jobs.entity";
 import { AddressCompany } from "src/modules/companies/entities/address_company.entity";
 import { JobCandidates } from "./job_candidates.entity";
+import { JobSalary } from "./job_salary.entity";
 
 @Entity('job')
 export class Job {
@@ -48,4 +49,7 @@ export class Job {
 
     @OneToMany(type => JobCandidates, job_candidates => job_candidates.job_id)
     job_candidates: JobCandidates[]
+
+    @OneToMany(type => JobSalary , job_salary => job_salary.job_id)
+    job_salary: JobSalary[]
 }

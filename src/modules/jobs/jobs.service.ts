@@ -305,4 +305,17 @@ async applyJob(body:applyJobDto) {
         (formdata.name = name),
      await this.mailService.sendEmailCancel(formdata)
   }
+
+async searchJob() {
+  const result = await this.jobRepository
+    .createQueryBuilder("job")
+    .innerJoinAndSelect("job.address_company", "address_company")
+    .innerJoinAndSelect("job.id", "JobSalary")
+    .innerJoinAndSelect("JobSalary.salary_id", "Salary")
+    // .where("job.name like :search", { search: `%${search}%` })
+    .getMany();
+  console.log(result)
+  return result;
+}
+
 }

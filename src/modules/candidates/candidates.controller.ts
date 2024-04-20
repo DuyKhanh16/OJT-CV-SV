@@ -40,7 +40,7 @@ export class CandidatesController {
     }
   }
 
-  @Get("getAllInformation")
+@Get("getAllInformation")
 @UseGuards(AuthGuard)
 
   async findAllInformation(@Res() res,@Req() req) {
@@ -86,6 +86,17 @@ export class CandidatesController {
     }
   }
 
-  
+  @Get("getInforCandidatebyId/:id")
+  async getInforCandidatebyId(@Param("id") id, @Res() res) {
+     try {
+       const result = await this.candidatesService.getInforCandidatebyId(id);
+       res
+       .status(process.env.STATUS_CREATR_OK)
+       .json({ message: process.env.SUCCESS, data: result });
+     } catch (error) {
+        res.status(process.env.STATUS_FAIL).json({ message: error.message });
+     }
+  }
+
 
 }

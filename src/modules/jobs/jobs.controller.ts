@@ -220,6 +220,7 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
     }
   }
 
+
   //  Từ chối ứng viên
   @Post("cancelCandidate/:id")
   @UseGuards(AuthGuard)
@@ -233,6 +234,19 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
     } catch (error) {
       console.log(error);
       res.status(process.env.STATUS_FAIL).json({ message: error.message });
+
+
+  @Get("searchJob")
+  async searchJob(@Res() res) {
+    try {
+      const result = await this.jobsService.searchJob();
+      res.status(200).json({ 
+        message:"success",
+        data:result
+       });
+    } catch (error) {
+      res.status(400).json({message:error})
+
     }
   }
 }
