@@ -11,13 +11,19 @@ import { LeversJobs } from './entities/levers_jobs.entity';
 import { CompaniesModule } from '../companies/companies.module';
 import { AuthModule } from '../auth/auth.module';
 import { JobCandidates } from './entities/job_candidates.entity';
+import { JobSalary } from './entities/job_salary.entity';
 
 @Module({
   controllers: [JobsController],
   providers: [JobsService],
-  imports: [TypeOrmModule.forFeature([Job,JobCandidates]),TypeOrmModule.forFeature([TypesJobs]),TypeOrmModule.forFeature([LeversJobs])
-  ,forwardRef(() => TypejobModule),forwardRef(() => LeveljobsModule),forwardRef(() => LocaltionModule),forwardRef(() => CompaniesModule),
-  forwardRef(() => AuthModule)
+  imports: [TypeOrmModule.forFeature([Job,JobCandidates,JobSalary])
+  ,TypeOrmModule.forFeature([TypesJobs])
+  ,TypeOrmModule.forFeature([LeversJobs])
+  ,forwardRef(() => TypejobModule),
+  forwardRef(() => LeveljobsModule),
+  forwardRef(() => LocaltionModule),
+  forwardRef(() => CompaniesModule),
+  forwardRef(() => AuthModule),
 ],
   exports: [JobsService]
 })
