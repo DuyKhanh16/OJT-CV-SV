@@ -96,7 +96,8 @@ export class CandidatesService {
       phone:body.phone,
       address: body.address,
       position:body.position,
-      link_git:body.link_git
+      link_git:body.link_git,
+      avatar:body.avatar
    })
    .where("id = :id", { id: candidate.id })
    .execute()

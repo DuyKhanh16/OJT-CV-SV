@@ -12,6 +12,7 @@ export class UpdateInforCandidateDto {
     address:string
     position:string
     link_git:string
+    avatar:string
 }
 export class updateEducationDto {
     name_education:string|any

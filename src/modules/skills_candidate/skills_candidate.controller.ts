@@ -28,7 +28,7 @@ export class SkillsCandidateController {
     try {
       console.log(createSkillsCandidateDto)
       const result = await this.skillsCandidateService.createSkill(createSkillsCandidateDto);
-      res.status(201).json({message:"create success"}) 
+      res.status(201).json({message:"create skill success"}) 
     } catch (error) {
       res.status(400).json({message:error})
     }
