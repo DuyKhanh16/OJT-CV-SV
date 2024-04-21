@@ -98,10 +98,10 @@ export class CompaniesService {
     console.log("111111",email)
     const result = await this.companyRepository.createQueryBuilder("Company")
     .innerJoinAndSelect("Company.address_company", "AddressCompany")
-    .innerJoinAndSelect("Company.account_company_id", "Account")
+    .innerJoinAndSelect("Company.account_company_id", "Account") 
     .where("Account.email = :email", { email: email })
     .getOne()
-   console.log(result,"1111")
+  //  console.log(result,"1111111111111111111111111111111111111111111111111")
     return result
   }
 
