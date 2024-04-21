@@ -55,6 +55,7 @@ export class JobsService {
         expire_at: createJobDto.expire_at,
         company: company,
         address_company: address_company,
+        salary: createJobDto.salary,
       })
       .execute();
     log(newJob.raw.insertId);
@@ -323,6 +324,7 @@ async getCandidatesApplyingforCompany(email: string) {
   console.log(result)
   return result;
 }
+
 // lấy job theo Id(jobdetail)
 async getJobById(id: string) {
   return await this.jobRepository.createQueryBuilder("job")
@@ -342,6 +344,7 @@ async deleteoneJob(id: string) {
   console.log(result);
   await this.leversJobsRepository.remove(result[0].levers_jobs)
   await this.typesJobsRepository.remove(result[0].types_jobs)
+  // await this.salaryJobsRepository.remove(result[0].salary_jobs)
   return await this.jobRepository.delete(id);
  }
 
@@ -404,7 +407,7 @@ async applyJob(body:applyJobDto) {
   }
 
   async searchJob(name:string,location:string,leveljob:string,salary:string) {
-    console.log(name,location,leveljob,salary)
+    // console.log(name,location,leveljob,salary)
   const result = await this.jobRepository
     .createQueryBuilder("job")
     .innerJoinAndSelect("job.company", "company")
