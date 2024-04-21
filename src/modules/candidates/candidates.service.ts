@@ -119,5 +119,21 @@ export class CandidatesService {
     return result
   }
 
-
+  async searchCandidate (name:string,location:string,level:string,position:string) {
+    console.log(name,location,level,position)
+    const result = await this.candidateRepository.createQueryBuilder("Candidate")
+    .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
+    .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
+    .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
+    .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
+    .innerJoinAndSelect("Candidate.project_candidate", "ProjectCandidate")
+    .where("Candidate.name like :name", { name: `%${name}%` })
+    if(location){
+    result.andWhere("Candidate.location like :location", { location: `%${location}%` })
+    }
+    if(position){
+      result.andWhere("Candidate.position like :position", { position: `%${position}%` })
+    } 
+    return result.getMany()
+}
 }
