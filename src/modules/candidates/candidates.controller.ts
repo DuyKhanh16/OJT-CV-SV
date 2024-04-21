@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req, Query } from '@nestjs/common';
 import { CandidatesService } from './candidates.service';
 import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto, UpdateInforCandidateDto } from './dto/update-candidate.dto';
@@ -94,5 +94,16 @@ export class CandidatesController {
      }
   }
 
-
+  @Get("searchCandidate")
+  async searchCandidate(@Query("name") name:string,@Query("location") location:string,@Query("level") level:string,@Query("position") position:string,  @Res() res) {
+    console.log(name,location,level,position)
+     try {
+       const result = await this.candidatesService.searchCandidate(name,location,level,position);
+       res
+       .status(process.env.STATUS_CREATR_OK)
+       .json({ message: process.env.SUCCESS, data: result });
+     } catch (error) {
+        res.status(process.env.STATUS_FAIL).json({ message: error.message });
+     }
+  }
 }
