@@ -77,9 +77,10 @@ async findAllAdminJobs(@Res() res) {
   //lay tat ca job dang tuyen dung cua cty (Hoang viet)
   @Get("getJobsForCompany")
   @UseGuards(AuthGuard)
-  async getJobsForCompany(@Res() res, @Req() req) {
+  async getJobsForCompany(@Res() res, @Req() req,@Query() query) {
+    // console.log(query,"2222222222222222222222222222")
     try {
-      const result = await this.jobsService.getJobsForCompany(req.account.email);
+      const result = await this.jobsService.getJobsForCompany(req.account.email,query);
     res.status(200).json({ 
       message:"success",
       data:result
