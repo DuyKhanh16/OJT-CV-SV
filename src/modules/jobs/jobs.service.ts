@@ -194,7 +194,7 @@ async findAllAdminJobs() {
  }
 
 
- //lay tat ca job dang tuyen dung cua cty (Hoang viet)
+ //lay tat ca job dang tuyen dung cua cty 
 async getJobsForCompany(email: string,status :any) {
   
   // công ty selec trạng thái cua job đang tuyển dụng
