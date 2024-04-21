@@ -14,7 +14,7 @@ const config: MysqlConnectionOptions = {
   type: 'mysql',
   database: process.env.DB_NAME, 
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize: false,
+  synchronize: true,
   // autoSchemaSync: true,
   namingStrategy: new SnakeNamingStrategy(),
   logging: true

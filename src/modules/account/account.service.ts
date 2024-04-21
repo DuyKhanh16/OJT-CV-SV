@@ -49,5 +49,16 @@ export class AccountService {
 
    return result;
  }
+//  thay đổi trạng thái của account để hiển thị, và khi đăng nhập
+ async BanorUnbandAccount(id: number, updateAccountDto: any) {
+   const result = await this.accountRepository.createQueryBuilder()
+   .update(Account)
+   .set({ status: updateAccountDto.status })
+   .where("id = :id", { id })
+   .execute();
+   return result;
+
+ }
  
 }
+

@@ -10,6 +10,7 @@ import {
   UseGuards,
   Req,
   Query,
+  Search,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto, applyJobDto } from './dto/create-job.dto';
@@ -76,9 +77,10 @@ async findAllAdminJobs(@Res() res) {
   //lay tat ca job dang tuyen dung cua cty (Hoang viet)
   @Get("getJobsForCompany")
   @UseGuards(AuthGuard)
-  async getJobsForCompany(@Res() res, @Req() req) {
+  async getJobsForCompany(@Res() res, @Req() req,@Query() query) {
+    // console.log(query,"2222222222222222222222222222")
     try {
-      const result = await this.jobsService.getJobsForCompany(req.account.email);
+      const result = await this.jobsService.getJobsForCompany(req.account.email,query);
     res.status(200).json({ 
       message:"success",
       data:result
@@ -91,6 +93,7 @@ async findAllAdminJobs(@Res() res) {
  // Tạo mới job
   @Post("create/:id")
  async createNewJob(@Body() createJobDto: CreateJobDto,@Res() res, @Param("id") id) {
+   console.log(createJobDto,id,"đã ăn vào đây")
    try {
     await this.jobsService.createNewJob(createJobDto,id);
     res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS });
@@ -122,9 +125,11 @@ async findAllAdminJobs(@Res() res) {
 
 @Get("getCandidatesbyIdJob/:id")
 async getCandidatesbyIdJob(@Param("id") id:string, @Res() res) {
-  console.log(id)
+  // console.log(id)
   try {
     const result = await this.jobsService.getCandidatesbyIdJob(id);
+    // console.log(result);
+    
   res.status(200).json({ 
     message:"success",
     data:result
@@ -140,6 +145,8 @@ async getCandidatesbyIdJob(@Param("id") id:string, @Res() res) {
 async getAllCandidatesAppling(@Res() res, @Req() req) {
   try {
     const result = await this.jobsService.getCandidatesApplyingforCompany(req.account.email);
+    // console.log(result);
+    
   res.status(200).json({ 
     message:"success",
     data:result
@@ -166,7 +173,6 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   // Delete Job
   @Delete("delete/:id")
   async deleteJobById(@Param("id") id, @Res() res) {
-    console.log(id,"đã ăn vào đây")
     try {
     const result =  await this.jobsService.deleteoneJob(id);
       res.status(process.env.STATUS_SUCCESS).json({ message: process.env.SUCCESS });
@@ -179,7 +185,6 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   //update status job
   @Patch("updatestatus/:id")
   async updateStatusJob(@Param("id") id, @Res() res,@Query("status") status) {
-    console.log(id,status,"11111111111111111111111111111111111111111111111111111")
     try {
       await this.jobsService.updateStatusJob(id,status)
       res
@@ -194,9 +199,7 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   @Post("applyJob")
   async applyJob(@Body() applyJobDto: applyJobDto, @Res() res) {
     try {
-      console.log(applyJobDto)
       const result = await this.jobsService.applyJob(applyJobDto);
-      console.log(result)
       res.status(200).json({ 
         message:"Applied success",
         data:result
@@ -211,6 +214,7 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   async getJobAppliedCandidates(@Res() res, @Req() req) {
     try {
       const result = await this.jobsService.getJobAppliedCandidates(req.account.email);
+      
     res.status(200).json({ 
       message:"success",
       data:result
@@ -221,16 +225,48 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   }
 
 
-  @Get("searchJob")
-  async searchJob(@Res() res) {
+  //  Từ chối ứng viên
+  @Post("cancelCandidate/:id")
+  @UseGuards(AuthGuard)
+  async cancelCandidate(@Param("id") id, @Res() res) {
+    
     try {
-      const result = await this.jobsService.searchJob();
+      await this.jobsService.cancelCandidate(id);
+      res
+      .status(process.env.STATUS_SUCCESS)
+      .json({message: process.env.SUCCESS });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+    }
+  }
+  @Get("searchJob")
+  async searchJob(@Res() res , @Query("name") name:string,@Query("location") location:string,@Query("leveljob") leveljob:string,@Query("salary") salary:string) {
+    console.log(name,location,leveljob,salary)
+    
+    try {
+      const result = await this.jobsService.searchJob(name,location,leveljob,salary);
+      console.log(result)
       res.status(200).json({ 
         message:"success",
         data:result
        });
     } catch (error) {
       res.status(400).json({message:error})
+
+    }
+  }
+
+  // Cập nhật ngày phỏng vấn 
+  @Post("update-interview-date/:id")
+  async updateInterview(@Param("id") id, @Body("interview_day") interview_day:string,  @Res() res) {
+    try {
+      await this.jobsService.updateInterview(id,interview_day);
+      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+      
     }
   }
 }
