@@ -318,7 +318,7 @@ async getCandidatesApplyingforCompany(email: string) {
     .innerJoinAndSelect("job.job_candidates", "job_candidates")
     .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
     .innerJoinAndSelect("job.company", "company")
-      .innerJoinAndSelect("company.account_company_id", "account")
+    .innerJoinAndSelect("company.account_company_id", "account")
       .where("account.email = :email", { email: email})
     .getMany();
   console.log(result)
@@ -332,8 +332,10 @@ async getJobById(id: string) {
   .innerJoinAndSelect("job.company", "company")
     .innerJoinAndSelect("job.types_jobs", "types_jobs")
     .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
-    .leftJoinAndSelect("types_jobs.typejob", "typejob")
-    .leftJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .innerJoinAndSelect("types_jobs.typejob", "typejob")
+    .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
+    .innerJoinAndSelect("salary_jobs.salary", "salary")
     .where("job.id = :id", { id })
     .getOne()
 }
