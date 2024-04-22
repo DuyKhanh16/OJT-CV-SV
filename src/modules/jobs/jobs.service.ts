@@ -386,6 +386,8 @@ async applyJob(body:applyJobDto) {
     .innerJoinAndSelect("types_jobs.typejob", "typejob")
     .innerJoinAndSelect("job.levers_jobs", "levers_jobs")
     .innerJoinAndSelect("levers_jobs.leveljob", "leveljob")
+    .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
+    .innerJoinAndSelect("salary_jobs.salary", "salary")
     .where("account.email = :email", { email: email})
     .getMany();
   // console.log(result)
