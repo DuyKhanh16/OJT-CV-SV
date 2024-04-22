@@ -18,6 +18,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { MailModule } from './mail/mail.module';
 import { MailerModule } from './mailer/mailer.module';
 import { SalaryModule } from './modules/salary/salary.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot(config),
@@ -37,7 +38,8 @@ import { SalaryModule } from './modules/salary/salary.module';
     CertificateCandidateModule, 
     TypecompanyModule, 
     AuthModule, 
-    MailerModule], 
+    MailerModule,
+    NotificationModule], 
   controllers: [],
   providers: [],
 })
