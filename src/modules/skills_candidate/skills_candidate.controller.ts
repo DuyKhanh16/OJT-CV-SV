@@ -37,6 +37,7 @@ export class SkillsCandidateController {
   //update ki nang candidate
   @Patch('updateSkill/:id')
   update(@Param('id') id: string, @Body() updateSkillsCandidateDto: UpdateSkillsCandidateDto,@Res() res) {
+    console.log(updateSkillsCandidateDto,id)
     try {
         const result = this.skillsCandidateService.updateSkill(id, updateSkillsCandidateDto);
         res.status(201).json({message:"update success"})

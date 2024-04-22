@@ -163,7 +163,6 @@ export class JobsService {
     .where("job.status = 1")
     .orderBy("job.created_at", "DESC")
     .getMany()
-    // console.log(result)
     return result
  }
 
