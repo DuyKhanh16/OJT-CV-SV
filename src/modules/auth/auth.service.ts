@@ -17,6 +17,13 @@ export class AuthService {
     private readonly companyService: CompaniesService,
     private readonly jwtService: JwtService,
   ) {}
+
+
+async checkMail(email: string) {
+  const account = await this.accountService.getAccountByEmail(email);
+  console.log(account)
+  return account
+}
 // service đăng ký người dùng
 async registerCandidate(createCandidateAuthDto: UpdateAuthDto) {
   // check Mail tồn tại

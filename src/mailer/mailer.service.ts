@@ -72,4 +72,36 @@ export class MailService {
  
      return await this.transporter.sendMail(mailOptions);
   }
+
+  async sendMailRegister(to: string, subject: string, name: string) {
+    // Đọc template EJS từ file
+    const template = fs.readFileSync('./src/templates/send-mail.ejs', 'utf-8');
+    // Render template với dữ liệu từ formData
+    const html = ejs.render(template, { name });
+
+    const mailOptions = {
+      from: 'khuongdanhhoang123@gmail.com',
+      to: to,
+      subject: subject,
+      html,
+    };
+
+    return await this.transporter.sendMail(mailOptions);
+  }
+
+  async sendMailForgotPassword(to: string, subject: string,name:any) {
+    console.log(to, subject, name);
+    // Đọc template EJS tự file
+    const template = fs.readFileSync('./src/templates/forgot-password.ejs', 'utf-8');
+    // Render template với dữ liệu từ formData
+    const html = ejs.render(template, {name});
+
+    const mailOptions = {
+      from: 'RikkeiCV@gmail.com',
+      to: to,
+      subject: subject,
+      html,
+    };
+    return await this.transporter.sendMail(mailOptions);
+  }
 }

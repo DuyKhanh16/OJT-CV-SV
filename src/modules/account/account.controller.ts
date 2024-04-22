@@ -12,4 +12,6 @@ export class AccountController {
     console.log(id,updateAccountDto,"đã ăn vào đây")
     return this.accountService.BanorUnbandAccount(+id, updateAccountDto);
   }
+
+  
 }
