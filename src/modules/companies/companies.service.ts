@@ -63,6 +63,16 @@ export class CompaniesService {
     .execute();
     return addDress
   }
+
+
+  // sửa địa chỉ chi hánh
+  async updateAdress(createAddressCompanyDto:any,id:number) {
+    const {address} = createAddressCompanyDto
+    const result = await this.addressCompanyRepository.createQueryBuilder().update(AddressCompany).set({
+      address: createAddressCompanyDto.address
+    }).where("id = :id", { id }).execute();
+    return result
+  }
   // Update thông tin company
 
   async updateInfoCompany(id:number,updateInfoCompany: UpdateInfoCompanyDto) {

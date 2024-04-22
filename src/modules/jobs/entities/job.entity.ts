@@ -50,6 +50,6 @@ export class Job {
     @OneToMany(type => JobCandidates, job_candidates => job_candidates.job_id)
     job_candidates: JobCandidates[]
 
-    @OneToMany(type => SalaryJobs, salary_jobs => salary_jobs.job)
+    @OneToMany(type => SalaryJobs, salary_jobs => salary_jobs.job,{onDelete: "CASCADE"})
     salary_jobs: SalaryJobs
 }
