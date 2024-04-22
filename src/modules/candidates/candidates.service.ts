@@ -127,7 +127,7 @@ export class CandidatesService {
     .innerJoinAndSelect("Candidate.project_candidate", "ProjectCandidate")
     .where("Candidate.name like :name", { name: `%${name}%` })
     if(location){
-    result.andWhere("Candidate.location like :location", { location: `%${location}%` })
+    result.andWhere("Candidate.address like :location", { location: `%${location}%` })
     }
     if(position){
       result.andWhere("Candidate.position like :position", { position: `%${position}%` })
