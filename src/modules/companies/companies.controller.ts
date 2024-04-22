@@ -109,4 +109,19 @@ export class CompaniesController {
     }
 
 }
+
+// update địa chỉ chi nhánh công ty
+@Patch("update-address/:id")
+async updateAddress(@Body() createAddressCompanyDto:any, @Param("id") id, @Res() res) {
+  try {
+    const result = await this.companiesService.updateAdress(createAddressCompanyDto,id);
+    res.status(200).json({
+      message:"success",
+      data:result
+    })
+  } catch (error) {
+    res.status(400).json({message:error})
+    
+  }
+}
 }
