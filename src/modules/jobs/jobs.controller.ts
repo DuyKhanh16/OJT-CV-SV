@@ -269,5 +269,16 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
       
     }
   }
+
+  @Get("getJobAppliedCandidatesbyId/:id")
+  @UseGuards(AuthGuard)
+  async getJobAppliedCandidatesbyId(@Param("id") id, @Res() res,@Req() req) {
+    try {
+      const result = await this.jobsService.getJobAppliedCandidatesbyId(req.account.email,id);
+      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS,check:true });
+    } catch (error) {
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+    }
+  }
 }
   
