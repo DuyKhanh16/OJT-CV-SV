@@ -8,12 +8,14 @@ import { LocaltionModule } from '../localtion/localtion.module';
 import { AuthModule } from '../auth/auth.module';
 import { TypecompanyModule } from '../typecompany/typecompany.module';
 import { Follower } from './entities/follower.entity';
+import { AccountModule } from '../account/account.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Company,Follower]),TypeOrmModule.forFeature([AddressCompany]),
     forwardRef(()=>LocaltionModule),
     forwardRef(()=>AuthModule),
     forwardRef(()=>TypecompanyModule),
+    forwardRef(()=>AccountModule),
   ],
   controllers: [CompaniesController],
   providers: [CompaniesService],
