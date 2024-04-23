@@ -7,12 +7,13 @@ import { AddressCompany } from './entities/address_company.entity';
 import { LocaltionModule } from '../localtion/localtion.module';
 import { AuthModule } from '../auth/auth.module';
 import { TypecompanyModule } from '../typecompany/typecompany.module';
+import { Follower } from './entities/follower.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Company]),TypeOrmModule.forFeature([AddressCompany]),
+  imports: [TypeOrmModule.forFeature([Company,Follower]),TypeOrmModule.forFeature([AddressCompany]),
     forwardRef(()=>LocaltionModule),
     forwardRef(()=>AuthModule),
-    forwardRef(()=>TypecompanyModule)
+    forwardRef(()=>TypecompanyModule),
   ],
   controllers: [CompaniesController],
   providers: [CompaniesService],

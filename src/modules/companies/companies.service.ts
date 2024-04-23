@@ -7,11 +7,13 @@ import { CreateAddressCompanyDto, UpdateInfoCompanyDto } from './dto/create-comp
 import { AddressCompany } from './entities/address_company.entity';
 import { LocaltionService } from '../localtion/localtion.service';
 import { TypecompanyService } from '../typecompany/typecompany.service';
+import { Follower } from './entities/follower.entity';
 
 @Injectable()
 export class CompaniesService {
     constructor(
         @InjectRepository(Company) private companyRepository: Repository<Company>,
+        @InjectRepository(Follower) private followerRepository: Repository<Follower>,
         @InjectRepository(AddressCompany) private addressCompanyRepository: Repository<AddressCompany>,
         private readonly locationService: LocaltionService,
         private readonly typecompanyService: TypecompanyService
@@ -126,6 +128,25 @@ export class CompaniesService {
     .innerJoinAndSelect("Company.typeCompany_id", "Typecompany")
     .where("Company.id = :id", { id: id })
     .getOne()
+    return result
+  }
+
+  //  lấy danh sách flow company
+  async flowCompany(email:string, company_id:any) {
+   if (!company_id ) {
+    const result = await this.followerRepository.createQueryBuilder("follower")
+    .innerJoinAndSelect("follower.company", "Company")
+    .innerJoinAndSelect("follower.candidate", "Candidate")
+    .where("Company.id = :id", { id: company_id })
+    .getMany()
+    return result
+   }
+    const result = await this.followerRepository.createQueryBuilder("follower")
+    .innerJoinAndSelect("follower.company", "Company")
+    .innerJoinAndSelect("follower.candidate", "Candidate")
+    .leftJoinAndSelect("Company.account_company_id", "Account")
+    .where("Account.email = :email", { email: email })
+    .getMany()
     return result
   }
 }

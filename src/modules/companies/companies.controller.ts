@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req, Query } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { CreateAddressCompanyDto, UpdateInfoCompanyDto } from './dto/create-company.dto';
 import { AuthGuard } from '../guard/auth.guard';
@@ -123,5 +123,20 @@ async updateAddress(@Body() createAddressCompanyDto:any, @Param("id") id, @Res()
     res.status(400).json({message:error})
     
   }
-}
+  }
+  //  lấy  danh sách flow company
+  @Get("flow-company")
+  @UseGuards(AuthGuard)
+  async flowCompany(@Req() req, @Res() res:any, @Query("company_id") company_id:any) {
+    try {
+      const result = await this.companiesService.flowCompany(req.account.email,company_id);
+      res.status(process.env.STATUS_SUCCESS).json({ 
+        message:process.env.SUCCESS,
+        data:result
+       });
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+  }
+  
 }
