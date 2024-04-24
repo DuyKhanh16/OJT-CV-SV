@@ -5,11 +5,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Candidate } from './entities/candidate.entity';
 import { Repository } from 'typeorm';
 import { async } from 'rxjs';
+import { SaveCandidateJob } from './entities/save-candidate-job.entity';
+import { AccountService } from '../account/account.service';
+import { JobsService } from '../jobs/jobs.service';
 
 @Injectable()
 export class CandidatesService {
  constructor(
-    @InjectRepository(Candidate) private candidateRepository: Repository<Candidate>
+    @InjectRepository(Candidate) private candidateRepository: Repository<Candidate>,
+    @InjectRepository(SaveCandidateJob) private saveCandidateJobRepository: Repository<SaveCandidateJob>,
+    private readonly accountService: AccountService,
+    private readonly jobsService: JobsService
  ) {}
    async createNewCandidate(name:string,id:string|any) {
       const result = await this.candidateRepository.createQueryBuilder()
@@ -19,22 +25,15 @@ export class CandidatesService {
          {name:name,account_candidate_id:id}
       )
       .execute()
-      console.log(result)
       return result;
    }
   
 
   async getInfor(email:string) {
     const result = await this.candidateRepository.createQueryBuilder("Candidate")
-    // .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
-    // .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
-    // .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
-    // .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
-    // .innerJoinAndSelect("Candidate.Project_candidate", "ProjectCandidate")
     .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
     .where("Account.email = :email", { email: email })
     .getOne()
-   console.log(result)
     return result
     ;
   }
@@ -115,7 +114,6 @@ export class CandidatesService {
     .innerJoinAndSelect("Candidate.project_candidate", "ProjectCandidate")
     .where("Candidate.id = :id", { id: id })
     .getOne()
-    console.log(result)
     return result
   }
 
@@ -136,4 +134,35 @@ export class CandidatesService {
     } 
     return result.getMany()
 }
+
+// tạo bản lưu candidate-job
+async createSaveCandidateJob (candidate_email:string,job_id:string) {
+
+  const candidate= await this.accountService.getcandidateByEmail(candidate_email)
+  const job= await this.jobsService.getJobByIdTypeEntity(job_id)
+  return await this.saveCandidateJobRepository.save({candidate:candidate,job:job})
+}
+
+  // Lấy các job đã lưu theo candidate
+  async getJobSaveCandidate (email:string) {
+    
+    const result = await this.saveCandidateJobRepository.createQueryBuilder("SaveCandidateJob")
+    .innerJoinAndSelect("SaveCandidateJob.job", "Job")
+    .leftJoinAndSelect("SaveCandidateJob.candidate", "Candidate")
+    .leftJoinAndSelect("Candidate.account_candidate_id", "Account")
+    .where("Account.email = :email", { email: email })
+    .getMany()
+    return result
+  }
+
+  // check xem candidate đã lưu job hay chưa
+  async checkSaveJob (email:string,job_id:string) {
+    return await this.saveCandidateJobRepository.createQueryBuilder("SaveCandidateJob")
+    .innerJoinAndSelect("SaveCandidateJob.job", "Job")
+    .innerJoinAndSelect("SaveCandidateJob.candidate", "Candidate")
+    .leftJoinAndSelect("Candidate.account_candidate_id", "Account")
+    .where("Account.email = :email", { email: email })
+    .andWhere("Job.id = :id", {id: job_id })
+    .getOne()
+  }
 }

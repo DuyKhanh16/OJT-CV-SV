@@ -74,7 +74,7 @@ export class CandidatesController {
 @UseGuards(AuthGuard)
 
   async updateInfoCandidate(@Body() body:UpdateInforCandidateDto,@Res() res,@Req() req) {
-    console.log(req.account.email)
+    // console.log(req.account.email)
     const {name,birthday,gender,phone,address,position,link_git,avatar} = body
     console.log(body)
     try {
@@ -100,7 +100,7 @@ export class CandidatesController {
 
   @Get("searchCandidate")
   async searchCandidate(@Query("name") name:string,@Query("location") location:string,@Query("level") level:string,@Query("position") position:string,  @Res() res) {
-    console.log(name,location,level,position)
+    // console.log(name,location,level,position)
      try {
        const result = await this.candidatesService.searchCandidate(name,location,level,position);
        res
@@ -109,5 +109,51 @@ export class CandidatesController {
      } catch (error) {
         res.status(process.env.STATUS_FAIL).json({ message: error.message });
      }
+  }
+  
+  // tạo bản lưu candidate-job
+  @Post("candidate-save-job")
+  @UseGuards(AuthGuard)
+  async candidateSaveJob(@Body() body, @Res() res,@Req() req, @Query("job_id") job_id) {
+    try {
+      await this.candidatesService.createSaveCandidateJob(req.account.email,job_id)
+      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS })
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message })
+    }
+  }
+
+  // lấy các job đã lưu của candidate
+  @Get("getJobSave")
+  @UseGuards(AuthGuard)
+  async getJobSaveCandidate(@Res() res,@Req() req) {
+    try {
+      
+      const result=await this.candidatesService.getJobSaveCandidate(req.account.email)
+      res.status(process.env.STATUS_SUCCESS).json({ 
+        message: process.env.SUCCESS,
+         data: result })
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message })
+    }
+  }
+
+  // check xem candidate đã lưu job hay chưa
+  @Get("checkSaveJob")
+  @UseGuards(AuthGuard)
+  async checkSaveJob(@Res() res,@Req() req,@Query("job_id") job_id) {
+    const result = await this.candidatesService.checkSaveJob(req.account.email,job_id)
+    if (result) {
+      res.status(process.env.STATUS_SUCCESS).json({
+        message: process.env.SUCCESS,
+        data: true
+      })
+    }
+    res.status(process.env.STATUS_SUCCESS).json({
+      message: process.env.SUCCESS,
+      data: false
+    })
   }
 }

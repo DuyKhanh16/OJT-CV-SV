@@ -415,7 +415,6 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
     .where("account.email = :email", { email: email})
     .andWhere("job.id = :idJob", { idJob: idJob})
     .getMany();
-  console.log(result)
   return result;
 }
 
@@ -474,5 +473,8 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
     const day=interview_day
     return await this.mailService.sendMailInterview(email, subject, name,day)    
   }
-
+  //  laays job theo entity (để join bảng)
+  async getJobByIdTypeEntity(id: string) {
+    return this.jobRepository.findOneBy({id:id})
+  }
 }

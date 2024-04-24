@@ -85,7 +85,6 @@ export class CompaniesController {
   // }
   @Delete("delete-address-company/:id")
   async deleteAddressCompany(@Param("id") id, @Res() res) {
-    // console.log(id,"đã ăn vào đây")
     try {
       await this.companiesService.deleteAddressCompany(id);
       res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS });
@@ -129,13 +128,11 @@ async updateAddress(@Body() createAddressCompanyDto:any, @Param("id") id, @Res()
   @UseGuards(AuthGuard)
   async flowCompany(@Req() req, @Res() res:any, @Query("company_id") company_id:any) {
     try {
-      const account= await this.companiesService.getcandidate(req.account.email)
       const result = await this.companiesService.flowCompany(req.account.email,company_id);
       
       res.status(process.env.STATUS_SUCCESS).json({ 
         message:process.env.SUCCESS,
         data:result,
-        candidateId:account.id
        });
     } catch (error) {
       res.status(400).json({message:error})

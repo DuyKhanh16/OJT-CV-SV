@@ -30,7 +30,6 @@ export class CompaniesService {
         .innerJoinAndSelect("company.address_company", "address")
         .innerJoinAndSelect("company.typeCompany_id", "typecompany")
         .getMany()
-        console.log(result)
         return result;
     }
     // lấy company theo Id
@@ -51,8 +50,6 @@ export class CompaniesService {
     .execute();
     //tra id company moi cho bang address company
     const company = await this.companyRepository.findOneBy({id:newCompany.identifiers[0].id})
-    console.log(company)
-   
     return company
   }
 
@@ -115,7 +112,6 @@ export class CompaniesService {
     .innerJoinAndSelect("Company.account_company_id", "Account") 
     .where("Account.email = :email", { email: email })
     .getOne()
-  //  console.log(result,"1111111111111111111111111111111111111111111111111")
     return result
   }
 
@@ -135,9 +131,7 @@ export class CompaniesService {
   }
 
   //lấy candidate by email
-  async getcandidate(email:string) {
-   return await this.accountService.getcandidateByEmail(email)
-  }
+ 
   //  lấy danh sách flow company
   async flowCompany(email:string, company_id:any) {
    
@@ -157,8 +151,6 @@ export class CompaniesService {
    .innerJoinAndSelect("follower.candidate", "Candidate")
    .where("Company.id = :id", { id: company_id })
    .getMany()
-    
-    // console.log(result,"jksdgkjdbgjk");
     return result
   }
 
