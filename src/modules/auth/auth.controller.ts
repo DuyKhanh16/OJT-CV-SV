@@ -28,6 +28,7 @@ export class AuthController {
       await this.mailService. sendMailForgotPassword(to,subject,name);
       res.status(process.env.STATUS_SUCCESS).json({
         message: process.env.SUCCESS,
+        token:name,
         check:2
       })
     }else{

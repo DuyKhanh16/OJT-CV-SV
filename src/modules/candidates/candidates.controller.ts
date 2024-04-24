@@ -24,7 +24,7 @@ export class CandidatesController {
   }
 
   @Get("getInfor")
-@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
 
   async findOne(@Param('id') id: string,@Res() res,@Req() req) {
     console.log(req.account.email)
