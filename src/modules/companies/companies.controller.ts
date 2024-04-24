@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req, Query } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { CreateAddressCompanyDto, UpdateInfoCompanyDto } from './dto/create-company.dto';
 import { AuthGuard } from '../guard/auth.guard';
@@ -109,4 +109,50 @@ export class CompaniesController {
     }
 
 }
+
+// update địa chỉ chi nhánh công ty
+@Patch("update-address/:id")
+async updateAddress(@Body() createAddressCompanyDto:any, @Param("id") id, @Res() res) {
+  try {
+    const result = await this.companiesService.updateAdress(createAddressCompanyDto,id);
+    res.status(200).json({
+      message:"success",
+      data:result
+    })
+  } catch (error) {
+    res.status(400).json({message:error})
+    
+  }
+  }
+  //  lấy  danh sách flow company
+  @Get("flow-company")
+  @UseGuards(AuthGuard)
+  async flowCompany(@Req() req, @Res() res:any, @Query("company_id") company_id:any) {
+    try {
+      const account= await this.companiesService.getcandidate(req.account.email)
+      const result = await this.companiesService.flowCompany(req.account.email,company_id);
+      
+      res.status(process.env.STATUS_SUCCESS).json({ 
+        message:process.env.SUCCESS,
+        data:result,
+        candidateId:account.id
+       });
+    } catch (error) {
+      res.status(400).json({message:error})
+    }
+  }
+  
+  // tạo flow công ty
+  @Post("flow/:id")
+  @UseGuards(AuthGuard)
+  async candidateFlow(@Req() req, @Res() res, @Param("id") id) {
+    try {
+
+      await this.companiesService.candidateFlow(req.account.email,id);
+      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS });
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+    }
+  }
 }
