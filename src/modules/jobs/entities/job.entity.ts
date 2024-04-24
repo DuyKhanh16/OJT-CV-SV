@@ -5,6 +5,7 @@ import { TypesJobs } from "./types_jobs.entity";
 import { AddressCompany } from "src/modules/companies/entities/address_company.entity";
 import { JobCandidates } from "./job_candidates.entity";
 import { SalaryJobs } from "./salary_jobs.entity";
+import { SaveCandidateJob } from "src/modules/candidates/entities/save-candidate-job.entity";
 
 @Entity('job')
 export class Job {
@@ -50,6 +51,11 @@ export class Job {
     @OneToMany(type => JobCandidates, job_candidates => job_candidates.job_id)
     job_candidates: JobCandidates[]
 
-    @OneToMany(type => SalaryJobs, salary_jobs => salary_jobs.job)
+    @OneToMany(type => SalaryJobs, salary_jobs => salary_jobs.job,{onDelete: "CASCADE"})
     salary_jobs: SalaryJobs
+
+    @OneToMany(type => SaveCandidateJob, savecandidatejob => savecandidatejob.job)
+    savecandidatejob: SaveCandidateJob
+
+    
 }

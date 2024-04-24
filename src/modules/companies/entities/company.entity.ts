@@ -3,6 +3,8 @@ import { AddressCompany } from "./address_company.entity";
 import { Job } from "src/modules/jobs/entities/job.entity";
 import { Typecompany } from "src/modules/typecompany/entities/typecompany.entity";
 import { Account } from "src/modules/account/entities/account.entity";
+import { Follower } from "./follower.entity";
+import { Notification } from "src/modules/notification/entity/notification.entity";
 
 @Entity('company')
 export class Company {
@@ -82,4 +84,10 @@ export class Company {
     @ManyToOne(type => Account, account => account.company)
     @JoinColumn({name: 'account_company_id'})
     account_company_id: Account
+
+    @OneToMany(type => Follower, follower => follower.company)
+    follower: Follower[]
+
+    @OneToMany(type => Notification, notification => notification.company)
+    notification: Notification
 }

@@ -173,6 +173,8 @@ async findAllAdminJobs() {
   .innerJoinAndSelect("job.company", "company")
   .innerJoinAndSelect("job.types_jobs", "types_jobs")
   .innerJoinAndSelect("types_jobs.typejob", "typejob")
+  .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
+  .innerJoinAndSelect("salary_jobs.salary", "salary")
   .orderBy("job.created_at", "DESC")
   .getMany()
   // console.log(result)
@@ -198,7 +200,7 @@ async getJobsForCompany(email: string,status :any) {
   
   // công ty selec trạng thái cua job đang tuyển dụng
   if(status.status === "1"){
-    // console.log(status,"đã ăn vào dây122222222222222222222")
+    console.log(status,"đã ăn vào dây122222222222222222222")
     const result = await this.jobRepository
     .createQueryBuilder("job")
     .innerJoinAndSelect("job.company", "company")
@@ -218,7 +220,7 @@ async getJobsForCompany(email: string,status :any) {
 
   // công ty lấy các job đã ngừng tuyển dụng
   if(status.status === "0"){
-    // console.log(status,"đã ăn vào 333333333333")
+    console.log(status,"đã ăn vào 333333333333")
     const result = await this.jobRepository
     .createQueryBuilder("job")
     .innerJoinAndSelect("job.company", "company")
@@ -238,7 +240,7 @@ async getJobsForCompany(email: string,status :any) {
 
   // lấy tất cả job
   if(status.status === "2"){
-    // console.log(status,"đã ăn vào 444444444444")
+    console.log(status,"đã ăn vào 444444444444")
     const result = await this.jobRepository
     .createQueryBuilder("job")
     .innerJoinAndSelect("job.company", "company")
@@ -287,7 +289,7 @@ async getJobsForCompany(email: string,status :any) {
     .where("account.email = :email", { email })
     .orderBy("job.created_at", "DESC")
     .getMany();
-    // console.log(result)
+    console.log(result,"6666666666666666")
   return result;
 }
 
@@ -341,10 +343,12 @@ async getJobById(id: string) {
 
 // delete job
 async deleteoneJob(id: string) {
-  const result = await this.jobRepository.find({relations: ["types_jobs","levers_jobs"] ,where: { id: id }})
+  const result = await this.jobRepository.find({relations: ["types_jobs","levers_jobs","salary_jobs"] ,where: { id: id }})
   console.log(result);
   await this.leversJobsRepository.remove(result[0].levers_jobs)
   await this.typesJobsRepository.remove(result[0].types_jobs)
+  await this.salaryJobsRepository.remove(result[0].salary_jobs)
+  // await this.salaryJobsRepository.createQueryBuilder("salary_jobs").delete().from(SalaryJobs).where("job_id = :id", { id: id }).execute();
   // await this.salaryJobsRepository.remove(result[0].salary_jobs)
   return await this.jobRepository.delete(id);
  }

@@ -7,14 +7,19 @@ import { CreateAddressCompanyDto, UpdateInfoCompanyDto } from './dto/create-comp
 import { AddressCompany } from './entities/address_company.entity';
 import { LocaltionService } from '../localtion/localtion.service';
 import { TypecompanyService } from '../typecompany/typecompany.service';
+import { Follower } from './entities/follower.entity';
+import { AccountService } from '../account/account.service';
+import { log } from 'console';
 
 @Injectable()
 export class CompaniesService {
     constructor(
         @InjectRepository(Company) private companyRepository: Repository<Company>,
+        @InjectRepository(Follower) private followerRepository: Repository<Follower>,
         @InjectRepository(AddressCompany) private addressCompanyRepository: Repository<AddressCompany>,
         private readonly locationService: LocaltionService,
-        private readonly typecompanyService: TypecompanyService
+        private readonly typecompanyService: TypecompanyService,
+        private readonly accountService: AccountService
     ) {}
 
 
@@ -62,6 +67,16 @@ export class CompaniesService {
     })
     .execute();
     return addDress
+  }
+
+
+  // sửa địa chỉ chi hánh
+  async updateAdress(createAddressCompanyDto:any,id:number) {
+    const {address} = createAddressCompanyDto
+    const result = await this.addressCompanyRepository.createQueryBuilder().update(AddressCompany).set({
+      address: createAddressCompanyDto.address
+    }).where("id = :id", { id }).execute();
+    return result
   }
   // Update thông tin company
 
@@ -118,6 +133,42 @@ export class CompaniesService {
     .where("Company.id = :id", { id: id })
     .getOne()
     return result
+  }
+
+  //lấy candidate by email
+  async getcandidate(email:string) {
+   return await this.accountService.getcandidateByEmail(email)
+  }
+  //  lấy danh sách flow company
+  async flowCompany(email:string, company_id:any) {
+   
+   if (!company_id ) {
+    const result = await this.followerRepository.createQueryBuilder("follower")
+    .innerJoinAndSelect("follower.company", "Company")
+    .innerJoinAndSelect("follower.candidate", "Candidate")
+    .leftJoinAndSelect("Company.account_company_id", "Account")
+    .where("Account.email = :email", { email: email })
+    .getMany()
+   
+    return result
+   }
+
+   const result = await this.followerRepository.createQueryBuilder("follower")
+   .innerJoinAndSelect("follower.company", "Company")
+   .innerJoinAndSelect("follower.candidate", "Candidate")
+   .where("Company.id = :id", { id: company_id })
+   .getMany()
+    
+    // console.log(result,"jksdgkjdbgjk");
+    return result
+  }
+
+  // tạo candidate flow company
+  async candidateFlow(email_candidate:string, company_id:any) {
+  // lấy candidate by email
+  const candidate= await this.accountService.getcandidateByEmail(email_candidate)
+  const company= await this.companyRepository.findOneBy({id:company_id})
+  return await this.followerRepository.save({company:company,candidate:candidate})
   }
 }
     

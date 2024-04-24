@@ -13,7 +13,7 @@ export class AccountService {
     const result = await this.accountRepository.findOne({
       where: { email },
     });
-    console.log(result)
+    // console.log(result)
     return result;
   }
   async updatePassword(id: string, password:string  ) {
@@ -59,6 +59,14 @@ export class AccountService {
    return result;
 
  }
+//  lấy candidate by email
+  async getcandidateByEmail(email: string) {
+    const result = await this.accountRepository.createQueryBuilder("Account")
+    .innerJoinAndSelect("Account.candidate", "Candidate")
+    .where("Account.email = :email", { email: email })
+    .getOne();
+    return result.candidate[0];
+  }
  
 }
 

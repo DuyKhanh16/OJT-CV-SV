@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
+import * as argon from 'argon2'; 
 require('dotenv').config();
 
 import {
@@ -15,7 +16,31 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly mailService: MailService
     ) {}
-
+  
+  @Get("checkMail")
+  async checkMail(@Res() res,@Query('email') email:string) {
+    try {
+    const checkMail = await this.authService.checkMail(email)
+    if(checkMail){
+      const to = email
+      const subject = "Update password"
+      const name = await argon.hash(email)
+      await this.mailService. sendMailForgotPassword(to,subject,name);
+      res.status(process.env.STATUS_SUCCESS).json({
+        message: process.env.SUCCESS,
+        check:2
+      })
+    }else{
+      res.status(process.env.STATUS_SUCCESS).json({
+        message: process.env.SUCCESS,
+        check:1
+      })
+    }
+    
+    } catch (error) {
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+    }
+  }
 
   @Post('register-candidate')
   async createNewCandidate(

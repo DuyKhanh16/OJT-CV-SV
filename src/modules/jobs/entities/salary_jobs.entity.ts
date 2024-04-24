@@ -8,7 +8,7 @@ export class SalaryJobs {
     @PrimaryGeneratedColumn("increment")
     id: number;
 
-    @ManyToOne(type => Job, job => job.salary_jobs)
+    @ManyToOne(type => Job, job => job.salary_jobs,{onDelete: 'CASCADE'})
     @JoinColumn({name: 'job_id'})
     job: Job
 
