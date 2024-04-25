@@ -76,7 +76,6 @@ async login(createAuthDto: CreateAuthDto) {
   const account = await this.accountService.findByEmail(email);
   console.log(account)
   
-
   if (!account) {   
     throw new UnauthorizedException('email không đúng');
   }
@@ -91,6 +90,38 @@ async login(createAuthDto: CreateAuthDto) {
     token_access: await this.generateAccessToken({ email: account.email, role: account.role }),
     token: await this.generateToken({ email: account.email, role: account.role }),
   };
+}
+
+async loginByGoogle(createAuthDto: UpdateAuthDto) {
+  const {name,email, password} = createAuthDto;
+  console.log(name,email, password)
+  // check Mail tồn tại
+  const account = await this.accountService.getAccountByEmail(email);
+  if (account) {
+    return {
+      // viết thêm trả status đẻ xét điều kiện đăng nhập
+      status: account.status,
+      role: account.role,
+      token_access: await this.generateAccessToken({ email: account.email, role: account.role }),
+      token: await this.generateToken({ email: account.email, role: account.role }),
+    };
+  }
+ //  Tạo tài khoản và thông tin người dùng
+ const role= RoleEnum.CANDIDATE
+ try {
+   const account = await this.accountService.createNewAccount(email,password,role);
+   await this.candidateService.createNewCandidate(name,account.id);
+   return {
+    // viết thêm trả status đẻ xét điều kiện đăng nhập
+    status: account.status,
+    role: account.role,
+    token_access: await this.generateAccessToken({ email: account.email, role: account.role }),
+    token: await this.generateToken({ email: account.email, role: account.role }),
+  };
+ } catch (error) {
+   console.log(error);
+   throw new Error(error);
+ }
 }
 
 async getOTP(email: string) {

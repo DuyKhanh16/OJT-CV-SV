@@ -107,6 +107,7 @@ export class CompaniesService {
 
   //lay thong tin cty
   async getInfor(email:string) {
+    console.log("111111",email)
     const result = await this.companyRepository.createQueryBuilder("Company")
     .innerJoinAndSelect("Company.address_company", "AddressCompany")
     .innerJoinAndSelect("Company.account_company_id", "Account") 

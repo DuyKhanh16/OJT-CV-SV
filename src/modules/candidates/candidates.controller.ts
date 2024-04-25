@@ -12,6 +12,7 @@ export class CandidatesController {
 
   @Get("getAll")
   async findAll(@Res() res) {
+    
     try {
       const result = await this.candidatesService.findAll();
       res.status(200).json({ 
@@ -24,13 +25,12 @@ export class CandidatesController {
   }
 
   @Get("getInfor")
-  @UseGuards(AuthGuard)
+
+@UseGuards(AuthGuard)
 
   async findOne(@Param('id') id: string,@Res() res,@Req() req) {
-    console.log(req.account.email)
     try {
       const result = await this.candidatesService.getInfor(req.account.email);
-      console.log(result)
       res.status(200).json({
         message:"success",
         data:result
@@ -60,8 +60,6 @@ export class CandidatesController {
 @UseGuards(AuthGuard)
 
   async updateAboutMe(@Param('id') id: string, @Body() body:any,@Res() res,@Req() req) {
-    console.log(req.account.email)
-    console.log(body.aboutme)
     try {
       const result = await this.candidatesService.updateAboutMe(body.aboutMe,req.account.email);
       res.status(200).json({message:"update success"})
@@ -79,7 +77,6 @@ export class CandidatesController {
     console.log(body)
     try {
       const result = await this.candidatesService.updateInfoCandidate(body,req.account.email)
-      console.log(result)
       res.status(200).json({message:"update success"});
     } catch (error) {
       res.status(400).json({message:error})

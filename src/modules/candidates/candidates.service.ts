@@ -79,7 +79,6 @@ export class CandidatesService {
    .set({aboutme:aboutMe})
    .where("id = :id", { id: result.id })
    .execute()
-   console.log(resulta)
    return result
   }
   async updateInfoCandidate(body:UpdateInforCandidateDto,email:string) {
@@ -101,7 +100,6 @@ export class CandidatesService {
    })
    .where("id = :id", { id: candidate.id })
    .execute()
-    console.log(result)
     return result
   }
 

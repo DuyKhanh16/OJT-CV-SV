@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import * as argon from 'argon2'; 
 require('dotenv').config();
-
 import {
   CreateCandidateAuthDto,
   CreateCompanyDto,
@@ -86,7 +85,23 @@ export class AuthController {
       const result = await this.authService.login(createAuthDto);
       console.log(result)
       res.status(201).json({
-        message: "login successfull",
+        message: "Đăng nhập thành công",
+        data: result
+      })
+    } catch (error) {
+      res.status(400).json({
+        message: "login fail",
+      }) 
+    }
+  }
+  @Post("loginByGoogle")
+  async loginByGoogle(@Body() createAuthDto: CreateAuthDto,@Res() res) {
+    console.log(createAuthDto)
+    try {
+      const result = await this.authService.loginByGoogle(createAuthDto);
+      console.log(result)
+      res.status(201).json({
+        message: "Đăng nhập thành công",
         data: result
       })
     } catch (error) {
