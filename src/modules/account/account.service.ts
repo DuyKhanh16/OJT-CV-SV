@@ -24,11 +24,7 @@ export class AccountService {
     .execute();
     return result;
   }
-// @Injectable()
-// export class AccountService {
-//  constructor(
-//   @InjectRepository(Account) private accountRepository: Repository<Account>
-//  ) {}
+
  
  async getAccountByEmail(email: string) {
    return await this.accountRepository.findOne({ where: { email: email } });

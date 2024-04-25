@@ -150,6 +150,7 @@ export class JobsService {
  
 
  //lay tat ca job dang tuyen dung
+
  async findAllLiveJobs() {
     const result = await this.jobRepository.createQueryBuilder("job")
     .innerJoinAndSelect("job.address_company", "address_company")
@@ -414,7 +415,6 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
     .where("account.email = :email", { email: email})
     .andWhere("job.id = :idJob", { idJob: idJob})
     .getMany();
-  // console.log(result)
   return result;
 }
 
@@ -473,5 +473,8 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
     const day=interview_day
     return await this.mailService.sendMailInterview(email, subject, name,day)    
   }
-
+  //  laays job theo entity (để join bảng)
+  async getJobByIdTypeEntity(id: string) {
+    return this.jobRepository.findOneBy({id:id})
+  }
 }

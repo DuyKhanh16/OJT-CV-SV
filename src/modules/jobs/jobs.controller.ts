@@ -275,7 +275,9 @@ async getAllCandidatesAppling(@Res() res, @Req() req) {
   async getJobAppliedCandidatesbyId(@Param("id") id, @Res() res,@Req() req) {
     try {
       const result = await this.jobsService.getJobAppliedCandidatesbyId(req.account.email,id);
+      if(result.length !== 0){
       res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS,check:true });
+      }
     } catch (error) {
       res.status(process.env.STATUS_FAIL).json({ message: error.message });
     }
