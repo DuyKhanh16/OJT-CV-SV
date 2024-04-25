@@ -10,7 +10,6 @@ require('dotenv').config();
 @Injectable()
 export class MailService {
   private transporter;
-
   constructor() {
     this.transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -25,12 +24,10 @@ export class MailService {
   }
 
   async sendMail(to: string, subject: string, name: string) {
-
     // Đọc template EJS từ file
     const template = fs.readFileSync('./src/templates/send-mail.ejs', 'utf-8');
     // Render template với dữ liệu từ formData
     const html = ejs.render(template, { name });
-
     const mailOptions = {
       from: 'khuongdanhhoang123@gmail.com',
       to: to,
@@ -53,7 +50,6 @@ export class MailService {
       subject: subject,
       html,
     };
-
     return await this.transporter.sendMail(mailOptions);
   }
 
