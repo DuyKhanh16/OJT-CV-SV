@@ -12,6 +12,7 @@ export class CandidatesController {
 
   @Get("getAll")
   async findAll(@Res() res) {
+    
     try {
       const result = await this.candidatesService.findAll();
       res.status(200).json({ 
@@ -23,14 +24,28 @@ export class CandidatesController {
     }
   }
 
+  // phan trang
+
+  @Get("getAllPaging")
+  async findAllPaging(@Res() res,@Query() query) {
+    // try {
+    //   const result = await this.candidatesService.findAllPaging(query);
+    //   res.status(200).json({ 
+    //     message:"success",
+    //     data:result
+    //    });
+    // } catch (error) {
+    //   res.status(400).json({message:error})
+    // }
+  }
+
   @Get("getInfor")
+
   @UseGuards(AuthGuard)
 
   async findOne(@Param('id') id: string,@Res() res,@Req() req) {
-    console.log(req.account.email)
     try {
       const result = await this.candidatesService.getInfor(req.account.email);
-      console.log(result)
       res.status(200).json({
         message:"success",
         data:result
@@ -57,30 +72,26 @@ export class CandidatesController {
   }
 
   @Patch('updateAboutMe')
-@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
 
   async updateAboutMe(@Param('id') id: string, @Body() body:any,@Res() res,@Req() req) {
-    console.log(req.account.email)
-    console.log(body.aboutme)
     try {
       const result = await this.candidatesService.updateAboutMe(body.aboutMe,req.account.email);
-      res.status(200).json({message:"update success"})
+      res.status(200).json({message:"Cập nhật thành công"})
     }catch (error) {
       res.status(400).json({message:error})
     }
   }
   
   @Patch('updateInfoCandidate')
-@UseGuards(AuthGuard)
-
+  @UseGuards(AuthGuard)
   async updateInfoCandidate(@Body() body:UpdateInforCandidateDto,@Res() res,@Req() req) {
-    console.log(req.account.email)
+    // console.log(req.account.email)
     const {name,birthday,gender,phone,address,position,link_git,avatar} = body
     console.log(body)
     try {
       const result = await this.candidatesService.updateInfoCandidate(body,req.account.email)
-      console.log(result)
-      res.status(200).json({message:"update success"});
+      res.status(200).json({message:"Cập nhật thành công"});
     } catch (error) {
       res.status(400).json({message:error})
     }
@@ -100,7 +111,6 @@ export class CandidatesController {
 
   @Get("searchCandidate")
   async searchCandidate(@Query("name") name:string,@Query("location") location:string,@Query("level") level:string,@Query("position") position:string,  @Res() res) {
-    console.log(name,location,level,position)
      try {
        const result = await this.candidatesService.searchCandidate(name,location,level,position);
        res
@@ -109,5 +119,49 @@ export class CandidatesController {
      } catch (error) {
         res.status(process.env.STATUS_FAIL).json({ message: error.message });
      }
+  }
+  
+  // tạo bản lưu candidate-job
+  @Post("candidate-save-job")
+  @UseGuards(AuthGuard)
+  async candidateSaveJob(@Body() body, @Res() res,@Req() req, @Query("job_id") job_id) {
+    try {
+      await this.candidatesService.createSaveCandidateJob(req.account.email,job_id)
+      res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS })
+    } catch (error) {
+      res.status(process.env.STATUS_FAIL).json({ message: error.message })
+    }
+  }
+
+  // lấy các job đã lưu của candidate
+  @Get("getJobSave")
+  @UseGuards(AuthGuard)
+  async getJobSaveCandidate(@Res() res,@Req() req) {
+    try {
+      const result=await this.candidatesService.getJobSaveCandidate(req.account.email)
+      res.status(process.env.STATUS_SUCCESS).json({ 
+        message: process.env.SUCCESS,
+         data: result })
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message })
+    }
+  }
+
+  // check xem candidate đã lưu job hay chưa
+  @Get("checkSaveJob")
+  @UseGuards(AuthGuard)
+  async checkSaveJob(@Res() res,@Req() req,@Query("job_id") job_id) {
+    const result = await this.candidatesService.checkSaveJob(req.account.email,job_id)
+    if (result) {
+      res.status(process.env.STATUS_SUCCESS).json({
+        message: process.env.SUCCESS,
+        data: true
+      })
+    }
+    res.status(process.env.STATUS_SUCCESS).json({
+      message: process.env.SUCCESS,
+      data: false
+    })
   }
 }

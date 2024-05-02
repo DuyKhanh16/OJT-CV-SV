@@ -46,7 +46,7 @@ export class ProjectCandidateService {
     .update(ProjectCandidate)
     .set({
         name:updateProjectCandidateDto.name,
-        link:updateProjectCandidateDto.info,
+        link:updateProjectCandidateDto.link,
         info:updateProjectCandidateDto.info,
         start_at:updateProjectCandidateDto.start_at,
         end_at:updateProjectCandidateDto.end_at

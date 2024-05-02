@@ -24,11 +24,7 @@ export class AccountService {
     .execute();
     return result;
   }
-// @Injectable()
-// export class AccountService {
-//  constructor(
-//   @InjectRepository(Account) private accountRepository: Repository<Account>
-//  ) {}
+
  
  async getAccountByEmail(email: string) {
    return await this.accountRepository.findOne({ where: { email: email } });
@@ -41,12 +37,10 @@ export class AccountService {
    account.password = hashedPassword;
    account.role = role;
    await this.accountRepository.save(account);
-
    const result = await this.accountRepository.createQueryBuilder()
   .select("Account")
   .where("Account.email = :email", { email: email })
   .getOne();
-
    return result;
  }
 //  thay đổi trạng thái của account để hiển thị, và khi đăng nhập
