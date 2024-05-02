@@ -16,11 +16,11 @@ export class AccountService {
     // console.log(result)
     return result;
   }
-  async updatePassword(id: string, password:string  ) {
+  async updatePassword(email: string, password:string  ) {
     const result = await this.accountRepository.createQueryBuilder()
     .update(Account)
     .set({ password: password })
-    .where("id = :id", { id })
+    .where("email = :email", { email: email })
     .execute();
     return result;
   }
@@ -67,6 +67,7 @@ export class AccountService {
     .getOne();
     return result.candidate[0];
   }
- 
+  
+
 }
 

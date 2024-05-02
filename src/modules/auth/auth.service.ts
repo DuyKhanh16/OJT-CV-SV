@@ -103,6 +103,7 @@ async getOTP(email: string) {
 }
 
 async getNewPassword(email:string){
+
 }
 
 async generateToken(payload) {
@@ -126,5 +127,10 @@ async verifyAccessToken(token: string) {
      secret: 'token'
    });
  } 
-  
+
+ 
+async updatePassword(email: string, password:string  ) {
+  const result = await this.accountService.updatePassword(email, password);
+  return result;
+} 
 }
