@@ -47,7 +47,6 @@ export class CandidatesService {
     .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
     .where("Account.email = :email", { email: email })
     .getOne()
-    console.log(result)
     return result
     ;
   }
@@ -63,9 +62,25 @@ export class CandidatesService {
     .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
     .innerJoinAndSelect("Candidate.project_candidate", "ProjectCandidate")
     .getMany()
-    console.log(result)
     return result;
   }
+
+  // phan trang
+ async findAllPaging(query) {
+   const result = await this.candidateRepository.createQueryBuilder("Candidate")
+   .innerJoinAndSelect("Candidate.account_candidate_id", "Account")
+   .innerJoinAndSelect("Candidate.certificate_candidate", "CertificateCandidate")
+   .innerJoinAndSelect("Candidate.education_candidate", "EducationCandidate")
+   .innerJoinAndSelect("Candidate.experience_candidate", "ExperienceCandidate")
+   .innerJoinAndSelect("Candidate.skills_candidate", "SkillsCandidate")
+   .innerJoinAndSelect("Candidate.project_candidate", "ProjectCandidate")
+   .skip(query.skip)
+   .take(query.take)
+   .getMany()
+   console.log("3333",result) 
+   return result
+ }
+
 
 
   // update thong tin cv cua candidate

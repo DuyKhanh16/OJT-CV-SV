@@ -10,7 +10,6 @@ export class AccountController {
 
   @Patch('update/:id')
   BanorUnbandAccount(@Param('id') id: string, @Body() updateAccountDto: any) {
-    console.log(id,updateAccountDto,"đã ăn vào đây")
     return this.accountService.BanorUnbandAccount(+id, updateAccountDto);
   }
 

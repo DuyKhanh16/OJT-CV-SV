@@ -150,7 +150,6 @@ export class JobsService {
  
 
  //lay tat ca job dang tuyen dung
-
  async findAllLiveJobs() {
     const result = await this.jobRepository.createQueryBuilder("job")
     .innerJoinAndSelect("job.address_company", "address_company")
@@ -179,6 +178,37 @@ async findAllAdminJobs() {
   .orderBy("job.created_at", "DESC")
   .getMany()
   // console.log(result)
+  return result
+}
+
+// phantrang
+async findAllFirstPaging() {
+  const result = await this.jobRepository.createQueryBuilder("job")
+  .innerJoinAndSelect("job.address_company", "address_company")
+  .innerJoinAndSelect("job.company", "company")
+  .innerJoinAndSelect("job.types_jobs", "types_jobs")
+  .innerJoinAndSelect("types_jobs.typejob", "typejob")
+  .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
+  .innerJoinAndSelect("salary_jobs.salary", "salary")
+  .orderBy("job.created_at", "DESC")
+  .limit(6)
+  .offset(0)
+  .getMany()
+  return result
+}
+
+async findAllPaging(query) {
+  const result = await this.jobRepository.createQueryBuilder("job")
+  .innerJoinAndSelect("job.address_company", "address_company")
+  .innerJoinAndSelect("job.company", "company")
+  .innerJoinAndSelect("job.types_jobs", "types_jobs")
+  .innerJoinAndSelect("types_jobs.typejob", "typejob")
+  .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
+  .innerJoinAndSelect("salary_jobs.salary", "salary")
+  .orderBy("job.created_at", "DESC")
+  .limit(6)
+  .offset((query.page - 1) * 6)
+  .getMany()
   return result
 }
 
