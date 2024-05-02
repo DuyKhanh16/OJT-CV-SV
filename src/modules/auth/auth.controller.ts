@@ -47,7 +47,6 @@ export class AuthController {
     @Body() createCandidateAuthDto: CreateCandidateAuthDto,
     @Res() res,
   ) {
-    console.log(createCandidateAuthDto)
     try {
       await this.authService.registerCandidate(createCandidateAuthDto);
       const to=createCandidateAuthDto.email
@@ -56,14 +55,12 @@ export class AuthController {
         await this.mailService.sendMail(to,subject,name);
       res.status(201).json({ message: 'register successfull' });
     } catch (error) {
-      console.log(error);
       res.status(400).json({ message: error.message });
     }
   }
 
   @Post('register-company')
   async createNewCompany(@Body() createCompanyDto: CreateCompanyDto,@Res() res) {
-    console.log(createCompanyDto)
     try {
       await this.authService.registerCompany(createCompanyDto);
       const to=createCompanyDto.email
@@ -72,7 +69,6 @@ export class AuthController {
         await this.mailService.sendMail(to,subject,name);
       res.status(process.env.STATUS_CREATR_OK).json({ message: "register successfull" });
     } catch (error) {
-      console.log(error);
       res.status(process.env.STATUS_FAIL).json({ message: error.message });
       
     }
@@ -83,14 +79,13 @@ export class AuthController {
     console.log(createAuthDto)
     try {
       const result = await this.authService.login(createAuthDto);
-      console.log(result)
       res.status(201).json({
         message: "Đăng nhập thành công",
         data: result
       })
     } catch (error) {
       res.status(400).json({
-        message: "login fail",
+        message: "Đăng nhập thất bại",
       }) 
     }
   }
@@ -106,7 +101,7 @@ export class AuthController {
       })
     } catch (error) {
       res.status(400).json({
-        message: "login fail",
+        message: "Đăng nhập thất bại",
       }) 
     }
   }
