@@ -152,7 +152,7 @@ async generateAccessToken(payload) {
 }
 
 async verifyAccessToken(token: string) {
-  console.log("token", token)
+  // console.log("token", token)
    return await this.jwtService.verify(token, {
      secret: 'token'
    });
