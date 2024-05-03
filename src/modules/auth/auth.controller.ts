@@ -143,4 +143,35 @@ export class AuthController {
       OTP: checkMail,
     });
   }
+
+
+  @Patch("updatePassword")
+  async updatePassword(@Body() body,@Res() res) {
+    try{
+      const {email,password,token} = body
+      console.log(email,password,token)
+      const checkToken = await argon.verify(token,email)
+      const hash = await argon.hash(password)
+      if(checkToken){
+        const updateMail = await this.authService.updatePassword(email,hash)
+        if(updateMail){
+        res.status(process.env.STATUS_SUCCESS).json({ message:"Change password success"})
+        }
+      }else{
+        res.status(process.env.STATUS_FAIL).json({ message: "Token is not valid" });
+      }
+      // const checkMail = await this.authService.updatePassword(email,password)
+    }
+    catch(error){
+      res.status(process.env.STATUS_FAIL).json({ message: error.message });
+    }
 }
+}
+  
+ 
+
+ 
+
+  
+
+

@@ -265,7 +265,7 @@ async getJobsForCompany(email: string,status :any) {
     .andWhere("job.status = 0")
     .orderBy("job.created_at", "DESC")
     .getMany();
-    // console.log(result)
+    console.log(result)
     return result;
   }
 
@@ -449,17 +449,18 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
 }
 
 // từ chối ứng viên
-  async cancelCandidate (id: string) {
+  async cancelCandidate (id: string,nameCompany: string) {
     const candidaet= await this.jobCandidatesRepository.createQueryBuilder("job_candidates")
     .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
     .leftJoinAndSelect("candidate.account_candidate_id", "account")
     .where("job_candidates.id = :id", { id })
     .getOne()
+    await this.jobCandidatesRepository.update({id}, {status: StatusApplyEnum.CANCEL})
     const email= candidaet.candidate_id.account_candidate_id.email
     const name=candidaet.candidate_id.name
-    await this.jobCandidatesRepository.update({id}, {status: StatusApplyEnum.CANCEL})
     const subject = 'THƯ CẢM ƠN & THÔNG BÁO KẾT QUẢ CV'
-    await this.mailService.sendMailCancel(email, subject, name)
+    const Company = nameCompany
+    await this.mailService.sendMailCancel(email, subject, name,Company)
   }
 
   async searchJob(name:string,location:string,leveljob:string,salary:string) {
@@ -489,19 +490,22 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
 }
 
 // update interview_day
-  async updateInterview(id: string, interview_day: string) {
+  async updateInterview(id: string, interview_day: string,interview_adress : string,nameCompany :string,emailCompany :string) {
     const candidaet= await this.jobCandidatesRepository.createQueryBuilder("job_candidates")
     .innerJoinAndSelect("job_candidates.candidate_id", "candidate")
     .leftJoinAndSelect("candidate.account_candidate_id", "account")
     .where("job_candidates.id = :id", { id })
     .getOne()
-    
+  
     const email= candidaet.candidate_id.account_candidate_id.email
     const name=candidaet.candidate_id.name
     await this.jobCandidatesRepository.update({id}, {interview_day:interview_day,status: StatusApplyEnum.APPLY})
     const subject = 'Thư mời phỏng vấn'
     const day=interview_day
-    return await this.mailService.sendMailInterview(email, subject, name,day)    
+    const address =interview_adress
+    const Company = nameCompany
+    const emailcompany = emailCompany
+    return await this.mailService.sendMailInterview(email, subject, name,day,address,Company,emailcompany)    
   }
   //  laays job theo entity (để join bảng)
   async getJobByIdTypeEntity(id: string) {

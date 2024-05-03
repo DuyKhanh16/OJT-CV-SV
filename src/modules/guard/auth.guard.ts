@@ -20,7 +20,11 @@ export class AuthGuard implements CanActivate {
     const token = request.headers.authorization;
     //  console.log("token", token);
 
-    if (!token?.startsWith('Bearer')) throw new UnauthorizedException();
+
+        
+       const token = request.headers.authorization;
+       
+
 
     const newToken = token.split(' ')[1];
     //  console.log("newToken", newToken);
@@ -30,8 +34,19 @@ export class AuthGuard implements CanActivate {
         request['account'] = res;
       });
 
-    if (!checkToken) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+
+       const newToken = token.split(" ")[1]; 
+       console.log("newToken11111111111", newToken);
+       const checkToken =  this.authService.verifyAccessToken(newToken).then((res)=>{
+         request["account"] = res;
+        
+       });
+         
+       if(!checkToken){
+        throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+       }
+       return true
+
     }
     return true;
   }

@@ -134,6 +134,7 @@ async getOTP(email: string) {
 }
 
 async getNewPassword(email:string){
+
 }
 
 async generateToken(payload) {
@@ -152,10 +153,15 @@ async generateAccessToken(payload) {
 }
 
 async verifyAccessToken(token: string) {
-  console.log("token", token)
+  // console.log("token", token)
    return await this.jwtService.verify(token, {
      secret: 'token'
    });
  } 
-  
+
+ 
+async updatePassword(email: string, password:string  ) {
+  const result = await this.accountService.updatePassword(email, password);
+  return result;
+} 
 }
