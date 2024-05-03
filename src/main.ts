@@ -11,6 +11,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalGuards();
 
+
   //Swagger
   const options = new DocumentBuilder()
   .setTitle('Doc API Project demo')

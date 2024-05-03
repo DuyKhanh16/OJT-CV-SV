@@ -8,6 +8,8 @@ import { async } from 'rxjs';
 import { SaveCandidateJob } from './entities/save-candidate-job.entity';
 import { AccountService } from '../account/account.service';
 import { JobsService } from '../jobs/jobs.service';
+import { EventsGateway } from 'src/socket/socket.gateway';
+
 
 @Injectable()
 export class CandidatesService {
@@ -15,7 +17,9 @@ export class CandidatesService {
     @InjectRepository(Candidate) private candidateRepository: Repository<Candidate>,
     @InjectRepository(SaveCandidateJob) private saveCandidateJobRepository: Repository<SaveCandidateJob>,
     private readonly accountService: AccountService,
-    private readonly jobsService: JobsService
+    private readonly jobsService: JobsService,
+    private readonly socketioService: EventsGateway
+    
  ) {}
    async createNewCandidate(name:string,id:string|any) {
       const result = await this.candidateRepository.createQueryBuilder()

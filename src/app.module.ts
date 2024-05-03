@@ -19,6 +19,7 @@ import { MailModule } from './mail/mail.module';
 import { MailerModule } from './mailer/mailer.module';
 import { SalaryModule } from './modules/salary/salary.module';
 import { NotificationModule } from './modules/notification/notification.module';
+import { EventsGateway } from './socket/socket.gateway';
 
 @Module({
   imports: [TypeOrmModule.forRoot(config),
@@ -41,6 +42,6 @@ import { NotificationModule } from './modules/notification/notification.module';
     MailerModule,
     NotificationModule], 
   controllers: [],
-  providers: [],
+  providers: [EventsGateway],
 })
 export class AppModule {}
