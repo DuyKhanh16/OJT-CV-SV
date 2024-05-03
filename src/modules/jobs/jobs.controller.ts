@@ -255,9 +255,10 @@ export class JobsController {
   //  Từ chối ứng viên
   @Post('cancelCandidate/:id')
   @UseGuards(AuthGuard)
-  async cancelCandidate(@Param('id') id, @Res() res) {
+  async cancelCandidate(@Param('id') id, @Res() res,@Body() body) {
+    const {nameCompany} = body  
     try {
-      await this.jobsService.cancelCandidate(id);
+      await this.jobsService.cancelCandidate(id,nameCompany);
       res
         .status(process.env.STATUS_SUCCESS)
         .json({ message: process.env.SUCCESS });
@@ -294,11 +295,13 @@ export class JobsController {
   @Post('update-interview-date/:id')
   async updateInterview(
     @Param('id') id,
-    @Body('interview_day') interview_day: string,
+    @Body() body : any,
     @Res() res,
   ) {
+    // console.log(body,"ăn vào đây")
+    const {interview_day,interview_adress,nameCompany,emailCompany} = body
     try {
-      await this.jobsService.updateInterview(id, interview_day);
+      await this.jobsService.updateInterview(id, interview_day,interview_adress,nameCompany,emailCompany);
       res
         .status(process.env.STATUS_CREATR_OK)
         .json({ message: process.env.SUCCESS });
