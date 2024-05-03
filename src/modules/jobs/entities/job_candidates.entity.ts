@@ -41,4 +41,4 @@ export class JobCandidates {
     @ManyToOne(()=> Job, (job) => job.id)
     @JoinColumn({ name: 'job_id' })
     job_id: Job
-}
+}               

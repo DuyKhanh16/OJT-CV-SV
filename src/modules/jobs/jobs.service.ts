@@ -265,7 +265,7 @@ async getJobsForCompany(email: string,status :any) {
     .andWhere("job.status = 0")
     .orderBy("job.created_at", "DESC")
     .getMany();
-    // console.log(result)
+    console.log(result)
     return result;
   }
 
