@@ -2,11 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req,
 import { CompaniesService } from './companies.service';
 import { CreateAddressCompanyDto, UpdateInfoCompanyDto } from './dto/create-company.dto';
 import { AuthGuard } from '../guard/auth.guard';
+import { CandidatesService } from '../candidates/candidates.service';
 require('dotenv').config();
 
 @Controller('api/v2/companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) {}
+  constructor(private readonly companiesService: CompaniesService,
+    private readonly candidateService: CandidatesService
+
+  ) {}
 
 
   @Get("getInfor")

@@ -10,6 +10,7 @@ import { TypecompanyService } from '../typecompany/typecompany.service';
 import { Follower } from './entities/follower.entity';
 import { AccountService } from '../account/account.service';
 import { log } from 'console';
+import { CandidatesService } from '../candidates/candidates.service';
 
 @Injectable()
 export class CompaniesService {
@@ -19,7 +20,7 @@ export class CompaniesService {
         @InjectRepository(AddressCompany) private addressCompanyRepository: Repository<AddressCompany>,
         private readonly locationService: LocaltionService,
         private readonly typecompanyService: TypecompanyService,
-        private readonly accountService: AccountService
+        private readonly accountService: AccountService,
     ) {}
 
 

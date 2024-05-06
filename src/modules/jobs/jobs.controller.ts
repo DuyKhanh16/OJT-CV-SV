@@ -17,10 +17,19 @@ import { CreateJobDto, applyJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { zip } from 'rxjs/operators';
 import { AuthGuard } from '../guard/auth.guard';
+import { CompaniesService } from '../companies/companies.service';
+import { CandidatesService } from '../candidates/candidates.service';
+import { NotificationService } from '../notification/notification.service';
 require('dotenv').config();
 @Controller('api/v2/jobs')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) {}
+  constructor(private readonly jobsService: JobsService,
+    private readonly companyService: CompaniesService,
+    private readonly candidateService: CandidatesService,
+    private readonly notificationService: NotificationService,
+
+    
+  ) {}
 
   //lay tat ca job dang tuyen dung
   @Get('getLiveJobs')
@@ -226,9 +235,13 @@ export class JobsController {
   async applyJob(@Body() applyJobDto: applyJobDto, @Res() res) {
     try {
       const result = await this.jobsService.applyJob(applyJobDto);
+      const   content= `Đã ứng tuyển công việc ${result.title}`
+      const company= await this.companyService.getCompanyById(result.company.id)
+      const  candidate=await this.candidateService.getCandidateById(applyJobDto.candidate_id)
+       await this.notificationService.createNotification(content,candidate,company)
       res.status(200).json({
         message: 'Ứng tuyển thành công',
-        data: result,
+       data: result
       });
     } catch (error) {
       res.status(400).json({ message: error });

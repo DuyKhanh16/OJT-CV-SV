@@ -15,22 +15,27 @@ import { SalaryModule } from '../salary/salary.module';
 import { SalaryJobs } from './entities/salary_jobs.entity';
 
 import { MailerModule } from 'src/mailer/mailer.module';
+import { NotificationModule } from '../notification/notification.module';
+import { CandidatesModule } from '../candidates/candidates.module';
 
 
 
 @Module({
   controllers: [JobsController],
   providers: [JobsService],
-  imports: [TypeOrmModule.forFeature([Job,JobCandidates,SalaryJobs])
-  ,TypeOrmModule.forFeature([TypesJobs])
-  ,TypeOrmModule.forFeature([LeversJobs])
-  ,forwardRef(() => TypejobModule),
+  imports: [TypeOrmModule.forFeature([Job, JobCandidates, SalaryJobs])
+    , TypeOrmModule.forFeature([TypesJobs]),
+  TypeOrmModule.forFeature([LeversJobs]),
+  forwardRef(() => CandidatesModule),
+  forwardRef(() => TypejobModule),
   forwardRef(() => LeveljobsModule),
   forwardRef(() => LocaltionModule),
   forwardRef(() => CompaniesModule),
   forwardRef(() => AuthModule),
   forwardRef(() => SalaryModule),
-  forwardRef(() => AuthModule),forwardRef(() => MailerModule)],
+  forwardRef(() => AuthModule),
+  forwardRef(() => MailerModule),
+  forwardRef(() => NotificationModule)],
   exports: [JobsService]
 })
-export class JobsModule {}
+export class JobsModule { }

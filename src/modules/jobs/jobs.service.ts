@@ -14,9 +14,10 @@ import { log } from 'console';
 // import { async } from 'rxjs';
 import { JobCandidates } from './entities/job_candidates.entity';
 import { SalaryJobs } from './entities/salary_jobs.entity';
-import { Candidate } from '../candidates/entities/candidate.entity';
 import { StatusApplyEnum } from 'src/constants/enums/enum';
 import { MailService } from 'src/mailer/mailer.service';
+import { NotificationService } from '../notification/notification.service';
+import { CandidatesService } from '../candidates/candidates.service';
 
 @Injectable()
 export class JobsService {
@@ -32,7 +33,9 @@ export class JobsService {
     private readonly typejobService: TypejobService,
     private readonly leveljobService: LeveljobsService,
     private readonly companyService: CompaniesService,
-    private readonly mailService: MailService
+    private readonly mailService: MailService,
+    private readonly notificationService: NotificationService,
+    // private readonly candidateService: CandidatesService
 
   ) {}
   //  tạo mới job
@@ -394,7 +397,7 @@ async updateStatusJob(id: string, status: number) {
     .execute();
 }
 
-async applyJob(body:applyJobDto) {
+async   applyJob(body:applyJobDto) {
   const result = await this.jobCandidatesRepository.createQueryBuilder("job_candidates")
   .insert()
   .into(JobCandidates)
@@ -405,8 +408,12 @@ async applyJob(body:applyJobDto) {
     cv_url: body.cv_url
   })
   .execute()
-  // console.log(result)
-  return result
+  const job = await this.jobRepository.findOne({
+    where: {id: body.job_id},
+    relations: ["company"]})
+ 
+
+  return job
 }
 
  async getJobAppliedCandidates(email: string) {

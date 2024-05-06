@@ -32,6 +32,9 @@ export class CandidatesService {
       return result;
    }
   
+   async getCandidateById(id:string) {
+     return this.candidateRepository.findOneBy({id:id})
+   }
 
   async getInfor(email:string) {
     const result = await this.candidateRepository.createQueryBuilder("Candidate")
