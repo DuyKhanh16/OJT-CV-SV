@@ -18,6 +18,7 @@ export class AuthController {
   
   @Get("checkMail")
   async checkMail(@Res() res,@Query('email') email:string) {
+    console.log(email,"11111111111111111111111111")
     try {
     const checkMail = await this.authService.checkMail(email)
     if(checkMail){

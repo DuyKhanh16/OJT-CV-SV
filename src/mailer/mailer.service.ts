@@ -86,7 +86,7 @@ export class MailService {
   }
 
   async sendMailForgotPassword(to: string, subject: string,name:any) {
-    console.log(to, subject, name);
+    // console.log(to, subject, name);
     // Đọc template EJS tự file
     const template = fs.readFileSync('./src/templates/forgot-password.ejs', 'utf-8');
     // Render template với dữ liệu từ formData
