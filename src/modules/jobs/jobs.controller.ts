@@ -34,8 +34,9 @@ export class JobsController {
 
   // get all jobs của admin
   @Get('getJobsforadmin')
-  async findAllAdminJobs(@Res() res) {
-    const result = await this.jobsService.findAllAdminJobs();
+  async findAllAdminJobs(@Res() res,@Query() query) {
+    console.log(query,"2222222222222222222222222222")
+    const result = await this.jobsService.findAllAdminJobs(query);
     res.status(200).json({
       message: 'success',
       data: result,
@@ -76,12 +77,13 @@ export class JobsController {
   async findAllNewJobs(@Res() res) {
     const now = new Date().toISOString().split('/').reverse().join('');
     const result = await this.jobsService.findAllLiveJobs();
-    const arr = result.filter((item) => {
+    const arr = result.result.filter((item) => {
       return item.created_at.toString().slice(0, 10).split('-').join('') >= now;
     });
     res.status(200).json({
       message: 'success',
       data: arr,
+      all: result,
     });
   }
 
@@ -257,6 +259,7 @@ export class JobsController {
   @UseGuards(AuthGuard)
   async cancelCandidate(@Param('id') id, @Res() res,@Body() body) {
     const {nameCompany} = body  
+    console.log(nameCompany,"11111111111111111111111111111111")
     try {
       await this.jobsService.cancelCandidate(id,nameCompany);
       res
@@ -328,4 +331,22 @@ export class JobsController {
       res.status(process.env.STATUS_FAIL).json({ message: error.message });
     }
   }
+
+  // lấy dữ liệu chart của admin
+  @Get("admingetchart")
+async getchart(@Res() res) {
+  try {
+    const result = await this.jobsService.getchart();
+    res.status(200).json({
+      message: 'success',
+      data: result,
+    });
+  } catch (error) {
+    console.log(error)
+  }
 }
+}
+// admin lấy dữ liệu các user khi appy vào công việc có các trạng thái huỷ, đồng ý, đang chờ 
+
+
+

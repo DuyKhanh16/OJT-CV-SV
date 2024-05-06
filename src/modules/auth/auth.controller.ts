@@ -18,6 +18,7 @@ export class AuthController {
   
   @Get("checkMail")
   async checkMail(@Res() res,@Query('email') email:string) {
+    console.log(email,"11111111111111111111111111")
     try {
     const checkMail = await this.authService.checkMail(email)
     if(checkMail){
@@ -53,7 +54,7 @@ export class AuthController {
       const subject="Wellcome"
       const name=createCandidateAuthDto.name
         await this.mailService.sendMail(to,subject,name);
-      res.status(201).json({ message: 'register successfull' });
+      res.status(201).json({ message: 'Đăng ký thành công' });
     } catch (error) {
       res.status(400).json({ message: error.message });
     }

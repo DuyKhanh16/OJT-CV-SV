@@ -28,7 +28,7 @@ export class SkillsCandidateController {
     try {
       console.log(createSkillsCandidateDto)
       const result = await this.skillsCandidateService.createSkill(createSkillsCandidateDto);
-      res.status(201).json({message:"create skill success"}) 
+      res.status(201).json({message:"Thêm kĩ năng thành công"}) 
     } catch (error) {
       res.status(400).json({message:error})
     }
@@ -40,7 +40,7 @@ export class SkillsCandidateController {
     console.log(updateSkillsCandidateDto,id)
     try {
         const result = this.skillsCandidateService.updateSkill(id, updateSkillsCandidateDto);
-        res.status(201).json({message:"update success"})
+        res.status(201).json({message:"Cập nhật thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }
@@ -52,7 +52,7 @@ export class SkillsCandidateController {
   remove(@Param('id') id: string,@Res() res) {
     try {
       const result = this.skillsCandidateService.removeSkill(id);
-      res.status(200).json({message:"delete success"})
+      res.status(200).json({message:"Xóa kĩ năng thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }

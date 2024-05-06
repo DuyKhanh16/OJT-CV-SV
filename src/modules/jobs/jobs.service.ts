@@ -163,11 +163,20 @@ export class JobsService {
     .where("job.status = 1")
     .orderBy("job.created_at", "DESC")
     .getMany()
-    return result
+    const result2 = await this.jobRepository.createQueryBuilder("job")
+    
+    .where("job.status = 0")
+    .orderBy("job.created_at", "DESC")
+    .getMany()
+    return {
+      result,result2
+    }
  }
 
 //  admin lấy jobs
-async findAllAdminJobs() {
+async  findAllAdminJobs(query : any) {
+  const {name,salary,status} = query
+  console.log(status)
   const result = await this.jobRepository.createQueryBuilder("job")
   .innerJoinAndSelect("job.address_company", "address_company")
   .innerJoinAndSelect("job.company", "company")
@@ -175,8 +184,21 @@ async findAllAdminJobs() {
   .innerJoinAndSelect("types_jobs.typejob", "typejob")
   .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
   .innerJoinAndSelect("salary_jobs.salary", "salary")
-  .orderBy("job.created_at", "DESC")
-  .getMany()
+  if(status === "Tất cả" ){
+    return result.getMany();
+  }
+  if(salary === "Tất cả" ){
+    return result.getMany();
+  }
+  if(status === "1" || status === "0" ){
+    result.andWhere("job.status = :status", { status })
+  }
+  if(salary === "1" || salary === "2" || salary === "3" || salary === "4" || salary === "5" || salary === "6"  ){
+    result.andWhere("job.salary = :salary", { salary })
+  }
+
+  return result.getMany();
+
   // console.log(result)
   return result
 }
@@ -460,6 +482,7 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
     const name=candidaet.candidate_id.name
     const subject = 'THƯ CẢM ƠN & THÔNG BÁO KẾT QUẢ CV'
     const Company = nameCompany
+    console.log(email,"email ứng viên")
     await this.mailService.sendMailCancel(email, subject, name,Company)
   }
 
@@ -510,5 +533,16 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
   //  laays job theo entity (để join bảng)
   async getJobByIdTypeEntity(id: string) {
     return this.jobRepository.findOneBy({id:id})
+  }
+
+  // lấy dữ liệu của chart admin
+  async getchart() {
+    const result = await this.jobCandidatesRepository.createQueryBuilder("job_candidates")
+    .select("job_candidates.status", "status")
+    .addSelect("COUNT(*)", "count")
+    .groupBy("job_candidates.status")
+    .execute()
+    console.log(result)
+    return result;
   }
 }

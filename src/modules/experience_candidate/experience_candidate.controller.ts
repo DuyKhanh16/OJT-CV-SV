@@ -29,7 +29,7 @@ export class ExperienceCandidateController {
     
     try {
       const result = this.experienceCandidateService.createExperience(body);
-      res.status(201).json({message:"create success"})
+      res.status(201).json({message:"Thêm thông tin thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }
@@ -39,7 +39,7 @@ export class ExperienceCandidateController {
   update(@Param('id') id: string, @Body() updateExperienceCandidateDto: UpdateExperienceCandidateDto,@Res() res) {
     try {
       const result = this.experienceCandidateService.updateExperience(id, updateExperienceCandidateDto);
-      res.status(200).json({message:"update success"})
+      res.status(200).json({message:"Cập nhật thông tin thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }
@@ -49,7 +49,7 @@ export class ExperienceCandidateController {
   remove(@Param('id') id: string,@Res() res) {
     try {
       const result = this.experienceCandidateService.removeExperience(id);
-      res.status(200).json({message:"delete success"})
+      res.status(200).json({message:"Xóa thông tin thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }

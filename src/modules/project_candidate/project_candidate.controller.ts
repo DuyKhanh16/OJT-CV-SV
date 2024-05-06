@@ -29,7 +29,7 @@ export class ProjectCandidateController {
   async create(@Body() createProjectCandidateDto: CreateProjectCandidateDto,@Res() res) {
     try {
       const result = await this.projectCandidateService.createProjectCandidate(createProjectCandidateDto);
-      res.status(201).json({message:"create success"})
+      res.status(201).json({message:"Thêm thông tin mới thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }
@@ -41,7 +41,7 @@ export class ProjectCandidateController {
   async update(@Param('id') id: string, @Body() updateProjectCandidateDto: CreateProjectCandidateDto,@Res() res) {
     try {
       const result = await this.projectCandidateService.updateProjectCandidate(id,updateProjectCandidateDto)
-      res.status(200).json({message:"update success"})
+      res.status(200).json({message:"Cập nhật thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }
@@ -54,7 +54,7 @@ export class ProjectCandidateController {
   async remove(@Param('id') id: string,@Res() res) {
     try {
       const result = await this.projectCandidateService.deleteProject(id)
-      res.status(200).json({message:"delete success"})
+      res.status(200).json({message:"Xóa thông tin thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }

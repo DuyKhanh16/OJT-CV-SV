@@ -85,6 +85,7 @@ export class CompaniesController {
   // }
   @Delete("delete-address-company/:id")
   async deleteAddressCompany(@Param("id") id, @Res() res) {
+    console.log("12311111111111111111111111111111111111111111111111111111111111111",id)
     try {
       await this.companiesService.deleteAddressCompany(id);
       res.status(process.env.STATUS_CREATR_OK).json({ message: process.env.SUCCESS });
