@@ -53,7 +53,7 @@ export class AuthController {
       const subject="Wellcome"
       const name=createCandidateAuthDto.name
         await this.mailService.sendMail(to,subject,name);
-      res.status(201).json({ message: 'register successfull' });
+      res.status(201).json({ message: 'Đăng ký thành công' });
     } catch (error) {
       res.status(400).json({ message: error.message });
     }

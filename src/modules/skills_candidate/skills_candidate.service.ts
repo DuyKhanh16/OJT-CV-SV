@@ -22,6 +22,7 @@ export class SkillsCandidateService {
     return result
   }
   async createSkill(createSkillsCandidateDto: CreateSkillsCandidateDto) {
+    console.log("234",createSkillsCandidateDto)
     const result = await this.skillsCandidateRepository.createQueryBuilder()
     .insert()
     .into(SkillsCandidate)

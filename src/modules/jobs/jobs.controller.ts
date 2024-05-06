@@ -257,6 +257,7 @@ export class JobsController {
   @UseGuards(AuthGuard)
   async cancelCandidate(@Param('id') id, @Res() res,@Body() body) {
     const {nameCompany} = body  
+    console.log(nameCompany,"11111111111111111111111111111111")
     try {
       await this.jobsService.cancelCandidate(id,nameCompany);
       res
