@@ -163,7 +163,14 @@ export class JobsService {
     .where("job.status = 1")
     .orderBy("job.created_at", "DESC")
     .getMany()
-    return result
+    const result2 = await this.jobRepository.createQueryBuilder("job")
+    
+    .where("job.status = 0")
+    .orderBy("job.created_at", "DESC")
+    .getMany()
+    return {
+      result,result2
+    }
  }
 
 //  admin lấy jobs
@@ -525,5 +532,16 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
   //  laays job theo entity (để join bảng)
   async getJobByIdTypeEntity(id: string) {
     return this.jobRepository.findOneBy({id:id})
+  }
+
+  // lấy dữ liệu của chart admin
+  async getchart() {
+    const result = await this.jobCandidatesRepository.createQueryBuilder("job_candidates")
+    .select("job_candidates.status", "status")
+    .addSelect("COUNT(*)", "count")
+    .groupBy("job_candidates.status")
+    .execute()
+    console.log(result)
+    return result;
   }
 }

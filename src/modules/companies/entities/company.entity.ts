@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AddressCompany } from "./address_company.entity";
 import { Job } from "src/modules/jobs/entities/job.entity";
 import { Typecompany } from "src/modules/typecompany/entities/typecompany.entity";
@@ -81,7 +81,7 @@ export class Company {
     @JoinColumn({name: 'typeCompany_id'})
     typeCompany_id: Typecompany
 
-    @ManyToOne(type => Account, account => account.company)
+    @OneToOne(type => Account, account => account.company)
     @JoinColumn({name: 'account_company_id'})
     account_company_id: Account
 

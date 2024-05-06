@@ -5,7 +5,7 @@ import { ExperienceCandidate } from "src/modules/experience_candidate/entities/e
 import { JobCandidates } from "src/modules/jobs/entities/job_candidates.entity";
 import { ProjectCandidate } from "src/modules/project_candidate/entities/project_candidate.entity";
 import { SkillsCandidate } from "src/modules/skills_candidate/entities/skills_candidate.entity";
-import { Column, Entity,  JoinColumn,  ManyToOne,  OneToMany,  PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity,  JoinColumn,  ManyToOne,  OneToMany,  OneToOne,  PrimaryGeneratedColumn } from "typeorm";
 import { SaveCandidateJob } from "./save-candidate-job.entity";
 import { Follower } from "src/modules/companies/entities/follower.entity";
 import { Notification } from "src/modules/notification/entity/notification.entity";
@@ -120,7 +120,7 @@ export class Candidate {
     @OneToMany(() => JobCandidates, (job_candidates) => job_candidates.candidate_id)
     job_candidates: JobCandidates[]
 
-    @ManyToOne(()=> Account, (account) => account.id)
+    @OneToOne(()=> Account, (account) => account.id)
     @JoinColumn({ name: 'account_id' })
     account_candidate_id: Account
 

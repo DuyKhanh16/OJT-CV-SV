@@ -77,12 +77,13 @@ export class JobsController {
   async findAllNewJobs(@Res() res) {
     const now = new Date().toISOString().split('/').reverse().join('');
     const result = await this.jobsService.findAllLiveJobs();
-    const arr = result.filter((item) => {
+    const arr = result.result.filter((item) => {
       return item.created_at.toString().slice(0, 10).split('-').join('') >= now;
     });
     res.status(200).json({
       message: 'success',
       data: arr,
+      all: result,
     });
   }
 
@@ -329,4 +330,22 @@ export class JobsController {
       res.status(process.env.STATUS_FAIL).json({ message: error.message });
     }
   }
+
+  // lấy dữ liệu chart của admin
+  @Get("admingetchart")
+async getchart(@Res() res) {
+  try {
+    const result = await this.jobsService.getchart();
+    res.status(200).json({
+      message: 'success',
+      data: result,
+    });
+  } catch (error) {
+    console.log(error)
+  }
 }
+}
+// admin lấy dữ liệu các user khi appy vào công việc có các trạng thái huỷ, đồng ý, đang chờ 
+
+
+
