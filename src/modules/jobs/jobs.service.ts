@@ -167,7 +167,9 @@ export class JobsService {
  }
 
 //  admin lấy jobs
-async findAllAdminJobs() {
+async  findAllAdminJobs(query : any) {
+  const {name,salary,status} = query
+  console.log(status)
   const result = await this.jobRepository.createQueryBuilder("job")
   .innerJoinAndSelect("job.address_company", "address_company")
   .innerJoinAndSelect("job.company", "company")
@@ -175,8 +177,21 @@ async findAllAdminJobs() {
   .innerJoinAndSelect("types_jobs.typejob", "typejob")
   .innerJoinAndSelect("job.salary_jobs", "salary_jobs")
   .innerJoinAndSelect("salary_jobs.salary", "salary")
-  .orderBy("job.created_at", "DESC")
-  .getMany()
+  if(status === "Tất cả" ){
+    return result.getMany();
+  }
+  if(salary === "Tất cả" ){
+    return result.getMany();
+  }
+  if(status === "1" || status === "0" ){
+    result.andWhere("job.status = :status", { status })
+  }
+  if(salary === "1" || salary === "2" || salary === "3" || salary === "4" || salary === "5" || salary === "6"  ){
+    result.andWhere("job.salary = :salary", { salary })
+  }
+
+  return result.getMany();
+
   // console.log(result)
   return result
 }

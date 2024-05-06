@@ -34,8 +34,9 @@ export class JobsController {
 
   // get all jobs của admin
   @Get('getJobsforadmin')
-  async findAllAdminJobs(@Res() res) {
-    const result = await this.jobsService.findAllAdminJobs();
+  async findAllAdminJobs(@Res() res,@Query() query) {
+    console.log(query,"2222222222222222222222222222")
+    const result = await this.jobsService.findAllAdminJobs(query);
     res.status(200).json({
       message: 'success',
       data: result,
