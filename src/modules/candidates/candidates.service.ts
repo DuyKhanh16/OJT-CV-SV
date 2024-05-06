@@ -182,4 +182,19 @@ async createSaveCandidateJob (candidate_email:string,job_id:string) {
     .andWhere("Job.id = :id", {id: job_id })
     .getOne()
   }
+
+  async getSaveJob (email:string) {
+    return await this.saveCandidateJobRepository.createQueryBuilder("SaveCandidateJob")
+    .innerJoinAndSelect("SaveCandidateJob.job", "Job")
+    .innerJoinAndSelect("Job.types_jobs", "TypesJobs")
+    .innerJoinAndSelect("TypesJobs.typejob", "Typejob")
+    .innerJoinAndSelect("Job.address_company", "AddressCompany")
+    .innerJoinAndSelect("Job.company", "Company")
+    .innerJoinAndSelect("Job.salary_jobs","SalaryJobs")
+    .innerJoinAndSelect("SalaryJobs.salary","Salary")
+    .innerJoinAndSelect("SaveCandidateJob.candidate", "Candidate")
+    .leftJoinAndSelect("Candidate.account_candidate_id", "Account")
+    .where("Account.email = :email", { email: email })
+    .getMany()
+  }
 }

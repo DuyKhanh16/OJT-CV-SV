@@ -62,7 +62,7 @@ export class CandidatesController {
 @UseGuards(AuthGuard)
 
   async findAllInformation(@Res() res,@Req() req) {
-    console.log(req.account.email)
+    // console.log(req.account.email)
     try {
       const result = await this.candidatesService.getAllInformation(req.account.email);
       res.status(200).json({ 
@@ -167,4 +167,22 @@ export class CandidatesController {
       data: false
     })
   }
+
+  @Get("save-job")
+  @UseGuards(AuthGuard)
+  async getsaveJobCandidate(@Res() res,@Req() req) {
+    try {
+      const result= await this.candidatesService.getSaveJob(req.account.email)
+      console.log(result);
+      
+      res.status(process.env.STATUS_SUCCESS).json({
+        message: process.env.SUCCESS,
+        data: result
+      })
+    } catch (error) {
+      console.log(error);
+      res.status(process.env.STATUS_FAIL).json({ message: error.message })
+    }
+  }
+
 }

@@ -12,7 +12,7 @@ export class Notification {
 
     @Column({type: 'int',default:0})
     status:number
-
+    
     @ManyToOne(type => Candidate, candidate => candidate.notification)
     @JoinColumn({name: 'candidate_id'})
     candidate:Candidate
