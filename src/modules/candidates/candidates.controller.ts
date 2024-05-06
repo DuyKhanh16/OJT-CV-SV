@@ -4,11 +4,14 @@ import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto, UpdateInforCandidateDto } from './dto/update-candidate.dto';
 import * as dotenv from 'dotenv';
 import { AuthGuard } from '../guard/auth.guard';
+import { EventsGateway } from 'src/socket/socket.gateway';
 dotenv.config();
 @Controller('api/v2/candidates')
 
 export class CandidatesController {
-  constructor(private readonly candidatesService: CandidatesService) {}
+  constructor(private readonly candidatesService: CandidatesService,
+    private readonly socketioService: EventsGateway
+  ) {}
 
   @Get("getAll")
   async findAll(@Res() res) {

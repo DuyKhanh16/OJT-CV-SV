@@ -8,13 +8,14 @@ import { AuthModule } from '../auth/auth.module';
 import { SaveCandidateJob } from './entities/save-candidate-job.entity';
 import { AccountModule } from '../account/account.module';
 import { JobsModule } from '../jobs/jobs.module';
+import { EventsGateway } from 'src/socket/socket.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Candidate,SaveCandidateJob]),
     forwardRef(()=>AuthModule),forwardRef(()=>AccountModule),forwardRef(()=>JobsModule)
 ],
   controllers: [CandidatesController],
-  providers: [CandidatesService],
+  providers: [CandidatesService,EventsGateway],
   exports: [CandidatesService],
 })
 export class CandidatesModule {}
