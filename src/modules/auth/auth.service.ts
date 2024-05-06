@@ -72,7 +72,6 @@ const role= RoleEnum.COMPANY
 }
 async login(createAuthDto: CreateAuthDto) {
   const { email, password } = createAuthDto;
-  console.log(email, password)
   const account = await this.accountService.findByEmail(email);
   console.log(account)
   

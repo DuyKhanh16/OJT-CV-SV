@@ -17,7 +17,7 @@ const config: MysqlConnectionOptions = {
   synchronize: false,
   // autoSchemaSync: true,
   namingStrategy: new SnakeNamingStrategy(),
-  logging: true
+  logging: false
 };
 
 export default config;

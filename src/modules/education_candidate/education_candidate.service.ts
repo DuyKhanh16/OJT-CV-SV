@@ -42,7 +42,6 @@ export class EducationCandidateService {
 
   //update thông tin học vấn candidate
   async updateNewEducation(id:string,candidate_id:any, name_education:string, major:string, started_at: string, end_at: string, info: string) {
-    // console.log(candidate_id,name_education,major,started_at,end_at,info)
     const result = await this.educationCandidateRepository.createQueryBuilder()
     .update(EducationCandidate)
     .set({

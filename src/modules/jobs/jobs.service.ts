@@ -482,6 +482,7 @@ async getJobAppliedCandidatesbyId(email: string, idJob: string) {
     const name=candidaet.candidate_id.name
     const subject = 'THƯ CẢM ƠN & THÔNG BÁO KẾT QUẢ CV'
     const Company = nameCompany
+    console.log(email,"email ứng viên")
     await this.mailService.sendMailCancel(email, subject, name,Company)
   }
 

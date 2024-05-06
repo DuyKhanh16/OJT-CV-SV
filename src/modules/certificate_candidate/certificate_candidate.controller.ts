@@ -33,7 +33,7 @@ export class CertificateCandidateController {
     console.log(body)
     try {
       const result = this.certificateCandidateService.createCertificate(body);
-      res.status(201).json({message:"create success"})
+      res.status(201).json({message:"Thêm thông tin thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }
@@ -44,7 +44,7 @@ export class CertificateCandidateController {
   update(@Param('id') id: string, @Body() updateCertificateCandidateDto: UpdateCertificateCandidateDto,@Res() res) {
     try {
       const result = this.certificateCandidateService.updateCertificate(id, updateCertificateCandidateDto);
-      res.status(200).json({message:"update success"})
+      res.status(200).json({message:"Cập nhật thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }
@@ -56,7 +56,7 @@ export class CertificateCandidateController {
     console.log(id)
     try {
       const result = this.certificateCandidateService.removeEdication(id);
-      res.status(200).json({message:"delete success"})
+      res.status(200).json({message:"Xóa thông tin thành công"})
     } catch (error) {
       res.status(400).json({message:error})
     }

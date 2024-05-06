@@ -53,7 +53,7 @@ export class EducationCandidateController {
         end_at,
         info,
       );
-      res.status(201).json({ message: 'create success' });
+      res.status(201).json({ message: 'Thêm thông tin thành công' });
     } catch (error) {
       res.status(400).json({ message: error });
     }
@@ -79,7 +79,7 @@ export class EducationCandidateController {
         end_at,
         info,
       );
-      res.status(200).json({ message: 'update education success' });
+      res.status(200).json({ message: 'Cập nhật thông tin thành công' });
     } catch (error) {
       res.status(400).json({ message: error });
     }
@@ -90,7 +90,7 @@ export class EducationCandidateController {
     try {
       console.log(id);
       const result = await this.educationCandidateService.removeEdication(id);
-      res.status(200).json({ message: 'delete education success' });
+      res.status(200).json({ message: 'Xóa thông tin thành công' });
     } catch (error) {
       res.status(400).json({ message: error });
     }
