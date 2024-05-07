@@ -28,6 +28,7 @@ export class CompaniesService {
     async findAll() {
         const result = await this.companyRepository.createQueryBuilder("company")
         .innerJoinAndSelect("company.address_company", "address")
+        .innerJoinAndSelect("company.account_company_id", "account")
         .innerJoinAndSelect("company.typeCompany_id", "typecompany")
         .getMany()
         return result;

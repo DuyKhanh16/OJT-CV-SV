@@ -345,6 +345,12 @@ async getchart(@Res() res) {
     console.log(error)
   }
 }
+
+@Get("search-job-admin")
+async searjobadmin(@Res() res, @Query('search') search: string) {
+  console.log(search,"đã ăn vào đây");
+  
+}
 }
 // admin lấy dữ liệu các user khi appy vào công việc có các trạng thái huỷ, đồng ý, đang chờ 
 

@@ -59,7 +59,7 @@ export class AccountService {
     .innerJoinAndSelect("Account.candidate", "Candidate")
     .where("Account.email = :email", { email: email })
     .getOne();
-    return result.candidate[0];
+    return result.candidate;
   }
   
 

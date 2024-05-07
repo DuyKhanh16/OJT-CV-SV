@@ -18,7 +18,6 @@ export class AuthController {
   
   @Get("checkMail")
   async checkMail(@Res() res,@Query('email') email:string) {
-    console.log(email,"11111111111111111111111111")
     try {
     const checkMail = await this.authService.checkMail(email)
     if(checkMail){
@@ -80,6 +79,8 @@ export class AuthController {
     console.log(createAuthDto)
     try {
       const result = await this.authService.login(createAuthDto);
+      console.log(result);
+      
       res.status(201).json({
         message: "Đăng nhập thành công",
         data: result
@@ -135,7 +136,7 @@ export class AuthController {
   async updatePassword(@Body() body,@Res() res) {
     try{
       const {email,password,token} = body
-      console.log(email,password,token)
+      // console.log(email,password,token)
       const checkToken = await argon.verify(token,email)
       const hash = await argon.hash(password)
       if(checkToken){
