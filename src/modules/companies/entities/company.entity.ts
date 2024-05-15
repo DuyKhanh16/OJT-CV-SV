@@ -1,8 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AddressCompany } from "./address_company.entity";
 import { Job } from "src/modules/jobs/entities/job.entity";
 import { Typecompany } from "src/modules/typecompany/entities/typecompany.entity";
 import { Account } from "src/modules/account/entities/account.entity";
+import { Follower } from "./follower.entity";
+import { Notification } from "src/modules/notification/entity/notification.entity";
 
 @Entity('company')
 export class Company {
@@ -48,11 +50,13 @@ export class Company {
     @Column({type: 'varchar', length: 11})
     phone: string;
 
-    @Column({type: 'varchar', length: 255})
-    emailCompany: string;
+    @Column({type: 'varchar', length: 255
+        , nullable:true
+    })
+    email_company: string;
 
-    @Column({type: 'varchar', length: 255})
-    addressRegister: string;
+    // @Column({type: 'varchar', length: 255})
+    // addressRegister: string;
 
     @Column({type: 'longtext'
     , nullable:true})
@@ -67,18 +71,23 @@ export class Company {
     updated_at: Date;
 
 
-    @OneToMany(type => AddressCompany, address_company => address_company.company)
+    @OneToMany(type => AddressCompany, address_company => address_company.company_id)
     address_company: AddressCompany[]
 
     @OneToMany(type => Job, job => job.company)
-
-    job: Job[]
+    job:Job[]
 
     @ManyToOne(type => Typecompany, typecompany => typecompany.company)
     @JoinColumn({name: 'typeCompany_id'})
     typeCompany_id: Typecompany
 
-    @ManyToOne(type => Account, account => account.company)
+    @OneToOne(type => Account, account => account.company)
     @JoinColumn({name: 'account_company_id'})
     account_company_id: Account
+
+    @OneToMany(type => Follower, follower => follower.company)
+    follower: Follower[]
+
+    @OneToMany(type => Notification, notification => notification.company)
+    notification: Notification
 }

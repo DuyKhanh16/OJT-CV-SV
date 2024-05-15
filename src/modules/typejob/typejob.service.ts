@@ -11,6 +11,11 @@ export class TypejobService {
   @InjectRepository(Typejob) private typejobRepository: Repository<Typejob>,
  ) {}
 
+// lấy tất cả typejob
+async findAll() {
+  return await this.typejobRepository.find();
+}
+
   async getTypejobById(id:string) {
     return await this.typejobRepository.findOneBy({id:id});
   }

@@ -5,14 +5,23 @@ import { ExperienceCandidate } from "src/modules/experience_candidate/entities/e
 import { JobCandidates } from "src/modules/jobs/entities/job_candidates.entity";
 import { ProjectCandidate } from "src/modules/project_candidate/entities/project_candidate.entity";
 import { SkillsCandidate } from "src/modules/skills_candidate/entities/skills_candidate.entity";
-import { Column, Entity,  JoinColumn,  ManyToOne,  OneToMany,  PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity,  JoinColumn,  ManyToOne,  OneToMany,  OneToOne,  PrimaryGeneratedColumn } from "typeorm";
+import { SaveCandidateJob } from "./save-candidate-job.entity";
+import { Follower } from "src/modules/companies/entities/follower.entity";
+import { Notification } from "src/modules/notification/entity/notification.entity";
 
 @Entity('candidate')
 export class Candidate {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column()
+    @Column(
+        {
+            type: 'varchar',
+            length: 50,
+            nullable: true
+        }
+    )
     name: string;
 
     @Column({
@@ -22,7 +31,8 @@ export class Candidate {
     status: number;
 
     @Column({
-       type:"date",
+       type:"varchar",
+       length: 20,
        nullable: true
     })
     birthday: string;
@@ -42,17 +52,17 @@ export class Candidate {
     phone: string;
 
     @Column({
-        type:"int",
+        type:"varchar",
         nullable: true
     })
-    gender: number;
+    gender: string;
 
     @Column({
         type:"varchar",
         length: 100,
         nullable: true
     })
-    link_fb: string;
+    position: string;
 
     @Column({
         type:"varchar",
@@ -83,7 +93,12 @@ export class Candidate {
     @Column({
         type:"longtext",
         nullable: true
+    })
+    avatar: string;
 
+    @Column({
+        type:"longtext",
+        nullable: true
     })
     aboutme:string;
 
@@ -105,7 +120,16 @@ export class Candidate {
     @OneToMany(() => JobCandidates, (job_candidates) => job_candidates.candidate_id)
     job_candidates: JobCandidates[]
 
-    @ManyToOne(()=> Account, (account) => account.id)
+    @OneToOne(()=> Account, (account) => account.id)
     @JoinColumn({ name: 'account_id' })
     account_candidate_id: Account
+
+    @OneToMany(() => SaveCandidateJob, (savecandidatejob) => savecandidatejob.candidate)
+    savecandidatejob: SaveCandidateJob
+
+    @OneToMany(() => Follower, (follower) => follower.candidate)
+    follower: Follower
+
+    @OneToMany(() => Notification, (notification) => notification.candidate)
+    notification: Notification
 }

@@ -1,5 +1,6 @@
 import { Candidate } from "src/modules/candidates/entities/candidate.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Job } from "./job.entity";
 
 @Entity('job_candidates')
 export class JobCandidates {
@@ -17,6 +18,14 @@ export class JobCandidates {
 
     })
     cv_url: string;
+
+    @Column({
+        type:"varchar",
+        length: 20,
+        nullable: true
+    })
+    interview_day: string;
+
     @Column({
         type:"varchar",
         length: 255
@@ -24,7 +33,12 @@ export class JobCandidates {
     })
     content: string;
 
+
     @ManyToOne(() => Candidate, (candidate) => candidate.id)
     @JoinColumn({ name: 'candidate_id' })
     candidate_id: Candidate;
-}
+
+    @ManyToOne(()=> Job, (job) => job.id)
+    @JoinColumn({ name: 'job_id' })
+    job_id: Job
+}               

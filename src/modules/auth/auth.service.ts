@@ -17,6 +17,13 @@ export class AuthService {
     private readonly companyService: CompaniesService,
     private readonly jwtService: JwtService,
   ) {}
+
+
+async checkMail(email: string) {
+  const account = await this.accountService.getAccountByEmail(email);
+  console.log(account)
+  return account
+}
 // service đăng ký người dùng
 async registerCandidate(createCandidateAuthDto: UpdateAuthDto) {
   // check Mail tồn tại
@@ -27,8 +34,8 @@ async registerCandidate(createCandidateAuthDto: UpdateAuthDto) {
   //  Tạo tài khoản và thông tin người dùng
   const role= RoleEnum.CANDIDATE
   try {
-    await this.accountService.createNewAccount(createCandidateAuthDto.email, createCandidateAuthDto.password,role);
-    await this.candidateService.createNewCandidate(createCandidateAuthDto.name);
+    const account = await this.accountService.createNewAccount(createCandidateAuthDto.email, createCandidateAuthDto.password,role);
+    await this.candidateService.createNewCandidate(createCandidateAuthDto.name,account.id);
     return
   } catch (error) {
     console.log(error);
@@ -39,6 +46,7 @@ async registerCandidate(createCandidateAuthDto: UpdateAuthDto) {
 //  service đăng ký công ty
 async registerCompany(createCompanyDto: CreateCompanyDto) {
   // check Mail tồn tại
+  console.log(createCompanyDto)
  const account = await this.accountService.getAccountByEmail(createCompanyDto.email);
  if (account) {
    throw new Error('email đã tồn tại');
@@ -47,14 +55,15 @@ async registerCompany(createCompanyDto: CreateCompanyDto) {
 // tạo tài khoản và thông tin công ty
 const role= RoleEnum.COMPANY
  try {
-  await this.accountService.createNewAccount(createCompanyDto.email, createCompanyDto.password,role);
+  const account = await this.accountService.createNewAccount(createCompanyDto.email, createCompanyDto.password,role);
   const infoCandidate:InfoCompanyRegister={
-    email: createCompanyDto.email,
     name: createCompanyDto.name,
-    address: createCompanyDto.address,
     phone: createCompanyDto.phone,
+    account_company_id: account.id
   }
-  await this.companyService.createNewCompany(infoCandidate);
+  const newCompany =  await this.companyService.createNewCompany(infoCandidate);
+  // tạo chi nhánh cho company trong bang address company
+  const newAddressCompany = await this.companyService.createNewAddress(newCompany.id,createCompanyDto.address);
   return
   } catch (error) {
   console.log(error);
@@ -63,11 +72,9 @@ const role= RoleEnum.COMPANY
 }
 async login(createAuthDto: CreateAuthDto) {
   const { email, password } = createAuthDto;
-  
   const account = await this.accountService.findByEmail(email);
   console.log(account)
   
-
   if (!account) {   
     throw new UnauthorizedException('email không đúng');
   }
@@ -76,10 +83,44 @@ async login(createAuthDto: CreateAuthDto) {
     throw new UnauthorizedException(' mật khẩu không đúng');
   }
   return {
+    // viết thêm trả status đẻ xét điều kiện đăng nhập
+    status: account.status,
     role: account.role,
     token_access: await this.generateAccessToken({ email: account.email, role: account.role }),
     token: await this.generateToken({ email: account.email, role: account.role }),
   };
+}
+
+async loginByGoogle(createAuthDto: UpdateAuthDto) {
+  const {name,email, password} = createAuthDto;
+  console.log(name,email, password)
+  // check Mail tồn tại
+  const account = await this.accountService.getAccountByEmail(email);
+  if (account) {
+    return {
+      // viết thêm trả status đẻ xét điều kiện đăng nhập
+      status: account.status,
+      role: account.role,
+      token_access: await this.generateAccessToken({ email: account.email, role: account.role }),
+      token: await this.generateToken({ email: account.email, role: account.role }),
+    };
+  }
+ //  Tạo tài khoản và thông tin người dùng
+ const role= RoleEnum.CANDIDATE
+ try {
+   const account = await this.accountService.createNewAccount(email,password,role);
+   await this.candidateService.createNewCandidate(name,account.id);
+   return {
+    // viết thêm trả status đẻ xét điều kiện đăng nhập
+    status: account.status,
+    role: account.role,
+    token_access: await this.generateAccessToken({ email: account.email, role: account.role }),
+    token: await this.generateToken({ email: account.email, role: account.role }),
+  };
+ } catch (error) {
+   console.log(error);
+   throw new Error(error);
+ }
 }
 
 async getOTP(email: string) {
@@ -92,6 +133,7 @@ async getOTP(email: string) {
 }
 
 async getNewPassword(email:string){
+
 }
 
 async generateToken(payload) {
@@ -115,5 +157,10 @@ async verifyAccessToken(token: string) {
      secret: 'token'
    });
  } 
-  
+
+ 
+async updatePassword(email: string, password:string  ) {
+  const result = await this.accountService.updatePassword(email, password);
+  return result;
+} 
 }

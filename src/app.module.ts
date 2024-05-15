@@ -16,9 +16,30 @@ import { CertificateCandidateModule } from './modules/certificate_candidate/cert
 import { TypecompanyModule } from './modules/typecompany/typecompany.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { MailerModule } from './mailer/mailer.module';
+import { SalaryModule } from './modules/salary/salary.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), CompaniesModule, CandidatesModule, JobsModule,AccountModule, LocaltionModule, LeveljobsModule, TypejobModule, ProjectCandidateModule, SkillsCandidateModule, EducationCandidateModule, ExperienceCandidateModule, CertificateCandidateModule, TypecompanyModule, AuthModule, MailModule], 
+  imports: [TypeOrmModule.forRoot(config),
+    MailModule,
+    SalaryModule,
+    CompaniesModule,
+    CandidatesModule,
+    JobsModule,
+    AccountModule,
+    LocaltionModule,
+    LeveljobsModule,
+    TypejobModule,
+    ProjectCandidateModule,
+    SkillsCandidateModule, 
+    EducationCandidateModule, 
+    ExperienceCandidateModule, 
+    CertificateCandidateModule, 
+    TypecompanyModule, 
+    AuthModule, 
+    MailerModule,
+    NotificationModule], 
   controllers: [],
   providers: [],
 })

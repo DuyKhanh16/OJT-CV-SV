@@ -11,9 +11,19 @@ export class EducationCandidateService {
     @InjectRepository(EducationCandidate) private educationCandidateRepository: Repository<EducationCandidate>,
   ) {}
 
+  async findEducations(email:string) {
+    const result = await this.educationCandidateRepository.createQueryBuilder()
+    .innerJoinAndSelect("EducationCandidate.candidate_id","Candidate")
+    .innerJoinAndSelect("Candidate.account_candidate_id","Account")
+    .where("Account.email = :email", { email: email })
+    .getMany();
+    console.log(result)
+    return result
+  }
+
   // thêm thông tin học vấn
-  async createNewEducation(candidate_id:any, name_education:string, major:string, started_at: string, end_at: string, info: string) {
-    console.log(candidate_id,name_education,major,started_at,end_at,info)
+  async createNewEducation(candidate_id:string|any, name_education:string, major:string, start_at: string, end_at: string, info: string) {
+    console.log(candidate_id,name_education,major,start_at,end_at,info)
     const result = await this.educationCandidateRepository.createQueryBuilder()
     .insert()
     .into(EducationCandidate)
@@ -21,7 +31,7 @@ export class EducationCandidateService {
       candidate_id:candidate_id,
       name_education:name_education,
       major:major,
-      start_at:started_at,
+      start_at:start_at,
       end_at:end_at,
       info:info
     })
@@ -31,8 +41,7 @@ export class EducationCandidateService {
   }
 
   //update thông tin học vấn candidate
-  async updateNewEducation(candidate_id:any, name_education:string, major:string, started_at: string, end_at: string, info: string) {
-    // console.log(candidate_id,name_education,major,started_at,end_at,info)
+  async updateNewEducation(id:string,candidate_id:any, name_education:string, major:string, started_at: string, end_at: string, info: string) {
     const result = await this.educationCandidateRepository.createQueryBuilder()
     .update(EducationCandidate)
     .set({
@@ -42,7 +51,7 @@ export class EducationCandidateService {
       end_at:end_at,
       info:info
     })
-    .where("candidate_id = :candidate_id", { candidate_id: candidate_id })
+    .where("id = :id", { id: id })
     .execute();
     console.log(result)
     return 'update success';
@@ -51,9 +60,11 @@ export class EducationCandidateService {
     const result = await this.educationCandidateRepository.createQueryBuilder()
     .delete()
     .from(EducationCandidate)
-    .where("candidate_id = :id", { id: id })
+    .where("id = :id", { id: id })
     .execute();
     console.log(result)
     return 'delete success';
   }
+
+  
 }

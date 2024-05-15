@@ -10,7 +10,19 @@ export class SkillsCandidateService {
   constructor(  
     @InjectRepository(SkillsCandidate) private skillsCandidateRepository: Repository<SkillsCandidate>,
   ){}
+
+  async findSkills(email:string) {
+    const result = await this.skillsCandidateRepository.createQueryBuilder()
+    .innerJoinAndSelect("SkillsCandidate.candidate_id","Candidate")
+    .innerJoinAndSelect("Candidate.account_candidate_id","Account")
+    .innerJoinAndSelect("SkillsCandidate.leveljob_id","LevelJob")
+    .where("Account.email = :email", { email: email })
+    .getMany();
+    console.log(result)
+    return result
+  }
   async createSkill(createSkillsCandidateDto: CreateSkillsCandidateDto) {
+    console.log("234",createSkillsCandidateDto)
     const result = await this.skillsCandidateRepository.createQueryBuilder()
     .insert()
     .into(SkillsCandidate)

@@ -11,6 +11,11 @@ constructor(
   @InjectRepository(Leveljob) private leveljobRepository: Repository<Leveljob>,
 ) {}
 
+  // lấy tất cả leveljob
+  async findAll() {
+    return await this.leveljobRepository.find();
+  }
+
  async getLeveljobById(id: string) {
    return await this.leveljobRepository.findOneBy({id:id});
  }

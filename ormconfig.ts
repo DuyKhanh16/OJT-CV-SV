@@ -14,9 +14,10 @@ const config: MysqlConnectionOptions = {
   type: 'mysql',
   database: process.env.DB_NAME, 
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize: true,
+  synchronize: false,
   // autoSchemaSync: true,
   namingStrategy: new SnakeNamingStrategy(),
+  logging: false
 };
 
 export default config;
